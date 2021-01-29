@@ -114,7 +114,7 @@ jobs:
       with:
         token: ${{ secrets.DIGITALOCEAN_TOKEN }}
     - name: Save DigitalOcean kubeconfig
-      run: doctl kubernetes cluster kubeconfig save ${{ secrets.CLUSTER_NAME }}
+      run: doctl kubernetes cluster kubeconfig save ${{ secrets.DEV_CLUSTER_NAME }}
     - name: Update kubernetes resources
       run: kubectl -n wallet-api apply --wait -k ./deployment/
 
