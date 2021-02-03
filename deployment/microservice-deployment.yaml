@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: #treetracker-microservice-name#
-        image: greenstand/#treetracker-microservice-name#:latest
+        image: greenstand/#treetracker-microservice-name#:VERSION
         ports:
         - containerPort: 80
         env:
