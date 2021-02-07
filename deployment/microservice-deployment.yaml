@@ -14,6 +14,14 @@ spec:
       labels:
         app: #treetracker-microservice-name#
     spec:
+      # initContainers definition only needed if microservice contains db migrations
+      initContainers:
+      - name: "wallet-db-migration-job-init"
+        image: "groundnuty/k8s-wait-for:1.3"
+        imagePullPolicy: Always
+        args: 
+        - "job"
+        - #microservice name migration job. has to match the exact name in microservice-db-migration-job.yaml#
       containers:
       - name: #treetracker-microservice-name#
         image: greenstand/#treetracker-microservice-name#:VERSION
