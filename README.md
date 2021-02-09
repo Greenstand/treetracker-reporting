@@ -16,6 +16,7 @@ Install all necessary dependencies:
 
 ```
 npm install
+```
 
 ### Database Setup
 
