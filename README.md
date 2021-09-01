@@ -20,15 +20,7 @@ npm install
 
 ### Database Setup
 
-// TODO - add generic database setup instructions
-
-Here are some resources to get started on local database set up and migration:
-* https://postgresapp.com
-* pgAdmin and DBeaver are great GUI options to use for navigating your local db 
-* https://www.postgresql.org/docs/9.1/app-pgdump.html
-
-
-TODO: detailed description of database migration
+This repository using db-migrate to manage database migrations for its schema.
 
 ```
 db-migrate --env dev up
@@ -40,7 +32,7 @@ If you have not installed db-migrate globally, you can run:
 ../node_modules/db-migrate/bin/db-migrate --env dev up
 ```
 
-See here to learn more about db-migrate: https://db-migrate.readthedocs.io/en/latest/
+Documentation for db-migrate: https://db-migrate.readthedocs.io/en/latest/
 
 # Architecture of this project
 
@@ -75,8 +67,6 @@ Repository is responsible for communicate with the real database, this isolation
 
 All the SQL statements should be here.
 
-
-TODO: Add link to WIKI page detailing our architecture rules
 
 
 # How to test
@@ -134,8 +124,4 @@ This command would run a API server locally, and seed some basic data into DB (t
 
 
 
-# Contributing
 
-Create your local git branch and rebase it from the shared master branch. Please make sure to rebuild your local database schemas using the migrations (as illustrated in the Database Setup section above) to capture any latest updates/changes.
-
-When you are ready to submit a pull request from your local branch, please rebase your branch off of the shared master branch again to integrate any new updates in the codebase before submitting. Any developers joining the project should feel free to review any outstanding pull requests and assign themselves to any open tickets on the Issues list. 
