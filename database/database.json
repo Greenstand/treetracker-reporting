@@ -1,0 +1,10 @@
+{
+  "dev": {
+    "driver": "pg",
+    "user": "postgres",
+    "password": "holodja123",
+    "host": "localhost",
+    "database": "messaging_api_dev",
+    "port": "5432"
+  }
+}
