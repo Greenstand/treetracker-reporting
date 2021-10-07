@@ -1,0 +1,25 @@
+{
+  "name": "treetracker-reporting",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "pg": "^8.7.1"
+  },
+  "devDependencies": {
+    "db-migrate-pg": "^1.2.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Greenstand/treetracker-reporting.git"
+  },
+  "author": "Greenstand Engineers",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/Greenstand/treetracker-reporting/issues"
+  },
+  "homepage": "https://github.com/Greenstand/treetracker-reporting#readme"
+}
