@@ -22,7 +22,7 @@ spec:
               - key: doks.digitalocean.com/node-pool
                 operator: In
                 values:
-                - NODE_POOL_LABEL_VALUE
+                - microservices-node-pool
       containers:
       - name: SERVICE
         image: greenstand/SERVICE:TAG
