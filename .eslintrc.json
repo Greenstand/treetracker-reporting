@@ -31,8 +31,13 @@
         "no-shadow":"warn",
         "import/order": "warn",
         "no-unused-expressions": "warn",
-        "import/no-extraneous-dependencies": "warn" ,
         "import/no-unresolved": "warn",
         "no-plusplus":"warn",
-        "no-continue":"off"   }
+        "no-continue":"off",
+        "no-console": ["warn", { "allow": ["error"] }],
+        "import/no-extraneous-dependencies": [
+          "error",
+          { "devDependencies": ["**/*.test.js", "**/*.spec.js"] }
+        ]
+    }
 }
