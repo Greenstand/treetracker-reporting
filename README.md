@@ -37,12 +37,14 @@ npm install
 This repository using db-migrate to manage database migrations for its schema.
 
 ```
+cd database/
 db-migrate --env dev up
 ```
 
 If you have not installed db-migrate globally, you can run:
 
 ```
+cd database/
 ../node_modules/db-migrate/bin/db-migrate --env dev up
 ```
 
