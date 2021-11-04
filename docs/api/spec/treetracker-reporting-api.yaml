@@ -1,0 +1,206 @@
+openapi: 3.1.0
+info:
+  title: Reporting API
+  version: '1.0'
+servers: []
+paths:
+  /capture:
+    parameters: []
+    get:
+      summary: Fetches data from the capture_denormalized table
+      tags: []
+      operationId: get-captures
+      description: 'Retreive captures with pagination, filtering and sorting on all columns'
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: offset
+        - schema:
+            type: integer
+          in: query
+          name: limit
+        - schema:
+            type: string
+            enum: ['capture_uuid','planter_first_name','planter_last_name','planter_identifier','created_at',
+                    'lat','lon','note','approved','planting_organization','date_paid','paid_by','payment_local_amt',
+                    'species','token_id']
+          in: query
+          name: sort_by
+          description: column with which to sort by
+        - schema:
+            type: string
+            enum: ['asc','desc']
+            default: 'asc'
+          in: query
+          name: order
+          description: order by which sorting is done
+        - schema:
+            type: string
+            format: uuid
+          in: query
+          name: capture_uuid
+          description: filter by capture_uuid
+        - schema:
+            type: string
+          in: query
+          name: planter_first_name
+          description: filter by planter_first_name
+        - schema:
+            type: string
+          in: query
+          name: planter_last_name
+          description: filter by planter_last_name
+        - schema:
+            type: string
+          in: query
+          name: planter_identifier
+          description: filter by planter_identifier
+        - schema:
+            type: string
+            format: IS0 8601 DateTime
+          in: query
+          name: since
+          description: where created_at >= since
+        - schema:
+            type: number
+          in: query
+          name: lat
+          description: filter by lat
+        - schema:
+            type: number
+          in: query
+          name: lon
+          description: filter by lon
+        - schema:
+            type: string
+          in: query
+          name: note
+          description: filter by note
+        - schema:
+            type: boolean
+          in: query
+          name: approved
+          description: filter by approved
+        - schema:
+            type: string
+          in: query
+          name: planting_organization
+          description: filter by planting_organization
+        - schema:
+            type: string
+            format: IS0 8601 DateTime
+          in: query
+          name: since_date_paid
+          description: where date_paid >= since_date_paid
+        - schema:
+            type: string
+          in: query
+          name: species
+          description: filter by species
+        - schema:
+            type: number
+          in: query
+          name: payment_local_amt
+          description: filter by payment_local_amt
+        - schema:
+            type: string
+          in: query
+          name: paid_by
+          description: filter by paid_by
+        - schema:
+            type: string
+            format: uuid
+          in: query
+          name: token_id
+          description: filter by token_id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                x-examples:
+                  example-1:
+                    captures:
+                      - capture_uuid: 'f478d001-8903-446d-84aa-7f585f89383c'
+                        planter_first_name: 'first name'
+                        planter_last_name: 'last name'
+                        planter_identifier: 'aasefW221'
+                        created_at: '2021-10-04T22:39:10.608Z'
+                        lat: 3.25252525
+                        lon: 4.4444444
+                        note: 'a note'
+                        approved: false
+                        planting_organization: 'organization'
+                        date_paid: '2021-11-04T22:39:10.608Z'
+                        paid_by: 'first name 2'
+                        payment_local_amt: 400
+                        species: 'sugar maple'
+                        token_id: '87cd7064-2071-47aa-9950-8be9b8969abc'
+                    links:
+                      prev: 'https://reporting.treetracker.org?paid_by=998SDF89SDF&since=2021-11-04T22:39:10.608Z&offset=0&limit=100'
+                      next: 'https://reporting.treetracker.org?paid_by=998SDF89SDF&since=2021-11-04T22:39:10.608Z&offset=200&limit=100'
+                properties:
+                  captures:
+                    type: array
+                    uniqueItems: true
+                    minItems: 1
+                    items:
+                      type: object
+                      properties:
+                        capture_uuid:
+                          type: string
+                          format: uuid
+                        planter_first_name:
+                          type: string
+                        planter_last_name:
+                          type: string
+                        planter_identifier:
+                          type: string
+                        created_at:
+                          type: string
+                          format: ISO 8601
+                        lat:
+                          type: number
+                        lon:
+                          type: number
+                        note:
+                          type: string
+                        approved:
+                          type: boolean
+                        planting_organization:
+                          type: string
+                        date_paid:
+                          type: string
+                          format: ISO 8601
+                        paid_by:
+                          type: string
+                        payment_local_amt:
+                          type: number
+                        species:
+                          type: string
+                        token_id:
+                          type: string
+                          format: uuid
+                  links:
+                    type: object
+                    required:
+                      - prev
+                      - next
+                    properties:
+                      prev:
+                        type: string
+                        minLength: 1
+                        description: Complete link with query string to the previous page of captures
+                      next:
+                        type: string
+                        minLength: 1
+                        description: Complete link with query string to the next page of captures
+                required:
+                  - captures
+                  - links
+components:
+  schemas: {}
