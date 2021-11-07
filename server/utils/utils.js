@@ -4,8 +4,8 @@
 // const ApiKeyService = require("../services/ApiKeyService");
 // const JWTService = require("../services/JWTService.js");
 const log = require('loglevel');
-const HttpError = require('../utils/HttpError');
 const { ValidationError } = require('joi');
+const HttpError = require("./HttpError");
 
 /*
  * This is from the library https://github.com/Abazhenov/express-async-handler

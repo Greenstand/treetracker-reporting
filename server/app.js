@@ -5,6 +5,7 @@ const HttpError = require('./utils/HttpError');
 // const router = require('./routes');
 const { sentryDSN } = require('../config/config');
 const { errorHandler, handlerWrapper } = require('./utils/utils');
+
 const app = express();
 
 Sentry.init({ dsn: sentryDSN });
@@ -33,13 +34,14 @@ app.use(
 app.use(express.urlencoded({ extended: false })); // parse application/x-www-form-urlencoded
 app.use(express.json()); // parse application/json
 
-//routers
-//app.use('/', router);
+// routers
+// app.use('/', router);
 
 // Global error handler
 app.use(errorHandler);
 
-const version = require('../package.json').version;
+const {version} = require('../package.json');
+
 app.get('*', function (req, res) {
   res.status(200).send(version);
 });
