@@ -19,7 +19,7 @@ const captureGetQuerySchema = Joi.object({
   planting_organization: Joi.string(),
   since: Joi.date().iso(),
   since_date_paid: Joi.date().iso(),
-  species: Joi.date().iso(),
+  species: Joi.string(),
   token_id: Joi.string().uuid(),
   sort_by: Joi.string().valid(
     'capture_uuid',
