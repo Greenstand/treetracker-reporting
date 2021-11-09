@@ -9,7 +9,7 @@ CREATE TABLE capture_denormalized
     lon numeric NOT NULL,
     note varchar NOT NULL,
     approved boolean NOT NULL,
-    planting_organization boolean NOT NULL,
+    planting_organization varchar NOT NULL,
     date_paid timestamptz NOT NULL,
     paid_by varchar NOT NULL,
     payment_local_amt numeric NOT NULL,
