@@ -35,35 +35,6 @@ describe('Captures GET', () => {
       });
   });
 
-  it(`Should raise validation error with error code 422 -- 'lat' query parameter should be a number  `, function (done) {
-    request(server)
-      .get(`/capture`)
-      .query({
-        lat: 'lat',
-      })
-      .set('Accept', 'application/json')
-      .expect(422)
-      .end(function (err, res) {
-        expect(res.body.message).to.eql('"lat" must be a number');
-        if (err) return done(err);
-        return done();
-      });
-  });
-
-  it(`Should raise validation error with error code 422 -- 'lon' query parameter should be a number  `, function (done) {
-    request(server)
-      .get(`/capture`)
-      .query({
-        lon: 'lon',
-      })
-      .set('Accept', 'application/json')
-      .expect(422)
-      .end(function (err, res) {
-        expect(res.body.message).to.eql('"lon" must be a number');
-        if (err) return done(err);
-        return done();
-      });
-  });
 
   it(`Should raise validation error with error code 422 -- 'limit' query parameter should be an integer  `, function (done) {
     request(server)
@@ -104,7 +75,7 @@ describe('Captures GET', () => {
       .set('Accept', 'application/json')
       .expect(422)
       .end(function (err, res) {
-        expect(res.body.message).to.eql('"limit" must be less than 101');
+        expect(res.body.message).to.eql('"limit" must be less than 1001');
         if (err) return done(err);
         return done();
       });
@@ -135,21 +106,6 @@ describe('Captures GET', () => {
       .expect(422)
       .end(function (err, res) {
         expect(res.body.message).to.eql('"offset" must be greater than -1');
-        if (err) return done(err);
-        return done();
-      });
-  });
-
-  it(`Should raise validation error with error code 422 -- 'payment_local_amt' query parameter should be a number  `, function (done) {
-    request(server)
-      .get(`/capture`)
-      .query({
-        payment_local_amt: 'payment_local_amt',
-      })
-      .set('Accept', 'application/json')
-      .expect(422)
-      .end(function (err, res) {
-        expect(res.body.message).to.eql('"payment_local_amt" must be a number');
         if (err) return done(err);
         return done();
       });
