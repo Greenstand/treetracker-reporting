@@ -95,11 +95,11 @@ describe('Captures GET', () => {
       });
   });
 
-  it(`Should raise validation error with error code 422 -- 'limit' query parameter should be less than 101  `, function (done) {
+  it(`Should raise validation error with error code 422 -- 'limit' query parameter should be less than 1001  `, function (done) {
     request(server)
       .get(`/capture`)
       .query({
-        limit: 101,
+        limit: 1001,
       })
       .set('Accept', 'application/json')
       .expect(422)
@@ -290,6 +290,10 @@ describe('Captures GET', () => {
     const capture = { ...captureOne };
     delete capture.created_at;
     delete capture.date_paid;
+    delete capture.lat;
+    delete capture.lon;
+    delete capture.note;
+    delete capture.payment_local_amt;
     capture.since = captureOne.created_at;
     capture.since_date_paid = captureOne.date_paid;
     request(server)
