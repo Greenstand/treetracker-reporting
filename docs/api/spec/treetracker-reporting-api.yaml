@@ -18,6 +18,7 @@ paths:
           name: offset
         - schema:
             type: integer
+            maximum: 1000
           in: query
           name: limit
         - schema:
@@ -63,21 +64,6 @@ paths:
           name: since
           description: where created_at >= since
         - schema:
-            type: number
-          in: query
-          name: lat
-          description: filter by lat
-        - schema:
-            type: number
-          in: query
-          name: lon
-          description: filter by lon
-        - schema:
-            type: string
-          in: query
-          name: note
-          description: filter by note
-        - schema:
             type: boolean
           in: query
           name: approved
@@ -98,11 +84,6 @@ paths:
           in: query
           name: species
           description: filter by species
-        - schema:
-            type: number
-          in: query
-          name: payment_local_amt
-          description: filter by payment_local_amt
         - schema:
             type: string
           in: query
