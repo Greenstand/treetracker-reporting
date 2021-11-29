@@ -35,7 +35,6 @@ describe('Captures GET', () => {
       });
   });
 
-
   it(`Should raise validation error with error code 422 -- 'limit' query parameter should be an integer  `, function (done) {
     request(server)
       .get(`/capture`)
@@ -145,6 +144,23 @@ describe('Captures GET', () => {
       });
   });
 
+  it(`Should raise validation error with error code 422 -- 'since_capture_created_at' query parameter should be a date  `, function (done) {
+    request(server)
+      .get(`/capture`)
+      .query({
+        since_capture_created_at: 'since_capture_created_at',
+      })
+      .set('Accept', 'application/json')
+      .expect(422)
+      .end(function (err, res) {
+        expect(res.body.message).to.eql(
+          '"since_capture_created_at" must be in ISO 8601 date format',
+        );
+        if (err) return done(err);
+        return done();
+      });
+  });
+
   it(`Should raise validation error with error code 422 -- 'token_id' query parameter should be a uuid  `, function (done) {
     request(server)
       .get(`/capture`)
@@ -160,6 +176,23 @@ describe('Captures GET', () => {
       });
   });
 
+  it(`Should raise validation error with error code 422 -- 'planting_organization_uuid' query parameter should be a uuid  `, function (done) {
+    request(server)
+      .get(`/capture`)
+      .query({
+        planting_organization_uuid: 'planting_organization_uuid',
+      })
+      .set('Accept', 'application/json')
+      .expect(422)
+      .end(function (err, res) {
+        expect(res.body.message).to.eql(
+          '"planting_organization_uuid" must be a valid GUID',
+        );
+        if (err) return done(err);
+        return done();
+      });
+  });
+
   it(`Should raise validation error with error code 422 -- 'sort_by' query parameter should be one of the allowed values  `, function (done) {
     request(server)
       .get(`/capture`)
@@ -170,7 +203,7 @@ describe('Captures GET', () => {
       .expect(422)
       .end(function (err, res) {
         expect(res.body.message).to.eql(
-          '"sort_by" must be one of [capture_uuid, planter_first_name, planter_last_name, planter_identifier, created_at, lat, lon, note, approved, planting_organization, date_paid, paid_by, payment_local_amt, species, token_id]',
+          '"sort_by" must be one of [capture_uuid, capture_created_at, planter_first_name, planter_last_name, planter_identifier, created_at, lat, lon, note, approved, planting_organization_uuid, planting_organization_name, date_paid, paid_by, payment_local_amt, species, token_id]',
         );
         if (err) return done(err);
         return done();
@@ -206,6 +239,7 @@ describe('Captures GET', () => {
         for (const capture of res.body.captures) {
           expect(capture).to.have.keys([
             'capture_uuid',
+            'capture_created_at',
             'planter_first_name',
             'planter_last_name',
             'planter_identifier',
@@ -214,7 +248,8 @@ describe('Captures GET', () => {
             'lon',
             'note',
             'approved',
-            'planting_organization',
+            'planting_organization_uuid',
+            'planting_organization_name',
             'date_paid',
             'paid_by',
             'payment_local_amt',
@@ -250,8 +285,10 @@ describe('Captures GET', () => {
     delete capture.lon;
     delete capture.note;
     delete capture.payment_local_amt;
+    delete capture.capture_created_at;
     capture.since = captureOne.created_at;
     capture.since_date_paid = captureOne.date_paid;
+    capture.since_capture_created_at = captureOne.capture_created_at;
     request(server)
       .get(`/capture`)
       .query({ ...capture })

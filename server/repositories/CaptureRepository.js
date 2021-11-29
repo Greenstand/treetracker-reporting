@@ -19,6 +19,14 @@ class CaptureRepository extends BaseRepository {
         result.where('date_paid', '>=', filterObject.date_paid);
         delete filterObject.date_paid;
       }
+      if (filterObject.capture_created_at) {
+        result.where(
+          'capture_created_at',
+          '>=',
+          filterObject.capture_created_at,
+        );
+        delete filterObject.capture_created_at;
+      }
       result.where(filterObject);
     };
     let promise = this._session

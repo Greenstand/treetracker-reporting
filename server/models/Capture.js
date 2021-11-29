@@ -1,5 +1,6 @@
 const Capture = ({
   capture_uuid,
+  capture_created_at,
   planter_first_name,
   planter_last_name,
   planter_identifier,
@@ -18,6 +19,7 @@ const Capture = ({
 }) => {
   return Object.freeze({
     capture_uuid,
+    capture_created_at,
     planter_first_name,
     planter_last_name,
     planter_identifier,
@@ -43,9 +45,11 @@ const FilterCriteria = ({
   planter_first_name = undefined,
   planter_identifier = undefined,
   planter_last_name = undefined,
-  planting_organization = undefined,
+  planting_organization_uuid = undefined,
+  planting_organization_name = undefined,
   since = undefined,
   since_date_paid = undefined,
+  since_capture_created_at = undefined,
   species = undefined,
   token_id = undefined,
 }) => {
@@ -56,7 +60,10 @@ const FilterCriteria = ({
     planter_identifier,
     created_at: since && new Date(since),
     approved,
-    planting_organization,
+    planting_organization_uuid,
+    planting_organization_name,
+    capture_created_at:
+      since_capture_created_at && new Date(since_capture_created_at),
     date_paid: since_date_paid && new Date(since_date_paid),
     paid_by,
     species,
