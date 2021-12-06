@@ -24,30 +24,30 @@ paths:
         - schema:
             type: string
             enum:
-              [
-                "capture_uuid",
-                "planter_first_name",
-                "planter_last_name",
-                "planter_identifier",
-                "created_at",
-                "lat",
-                "lon",
-                "note",
-                "approved",
-                "planting_organization",
-                "date_paid",
-                "paid_by",
-                "payment_local_amt",
-                "species",
-                "token_id",
-              ]
+              - capture_uuid
+              - planter_first_name
+              - planter_last_name
+              - planter_identifier
+              - created_at
+              - lat
+              - lon
+              - note
+              - approved
+              - planting_organization
+              - date_paid
+              - paid_by
+              - payment_local_amt
+              - species
+              - token_id
           in: query
           name: sort_by
           description: column with which to sort by
         - schema:
             type: string
-            enum: ["asc", "desc"]
-            default: "asc"
+            enum:
+              - asc
+              - desc
+            default: asc
           in: query
           name: order
           description: order by which sorting is done
@@ -121,21 +121,21 @@ paths:
                 x-examples:
                   example-1:
                     captures:
-                      - capture_uuid: "f478d001-8903-446d-84aa-7f585f89383c"
-                        planter_first_name: "first name"
-                        planter_last_name: "last name"
-                        planter_identifier: "aasefW221"
+                      - capture_uuid: f478d001-8903-446d-84aa-7f585f89383c
+                        planter_first_name: first name
+                        planter_last_name: last name
+                        planter_identifier: aasefW221
                         created_at: "2021-10-04T22:39:10.608Z"
                         lat: 3.25252525
                         lon: 4.4444444
-                        note: "a note"
+                        note: a note
                         approved: false
-                        planting_organization: "organization"
+                        planting_organization: organization
                         date_paid: "2021-11-04T22:39:10.608Z"
-                        paid_by: "first name 2"
+                        paid_by: first name 2
                         payment_local_amt: 400
-                        species: "sugar maple"
-                        token_id: "87cd7064-2071-47aa-9950-8be9b8969abc"
+                        species: sugar maple
+                        token_id: 87cd7064-2071-47aa-9950-8be9b8969abc
                     links:
                       prev: "https://reporting.treetracker.org?paid_by=998SDF89SDF&since=2021-11-04T22:39:10.608Z&offset=0&limit=100"
                       next: "https://reporting.treetracker.org?paid_by=998SDF89SDF&since=2021-11-04T22:39:10.608Z&offset=200&limit=100"
@@ -204,7 +204,18 @@ paths:
       summary: Fetches various capture statistics data
       tags: []
       operationId: get-capture-statistics
-      description: "Retreive capture statistics"
+      description: Retreive capture statistics
+      parameters:
+        - schema:
+            type: string
+            format: IS0 8601 DateTime
+          in: query
+          name: capture_created_start_date
+        - schema:
+            type: string
+            format: IS0 8601 DateTime
+          in: query
+          name: capture_created_end_date
       responses:
         "200":
           description: OK
@@ -218,32 +229,32 @@ paths:
                     planters:
                       total: 1000
                       planters:
-                        - name: "name"
+                        - name: name
                           number: 10
                     captures:
                       total: 1000
                       captures:
-                        - name: "name"
+                        - name: name
                           number: 10
                     unverified_captures:
                       total: 1000
                       unverified_captures:
-                        - name: "name"
+                        - name: name
                           number: 10
                     species:
                       total: 1000
                       species:
-                        - name: "name"
+                        - name: name
                           number: 10
                     top_planters:
                       average: 1000
                       top_planters:
-                        - name: "name"
+                        - name: name
                           number: 10
                     trees_per_planters:
                       average: 1000
                       trees_per_planters:
-                        - name: "name"
+                        - name: name
                           number: 10
                 properties:
                   planters:
@@ -342,6 +353,108 @@ paths:
                               type: string
                             number:
                               type: number
-
+  /capture/statistics/card:
+    parameters: []
+    get:
+      summary: Fetches various capture statistics data
+      tags: []
+      operationId: get-capture-statistics-card
+      description: Retreive capture statistics
+      parameters:
+        - schema:
+            type: string
+            format: IS0 8601 DateTime
+          in: query
+          name: capture_created_start_date
+        - schema:
+            type: string
+            format: IS0 8601 DateTime
+          in: query
+          name: capture_created_end_date
+        - schema:
+            type: integer
+          in: query
+          name: offset
+        - schema:
+            type: integer
+            maximum: 100
+          in: query
+          name: limit
+        - schema:
+            type: string
+            enum:
+              - planters
+              - species
+              - captures
+              - unverified_captures
+              - top_planters
+          in: query
+          name: card_title
+          description: card to get more data of
+          required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ""
+                type: object
+                x-examples:
+                  example-1:
+                    planters:
+                      total: 1000
+                      planters:
+                        - name: name
+                          number: 10
+                    captures:
+                      total: 1000
+                      captures:
+                        - name: name
+                          number: 10
+                    unverified_captures:
+                      total: 1000
+                      unverified_captures:
+                        - name: name
+                          number: 10
+                    species:
+                      total: 1000
+                      species:
+                        - name: name
+                          number: 10
+                    top_planters:
+                      average: 1000
+                      top_planters:
+                        - name: name
+                          number: 10
+                    trees_per_planters:
+                      average: 1000
+                      trees_per_planters:
+                        - name: name
+                          number: 10
+                properties:
+                  card_information:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        number:
+                          type: number
+                  links:
+                    type: object
+                    required:
+                      - prev
+                      - next
+                    properties:
+                      prev:
+                        type: string
+                        minLength: 1
+                        description: Complete link with query string to the previous page
+                      next:
+                        type: string
+                        minLength: 1
+                        description: Complete link with query string to the next page
 components:
   schemas: {}
