@@ -90,6 +90,23 @@ const QueryOptions = ({
     }, {});
 };
 
+const StatisticsFilterCriteria = ({
+  capture_created_start_date = undefined,
+  capture_created_end_date = undefined,
+  card_title = undefined,
+}) => {
+  return Object.entries({
+    capture_created_start_date,
+    capture_created_end_date,
+    card_title,
+  })
+    .filter((entry) => entry[1] !== undefined)
+    .reduce((result, item) => {
+      result[item[0]] = item[1];
+      return result;
+    }, {});
+};
+
 const getCaptures =
   (captureRepo) =>
   async (filterCriteria = undefined, url) => {
@@ -197,7 +214,8 @@ const generateFormattedResponse = ({
   };
 };
 
-const getCaptureStatistics = async (captureRepo) => {
+const getCaptureStatistics = async (captureRepo, filterCriteria) => {
+  const filter = StatisticsFilterCriteria({ ...filterCriteria });
   const {
     topPlanters,
     averageCapturePerPlanter,
@@ -209,7 +227,7 @@ const getCaptureStatistics = async (captureRepo) => {
     topCaptures,
     totalUnverifiedCaptures,
     topUnverifiedCaptures,
-  } = await captureRepo.getStatistics();
+  } = await captureRepo.getStatistics(filter);
 
   return generateFormattedResponse({
     topPlanters,
@@ -227,9 +245,11 @@ const getCaptureStatistics = async (captureRepo) => {
 
 const getCaptureStatisticsSingleCard =
   (captureRepo) => async (filterCriteria, url) => {
-    const card_title = filterCriteria.card_title;
+    const {card_title} = filterCriteria;
     let options = { limit: 7, offset: 0 };
     options = { ...options, ...QueryOptions({ ...filterCriteria }) };
+
+    const filter = StatisticsFilterCriteria({ ...filterCriteria });
 
     const queryFilterObjects = { ...filterCriteria };
     queryFilterObjects.limit = options.limit;
@@ -249,10 +269,11 @@ const getCaptureStatisticsSingleCard =
       prev = `${urlWithLimitAndOffset}${+options.offset - +options.limit}`;
     }
 
-    const result = await captureRepo.getStatistics(filterCriteria, options);
+    const result = await captureRepo.getStatistics(filter, options);
 
     return {
-      [card_title]: generateFormattedResponse(result)[card_title][card_title],
+      card_information:
+        generateFormattedResponse(result)[card_title][card_title],
       links: {
         prev,
         next,
@@ -264,4 +285,9 @@ module.exports = {
   getCaptures,
   getCaptureStatistics,
   getCaptureStatisticsSingleCard,
+  generateFormattedResponse,
+  QueryOptions,
+  StatisticsFilterCriteria,
+  FilterCriteria,
+  Capture,
 };

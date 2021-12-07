@@ -313,6 +313,42 @@ describe('Captures Statistics GET', () => {
     }
   };
   it(`Should get captures stastics successfully`, function (done) {
+    it(`Should raise validation error with error code 422 -- 'capture_created_start_date' query parameter should be a date  `, function (done) {
+      request(server)
+        .get(`/capture/statistics`)
+        .query({
+          capture_created_start_date: 'capture_created_start_date',
+        })
+        .set('Accept', 'application/json')
+        .expect(422)
+        .end(function (err, res) {
+          if (err) return done(err);
+          console.log(res.body);
+          expect(res.body.message).to.eql(
+            '"capture_created_start_date" must be in ISO 8601 date format',
+          );
+          return done();
+        });
+    });
+
+    it(`Should raise validation error with error code 422 -- 'capture_created_end_date' query parameter should be a date  `, function (done) {
+      request(server)
+        .get(`/capture/statistics`)
+        .query({
+          capture_created_end_date: 'capture_created_end_date',
+        })
+        .set('Accept', 'application/json')
+        .expect(422)
+        .end(function (err, res) {
+          if (err) return done(err);
+          console.log(res.body);
+          expect(res.body.message).to.eql(
+            '"capture_created_end_date" must be in ISO 8601 date format',
+          );
+          return done();
+        });
+    });
+
     request(server)
       .get(`/capture/statistics`)
       .set('Accept', 'application/json')
@@ -403,18 +439,18 @@ describe('Captures Statistics GET', () => {
         });
     });
 
-    it(`Should raise validation error with error code 422 -- 'limit' query parameter should be less than 11  `, function (done) {
+    it(`Should raise validation error with error code 422 -- 'limit' query parameter should be less than 101  `, function (done) {
       request(server)
         .get(`/capture/statistics/card`)
         .query({
-          limit: 11,
+          limit: 101,
           card_title: 'planters',
         })
         .set('Accept', 'application/json')
         .expect(422)
         .end(function (err, res) {
           if (err) return done(err);
-          expect(res.body.message).to.eql('"limit" must be less than 11');
+          expect(res.body.message).to.eql('"limit" must be less than 101');
           return done();
         });
     });
@@ -451,6 +487,44 @@ describe('Captures Statistics GET', () => {
         });
     });
 
+    it(`Should raise validation error with error code 422 -- 'capture_created_start_date' query parameter should be a date  `, function (done) {
+      request(server)
+        .get(`/capture/statistics/card`)
+        .query({
+          capture_created_start_date: 'capture_created_start_date',
+          card_title: 'planters',
+        })
+        .set('Accept', 'application/json')
+        .expect(422)
+        .end(function (err, res) {
+          if (err) return done(err);
+          console.log(res.body);
+          expect(res.body.message).to.eql(
+            '"capture_created_start_date" must be in ISO 8601 date format',
+          );
+          return done();
+        });
+    });
+
+    it(`Should raise validation error with error code 422 -- 'capture_created_end_date' query parameter should be a date  `, function (done) {
+      request(server)
+        .get(`/capture/statistics/card`)
+        .query({
+          capture_created_end_date: 'capture_created_end_date',
+          card_title: 'planters',
+        })
+        .set('Accept', 'application/json')
+        .expect(422)
+        .end(function (err, res) {
+          if (err) return done(err);
+          console.log(res.body);
+          expect(res.body.message).to.eql(
+            '"capture_created_end_date" must be in ISO 8601 date format',
+          );
+          return done();
+        });
+    });
+
     it(`Should get captures stastics card details successfully`, function (done) {
       request(server)
         .get(`/capture/statistics/card`)
@@ -461,9 +535,9 @@ describe('Captures Statistics GET', () => {
         .expect(200)
         .end(function (err, res) {
           if (err) return done(err);
-          expect(res.body).to.have.keys(['planters', 'links']);
+          expect(res.body).to.have.keys(['card_information', 'links']);
           expect(res.body.links).to.have.keys(['prev', 'next']);
-          checkObjectProperties(res.body.planters);
+          checkObjectProperties(res.body.card_information);
           return done();
         });
     });

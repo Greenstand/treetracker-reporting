@@ -45,9 +45,16 @@ const captureGetQuerySchema = Joi.object({
   order: Joi.string().valid('asc', 'desc'),
 }).unknown(false);
 
+const captureStatisticsQuerySchema = Joi.object({
+  capture_created_start_date: Joi.date().iso(),
+  capture_created_end_date: Joi.date().iso(),
+}).unknown(false);
+
 const captureStatisticsGetCardQuerySchema = Joi.object({
-  limit: Joi.number().integer().greater(0).less(11),
+  limit: Joi.number().integer().greater(0).less(101),
   offset: Joi.number().integer().greater(-1),
+  capture_created_start_date: Joi.date().iso(),
+  capture_created_end_date: Joi.date().iso(),
   card_title: Joi.string()
     .valid(
       'planters',
@@ -73,10 +80,13 @@ const captureGet = async (req, res) => {
 };
 
 const captureStatisticsGet = async (req, res) => {
+  await captureStatisticsQuerySchema.validateAsync(req.query, {
+    abortEarly: false,
+  });
   const session = new Session();
   const captureRepo = new CaptureRepository(session);
 
-  const result = await getCaptureStatistics(captureRepo);
+  const result = await getCaptureStatistics(captureRepo, req.query);
   res.send(result);
   res.end();
 };

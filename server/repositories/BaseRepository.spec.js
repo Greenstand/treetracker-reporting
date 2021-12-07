@@ -33,9 +33,9 @@ describe('BaseRepository', () => {
   });
 
   // TODO
-  it.skip('getById can not find result, should throw 404', () => {});
+  // it.skip('getById can not find result, should throw 404', () => {});
 
-  describe.only('getByFilter', () => {
+  describe('getByFilter', () => {
     it('getByFilter', async () => {
       tracker.uninstall();
       tracker.install();
@@ -229,7 +229,7 @@ describe('BaseRepository', () => {
       tracker.install();
       tracker.on('query', (query) => {
         expect(query.sql).match(/update.*testTable.*/);
-        query.response({ id: 1 });
+        query.response([{ id: 1 }]);
       });
       const result = await baseRepository.update({
         id: 1,

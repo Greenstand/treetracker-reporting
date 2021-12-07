@@ -50,81 +50,128 @@ class CaptureRepository extends BaseRepository {
   }
 
   async getStatistics(filter, options = { limit: 3, offset: 0 }) {
-    const totalOrganizationPlantersQuery = this._session
-      .getDB()
-      .raw(
-        `SELECT COUNT(*) FROM (SELECT DISTINCT planting_organization_uuid FROM capture_denormalized) AS totalPlanters;`,
+    const whereBuilder = function (object, builder) {
+      const result = builder;
+      const filterObject = { ...object };
+      delete filterObject.card_title;
+      if (filterObject.capture_created_start_date) {
+        result.where(
+          'capture_created_at',
+          '>=',
+          filterObject.capture_created_start_date,
+        );
+        delete filterObject.capture_created_start_date;
+      }
+      if (filterObject.capture_created_end_date) {
+        result.where(
+          'capture_created_at',
+          '<=',
+          filterObject.capture_created_end_date,
+        );
+        delete filterObject.capture_created_end_date;
+      }
+      result.where(filterObject);
+    };
+    const knex = this._session.getDB();
+
+    const totalOrganizationPlantersQuery = knex(this._tableName)
+      .countDistinct('planting_organization_uuid as totalPlanters')
+      .where((builder) => whereBuilder(filter, builder));
+
+    const topOrganizationPlantersQuery = knex(this._tableName)
+      .select(knex.raw('planting_organization_name, count(*) as count'))
+      .where((builder) => whereBuilder(filter, builder))
+      .groupBy('planting_organization_uuid', 'planting_organization_name')
+      .orderBy('count', 'desc')
+      .limit(options.limit)
+      .offset(options.offset);
+
+    const topPlantersQuery = knex(this._tableName)
+      .select(
+        knex.raw('planter_first_name, planter_last_name, count(*) as count'),
+      )
+      .where((builder) => whereBuilder(filter, builder))
+      .groupBy('planter_first_name', 'planter_last_name', 'planter_identifier')
+      .orderBy('count', 'desc')
+      .limit(options.limit)
+      .offset(options.offset);
+
+    const averageCapturePerPlanterQuery = knex(this._tableName)
+      .avg('totalPlanters')
+      .from(function () {
+        this.count('* as totalPlanters')
+          .from('capture_denormalized')
+          .where((builder) => whereBuilder(filter, builder))
+          .groupBy(
+            'planter_first_name',
+            'planter_last_name',
+            'planter_identifier',
+          )
+          .as('planters');
+      });
+
+    const totalSpeciesQuery = knex(this._tableName)
+      .where((builder) => whereBuilder(filter, builder))
+      .countDistinct('species as totalSpecies');
+
+    const topSpeciesQuery = knex(this._tableName)
+      .select(knex.raw('species, count(*) as count'))
+      .where((builder) => whereBuilder(filter, builder))
+      .groupBy('species')
+      .orderBy('count', 'desc')
+      .limit(options.limit)
+      .offset(options.offset);
+
+    const totalApprovedCapturesQuery = knex(this._tableName)
+      .count()
+      .where((builder) => whereBuilder({ ...filter, approved: true }, builder));
+
+    const topApprovedCapturesQuery = knex(this._tableName)
+      .select(knex.raw('planting_organization_name, count(*) as count'))
+      .where((builder) => whereBuilder({ ...filter, approved: true }, builder))
+      .groupBy('planting_organization_uuid', 'planting_organization_name')
+      .orderBy('count', 'desc')
+      .limit(options.limit)
+      .offset(options.offset);
+
+    const totalUnverifiedCapturesQuery = knex(this._tableName)
+      .count()
+      .where((builder) =>
+        whereBuilder({ ...filter, approved: false }, builder),
       );
 
-    const topOrganizationPlantersQuery = this._session
-      .getDB()
-      .raw(
-        `SELECT planting_organization_name, COUNT(*) FROM capture_denormalized GROUP BY planting_organization_uuid, planting_organization_name ORDER BY COUNT(*) DESC LIMIT ${options.limit} OFFSET ${options.offset}`,
-      );
-
-    const topPlantersQuery = this._session
-      .getDB()
-      .raw(
-        `SELECT planter_first_name, planter_last_name, COUNT(*) FROM capture_denormalized GROUP BY planter_first_name, planter_last_name, planter_identifier ORDER BY COUNT(*) DESC LIMIT ${options.limit} OFFSET ${options.offset}`,
-      );
-
-    const averageCapturePerPlanterQuery = this._session
-      .getDB()
-      .raw(
-        `SELECT  AVG(totalPlanters) FROM (SELECT COUNT(*) AS totalPlanters from public.capture_denormalized group by planter_first_name, planter_last_name, planter_identifier ) AS planters`,
-      );
-
-    const totalSpeciesQuery = this._session
-      .getDB()
-      .raw(
-        `SELECT COUNT(*) FROM (SELECT DISTINCT species FROM capture_denormalized) AS totalSpecies;`,
-      );
-
-    const topSpeciesQuery = this._session
-      .getDB()
-      .raw(
-        `SELECT species, COUNT(*) FROM capture_denormalized GROUP BY species ORDER BY COUNT(*) DESC LIMIT ${options.limit} OFFSET ${options.offset}`,
-      );
-
-    const totalApprovedCapturesQuery = this._session
-      .getDB()
-      .raw('SELECT COUNT(*) FROM capture_denormalized WHERE approved = true');
-
-    const topApprovedCapturesQuery = this._session
-      .getDB()
-      .raw(
-        `SELECT planting_organization_name, COUNT(*) FROM capture_denormalized WHERE approved = true GROUP BY planting_organization_uuid, planting_organization_name ORDER BY COUNT(*) DESC LIMIT ${options.limit} OFFSET ${options.offset}`,
-      );
-
-    const totalUnverifiedCapturesQuery = this._session
-      .getDB()
-      .raw('SELECT COUNT(*) FROM capture_denormalized WHERE approved = false');
-
-    const topUnverifiedCapturesQuery = this._session
-      .getDB()
-      .raw(
-        `SELECT planting_organization_name, COUNT(*) FROM capture_denormalized WHERE approved = false GROUP BY planting_organization_uuid, planting_organization_name ORDER BY COUNT(*) DESC LIMIT ${options.limit} OFFSET ${options.offset}`,
-      );
+    const topUnverifiedCapturesQuery = knex(this._tableName)
+      .select(knex.raw('planting_organization_name, count(*) as count'))
+      .where((builder) => whereBuilder({ ...filter, approved: false }, builder))
+      .groupBy('planting_organization_uuid', 'planting_organization_name')
+      .orderBy('count', 'desc')
+      .limit(options.limit)
+      .offset(options.offset);
 
     if (filter?.card_title) {
       const { card_title } = filter;
 
       switch (card_title) {
-        case 'planters':
+        case 'planters': {
           const topOrganizationPlanters = await topOrganizationPlantersQuery;
-          return { topOrganizationPlanters: topOrganizationPlanters.rows };
-        case 'species':
+          return { topOrganizationPlanters };
+        }
+        case 'species': {
           const topSpecies = await topSpeciesQuery;
-          return { topSpecies: topSpecies.rows };
-        case 'captures':
+          return { topSpecies };
+        }
+        case 'captures': {
           const topApprovedCaptures = await topApprovedCapturesQuery;
-          return { topCaptures: topApprovedCaptures.rows };
-        case 'unverified_captures':
+          return { topCaptures: topApprovedCaptures };
+        }
+        case 'unverified_captures': {
           const topUnverifiedCaptures = await topUnverifiedCapturesQuery;
-          return { topUnverifiedCaptures: topUnverifiedCaptures.rows };
-        case 'top_planters':
+          return { topUnverifiedCaptures };
+        }
+        case 'top_planters': {
           const topPlanters = await topPlantersQuery;
-          return { topPlanters: topPlanters.rows };
+          return { topPlanters };
+        }
 
         default:
           break;
@@ -143,16 +190,16 @@ class CaptureRepository extends BaseRepository {
     const topUnverifiedCaptures = await topUnverifiedCapturesQuery;
 
     return {
-      totalOrganizationPlanters: +totalOrganizationPlanters.rows[0].count,
-      topPlanters: topPlanters.rows,
-      averageCapturePerPlanter: +averageCapturePerPlanter.rows[0].avg,
-      topOrganizationPlanters: topOrganizationPlanters.rows,
-      totalSpecies: +totalSpecies.rows[0].count,
-      topSpecies: topSpecies.rows,
-      totalCaptures: +totalApprovedCaptures.rows[0].count,
-      topCaptures: topApprovedCaptures.rows,
-      totalUnverifiedCaptures: +totalUnverifiedCaptures.rows[0].count,
-      topUnverifiedCaptures: topUnverifiedCaptures.rows,
+      totalOrganizationPlanters: +totalOrganizationPlanters[0].totalPlanters,
+      topPlanters,
+      averageCapturePerPlanter: +averageCapturePerPlanter[0].avg,
+      topOrganizationPlanters,
+      totalSpecies: +totalSpecies[0].totalSpecies,
+      topSpecies,
+      totalCaptures: +totalApprovedCaptures[0].count,
+      topCaptures: topApprovedCaptures,
+      totalUnverifiedCaptures: +totalUnverifiedCaptures[0].count,
+      topUnverifiedCaptures,
     };
   }
 }
