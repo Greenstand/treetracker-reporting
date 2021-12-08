@@ -407,7 +407,7 @@ paths:
                       number: 10
                     links:
                       prev: null,
-                      next: "capture/statistics/card?card_title=planters&limit=7&offset=7
+                      next: capture/statistics/card?card_title=planters&limit=7&offset=7
                 properties:
                   card_information:
                     type: array
