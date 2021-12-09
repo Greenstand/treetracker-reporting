@@ -1,7 +1,8 @@
 apiVersion: getambassador.io/v2
 kind: Mapping
 metadata:
-  name: tretracker-reporting-be-api
+  name: treetracker-reporting-be-api
+  namespace: webmap
 spec:
   prefix: /reporting/
   service: treetracker-reporting-api-ambassador-svc
