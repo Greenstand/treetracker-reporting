@@ -25,7 +25,7 @@ spec:
                 - microservices-node-pool
       containers:
       - name: tretracker-reporting-api
-        image: greenstand/tretracker-reporting-api:TAG
+        image: greenstand/tretracker-reporting:TAG
         env:
           - name: DATABASE_URL
             valueFrom:
