@@ -27,6 +27,8 @@ spec:
       - name: tretracker-reporting-api
         image: greenstand/treetracker-reporting:TAG
         env:
+          - name: DATABASE_SCHEMA
+            value: reporting
           - name: DATABASE_URL
             valueFrom:
               secretKeyRef:
