@@ -2,7 +2,7 @@
 apiVersion: getambassador.io/v2
 kind: Mapping
 metadata:
-  name: SERVICE
+  name: tretracker-reporting-api
 spec:
   cors:
     cors:

@@ -1,8 +1,15 @@
 apiVersion: getambassador.io/v2
 kind: Mapping
 metadata:
-  name: SERVICE
+  name: tretracker-reporting-api
+  namespace: webmap
 spec:
-  prefix: /MAPPING_PREFIX/
-  service: SERVICE
+  prefix: /reporting/
+  service: treetracker-reporting-api-ambassador-svc
   rewrite: /
+  timeout_ms: 0
+  cors:
+    methods: GET, OPTIONS
+    headers:
+    - Content-Type
+    - Authorization
