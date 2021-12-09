@@ -1,10 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: SERVICE
+  name: treetracker-reporting-api-ambassador-svc
+  labels:
+    app: treetracker-webmap-api
+    name: treetracker-reporting-api-ambassador-svc
+  namespace: webmap
 spec:
   selector:
-    app: SERVICE
+    app: tretracker-reporting-api
   ports:
     - name: http
       protocol: TCP
