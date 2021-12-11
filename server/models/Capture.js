@@ -160,6 +160,9 @@ const generateFormattedResponse = ({
   topCaptures = [],
   totalUnverifiedCaptures = undefined,
   topUnverifiedCaptures = [],
+  averageCapturesPerPlanterPerOrganization = undefined,
+  topAverageCapturesPerPlanterPerOrganization = [],
+  lastUpdated = undefined,
 }) => {
   const planters = {
     total: totalOrganizationPlanters,
@@ -205,12 +208,28 @@ const generateFormattedResponse = ({
     ),
   };
 
+  const trees_per_planters = {
+    average: Math.round(averageCapturesPerPlanterPerOrganization),
+    trees_per_planters: topAverageCapturesPerPlanterPerOrganization.map(
+      ({ planting_organization_name, averagecapturesperplanters }) => {
+        return {
+          name: planting_organization_name,
+          number: averagecapturesperplanters,
+        };
+      },
+    ),
+  };
+
+  const last_updated_at = lastUpdated;
+
   return {
     planters,
     species,
     captures,
     unverified_captures,
     top_planters,
+    trees_per_planters,
+    last_updated_at,
   };
 };
 
@@ -227,6 +246,9 @@ const getCaptureStatistics = async (captureRepo, filterCriteria) => {
     topCaptures,
     totalUnverifiedCaptures,
     topUnverifiedCaptures,
+    averageCapturesPerPlanterPerOrganization,
+    topAverageCapturesPerPlanterPerOrganization,
+    lastUpdated,
   } = await captureRepo.getStatistics(filter);
 
   return generateFormattedResponse({
@@ -240,12 +262,15 @@ const getCaptureStatistics = async (captureRepo, filterCriteria) => {
     topCaptures,
     totalUnverifiedCaptures,
     topUnverifiedCaptures,
+    averageCapturesPerPlanterPerOrganization,
+    topAverageCapturesPerPlanterPerOrganization,
+    lastUpdated,
   });
 };
 
 const getCaptureStatisticsSingleCard =
   (captureRepo) => async (filterCriteria, url) => {
-    const {card_title} = filterCriteria;
+    const { card_title } = filterCriteria;
     let options = { limit: 7, offset: 0 };
     options = { ...options, ...QueryOptions({ ...filterCriteria }) };
 

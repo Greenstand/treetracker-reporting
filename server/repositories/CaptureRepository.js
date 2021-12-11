@@ -148,6 +148,63 @@ class CaptureRepository extends BaseRepository {
       .limit(options.limit)
       .offset(options.offset);
 
+    const averageCapturesPerPlanterPerOrganizationQuery = knex(this._tableName)
+      .avg('averageCapturesPerPlanters')
+      .from(function () {
+        this.avg('count as averageCapturesPerPlanters')
+          .from(function () {
+            this.select(
+              knex.raw(
+                `count(*) as count, planting_organization_name, planting_organization_uuid`,
+              ),
+            )
+              .from('capture_denormalized')
+              .where((builder) => whereBuilder(filter, builder))
+              .groupBy(
+                'planting_organization_uuid',
+                'planting_organization_name',
+                'planter_first_name',
+                'planter_last_name',
+                'planter_identifier',
+              )
+              .as('plantersCount');
+          })
+          .groupBy('planting_organization_name', 'planting_organization_uuid')
+          .as('plantersAverage');
+      });
+
+    const topAverageCapturesPerPlanterPerOrganizationQuery = knex(
+      this._tableName,
+    )
+      .select(
+        knex.raw(
+          'planting_organization_name, avg(count) as averagecapturesperplanters',
+        ),
+      )
+      .from(function () {
+        this.select(
+          knex.raw(
+            `count(*) as count, planting_organization_name, planting_organization_uuid`,
+          ),
+        )
+          .from('capture_denormalized')
+          .where((builder) => whereBuilder(filter, builder))
+          .groupBy(
+            'planting_organization_uuid',
+            'planting_organization_name',
+            'planter_first_name',
+            'planter_last_name',
+            'planter_identifier',
+          )
+          .as('plantersCount');
+      })
+      .groupBy('planting_organization_name', 'planting_organization_uuid')
+      .orderBy('averagecapturesperplanters', 'desc')
+      .limit(options.limit)
+      .offset(options.offset);
+
+    const lastUpdatedQuery = knex(this._tableName).max('created_at');
+
     if (filter?.card_title) {
       const { card_title } = filter;
 
@@ -172,6 +229,11 @@ class CaptureRepository extends BaseRepository {
           const topPlanters = await topPlantersQuery;
           return { topPlanters };
         }
+        case 'trees_per_planters': {
+          const topAverageCapturesPerPlanterPerOrganization =
+            await topAverageCapturesPerPlanterPerOrganizationQuery;
+          return { topAverageCapturesPerPlanterPerOrganization };
+        }
 
         default:
           break;
@@ -188,6 +250,11 @@ class CaptureRepository extends BaseRepository {
     const topApprovedCaptures = await topApprovedCapturesQuery;
     const totalUnverifiedCaptures = await totalUnverifiedCapturesQuery;
     const topUnverifiedCaptures = await topUnverifiedCapturesQuery;
+    const averageCapturesPerPlanterPerOrganization =
+      await averageCapturesPerPlanterPerOrganizationQuery;
+    const topAverageCapturesPerPlanterPerOrganization =
+      await topAverageCapturesPerPlanterPerOrganizationQuery;
+    const lastUpdated = await lastUpdatedQuery;
 
     return {
       totalOrganizationPlanters: +totalOrganizationPlanters[0].totalPlanters,
@@ -200,6 +267,10 @@ class CaptureRepository extends BaseRepository {
       topCaptures: topApprovedCaptures,
       totalUnverifiedCaptures: +totalUnverifiedCaptures[0].count,
       topUnverifiedCaptures,
+      averageCapturesPerPlanterPerOrganization:
+        averageCapturesPerPlanterPerOrganization[0].avg,
+      topAverageCapturesPerPlanterPerOrganization,
+      lastUpdated: lastUpdated[0].max,
     };
   }
 }
