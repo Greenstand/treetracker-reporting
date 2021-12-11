@@ -312,43 +312,43 @@ describe('Captures Statistics GET', () => {
       expect(object).to.have.keys(['name', 'number']);
     }
   };
+  it(`Should raise validation error with error code 422 -- 'capture_created_start_date' query parameter should be a date  `, function (done) {
+    request(server)
+      .get(`/capture/statistics`)
+      .query({
+        capture_created_start_date: 'capture_created_start_date',
+      })
+      .set('Accept', 'application/json')
+      .expect(422)
+      .end(function (err, res) {
+        if (err) return done(err);
+        console.log(res.body);
+        expect(res.body.message).to.eql(
+          '"capture_created_start_date" must be in ISO 8601 date format',
+        );
+        return done();
+      });
+  });
+
+  it(`Should raise validation error with error code 422 -- 'capture_created_end_date' query parameter should be a date  `, function (done) {
+    request(server)
+      .get(`/capture/statistics`)
+      .query({
+        capture_created_end_date: 'capture_created_end_date',
+      })
+      .set('Accept', 'application/json')
+      .expect(422)
+      .end(function (err, res) {
+        if (err) return done(err);
+        console.log(res.body);
+        expect(res.body.message).to.eql(
+          '"capture_created_end_date" must be in ISO 8601 date format',
+        );
+        return done();
+      });
+  });
+
   it(`Should get captures stastics successfully`, function (done) {
-    it(`Should raise validation error with error code 422 -- 'capture_created_start_date' query parameter should be a date  `, function (done) {
-      request(server)
-        .get(`/capture/statistics`)
-        .query({
-          capture_created_start_date: 'capture_created_start_date',
-        })
-        .set('Accept', 'application/json')
-        .expect(422)
-        .end(function (err, res) {
-          if (err) return done(err);
-          console.log(res.body);
-          expect(res.body.message).to.eql(
-            '"capture_created_start_date" must be in ISO 8601 date format',
-          );
-          return done();
-        });
-    });
-
-    it(`Should raise validation error with error code 422 -- 'capture_created_end_date' query parameter should be a date  `, function (done) {
-      request(server)
-        .get(`/capture/statistics`)
-        .query({
-          capture_created_end_date: 'capture_created_end_date',
-        })
-        .set('Accept', 'application/json')
-        .expect(422)
-        .end(function (err, res) {
-          if (err) return done(err);
-          console.log(res.body);
-          expect(res.body.message).to.eql(
-            '"capture_created_end_date" must be in ISO 8601 date format',
-          );
-          return done();
-        });
-    });
-
     request(server)
       .get(`/capture/statistics`)
       .set('Accept', 'application/json')
@@ -361,7 +361,12 @@ describe('Captures Statistics GET', () => {
           'captures',
           'unverified_captures',
           'top_planters',
+          'trees_per_planters',
+          'last_updated_at',
         ]);
+
+        expect(res.body.last_updated_at).eq(captureOne.created_at);
+
         expect(res.body.planters).to.have.keys(['total', 'planters']);
         expect(res.body.species).to.have.keys(['total', 'species']);
         expect(res.body.captures).to.have.keys(['total', 'captures']);
@@ -370,11 +375,16 @@ describe('Captures Statistics GET', () => {
           'unverified_captures',
         ]);
         expect(res.body.top_planters).to.have.keys(['average', 'top_planters']);
+        expect(res.body.trees_per_planters).to.have.keys([
+          'average',
+          'trees_per_planters',
+        ]);
         checkObjectProperties(res.body.planters.planters);
         checkObjectProperties(res.body.species.species);
         checkObjectProperties(res.body.captures.captures);
         checkObjectProperties(res.body.unverified_captures.unverified_captures);
         checkObjectProperties(res.body.top_planters.top_planters);
+        checkObjectProperties(res.body.trees_per_planters.trees_per_planters);
         return done();
       });
   });
@@ -401,7 +411,7 @@ describe('Captures Statistics GET', () => {
         .end(function (err, res) {
           if (err) return done(err);
           expect(res.body.message).to.eql(
-            '"card_title" must be one of [planters, species, captures, unverified_captures, top_planters]',
+            '"card_title" must be one of [planters, species, captures, unverified_captures, top_planters, trees_per_planters]',
           );
           return done();
         });
@@ -529,7 +539,7 @@ describe('Captures Statistics GET', () => {
       request(server)
         .get(`/capture/statistics/card`)
         .query({
-          card_title: 'planters',
+          card_title: 'trees_per_planters',
         })
         .set('Accept', 'application/json')
         .expect(200)
