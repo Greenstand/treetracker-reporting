@@ -1,15 +1,9 @@
-name: Service CI/CD Pipeline
+name: Service CI/CD Pipeline to Release and Deploy to Dev Env
 
-#on:
-#  push:
-#    branches:
-#      - main
 on:
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: 'git-tag'
-        required: true
+  push:
+    branches:
+      - main
 
 
 env:
