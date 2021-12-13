@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/Greenstand/treetracker-reporting/compare/v1.0.0...v1.0.1) (2021-12-13)
+
+
+### Bug Fixes
+
+* add 6th card and last_updated_at ([92eca46](https://github.com/Greenstand/treetracker-reporting/commit/92eca46f73757361b444f2f6cdcd0606db225934))
+
 # 1.0.0 (2021-12-09)
 
 
