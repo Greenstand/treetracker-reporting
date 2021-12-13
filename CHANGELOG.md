@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/Greenstand/treetracker-reporting/compare/v1.0.2...v1.0.3) (2021-12-13)
+
+
+### Bug Fixes
+
+* release test ([1331861](https://github.com/Greenstand/treetracker-reporting/commit/133186130fa90d1b0a2db4d47fbd6b16a291127e))
+
 ## [1.0.2](https://github.com/Greenstand/treetracker-reporting/compare/v1.0.1...v1.0.2) (2021-12-13)
 
 
