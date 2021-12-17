@@ -1,3 +1,10 @@
+## [1.0.6](https://github.com/Greenstand/treetracker-reporting/compare/v1.0.5...v1.0.6) (2021-12-17)
+
+
+### Bug Fixes
+
+* namespace and sealed secreate ([0cc0d90](https://github.com/Greenstand/treetracker-reporting/commit/0cc0d903d1a3e3fa1eae7f803db08c9305d6eac7))
+
 ## [1.0.5](https://github.com/Greenstand/treetracker-reporting/compare/v1.0.4...v1.0.5) (2021-12-17)
 
 
