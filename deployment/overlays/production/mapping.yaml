@@ -12,6 +12,7 @@ spec:
     origins:
       - https://admin.treetracker.org
       - https://staging-admin.treetracker.org
+      - https://beta-admin.treetracker.org
     methods: GET, OPTIONS
     headers:
     - Content-Type
