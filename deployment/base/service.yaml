@@ -5,7 +5,7 @@ metadata:
   labels:
     app: treetracker-webmap-api
     name: treetracker-reporting-api-ambassador-svc
-  namespace: webmap
+  namespace: reporting
 spec:
   selector:
     app: tretracker-reporting-api
