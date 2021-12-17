@@ -1,3 +1,10 @@
+## [1.0.5](https://github.com/Greenstand/treetracker-reporting/compare/v1.0.4...v1.0.5) (2021-12-17)
+
+
+### Bug Fixes
+
+* add cores to prod deploy, update namespace ([a9d711e](https://github.com/Greenstand/treetracker-reporting/commit/a9d711e80edb5e0e0adea4723e8ab989650f9add))
+
 ## [1.0.4](https://github.com/Greenstand/treetracker-reporting/compare/v1.0.3...v1.0.4) (2021-12-17)
 
 
