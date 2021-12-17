@@ -1,3 +1,11 @@
+## [1.0.7](https://github.com/Greenstand/treetracker-reporting/compare/v1.0.6...v1.0.7) (2021-12-17)
+
+
+### Bug Fixes
+
+* allow beta-admin CORS ([4c6b922](https://github.com/Greenstand/treetracker-reporting/commit/4c6b922311e45ccac693b13529d3464eb5527478))
+* base files and namespace ([f0203e9](https://github.com/Greenstand/treetracker-reporting/commit/f0203e9145667f76098e8d09a7ec067d5c9044ca))
+
 ## [1.0.6](https://github.com/Greenstand/treetracker-reporting/compare/v1.0.5...v1.0.6) (2021-12-17)
 
 
