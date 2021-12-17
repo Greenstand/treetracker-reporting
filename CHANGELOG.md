@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/Greenstand/treetracker-reporting/compare/v1.0.3...v1.0.4) (2021-12-17)
+
+
+### Bug Fixes
+
+* add staging-admin to CORS ([4eb702b](https://github.com/Greenstand/treetracker-reporting/commit/4eb702b6a8d01ec9c2a0b969299c5e578cf8dd55))
+
 ## [1.0.3](https://github.com/Greenstand/treetracker-reporting/compare/v1.0.2...v1.0.3) (2021-12-13)
 
 
