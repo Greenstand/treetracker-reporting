@@ -2,7 +2,7 @@ apiVersion: getambassador.io/v2
 kind: Mapping
 metadata:
   name: treetracker-reporting-api
-  namespace: webmap
+  namespace: reporting 
 spec:
   cors:
     cors:
