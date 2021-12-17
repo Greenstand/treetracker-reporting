@@ -1,3 +1,10 @@
+## [1.0.8](https://github.com/Greenstand/treetracker-reporting/compare/v1.0.7...v1.0.8) (2021-12-17)
+
+
+### Bug Fixes
+
+* correct name of secret ([732ebfb](https://github.com/Greenstand/treetracker-reporting/commit/732ebfbaf2233f6c6faaf443b91d0a4c658dbab5))
+
 ## [1.0.7](https://github.com/Greenstand/treetracker-reporting/compare/v1.0.6...v1.0.7) (2021-12-17)
 
 
