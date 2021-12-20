@@ -175,11 +175,9 @@ const generateFormattedResponse = ({
 
   const species = {
     total: totalSpecies,
-    species: topSpecies
-      .map(({ species, count }) => {
-        return { name: species, number: count };
-      })
-      .filter((s) => s.name !== null),
+    species: topSpecies.map(({ species, count }) => {
+      return { name: species, number: count };
+    }),
   };
 
   const captures = {

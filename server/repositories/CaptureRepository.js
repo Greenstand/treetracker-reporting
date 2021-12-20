@@ -117,6 +117,7 @@ class CaptureRepository extends BaseRepository {
     const topSpeciesQuery = knex(this._tableName)
       .select(knex.raw('species, count(*) as count'))
       .where((builder) => whereBuilder(filter, builder))
+      .whereNotNull('species')
       .groupBy('species')
       .orderBy('count', 'desc')
       .limit(options.limit)
