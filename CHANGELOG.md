@@ -1,3 +1,10 @@
+## [1.0.10](https://github.com/Greenstand/treetracker-reporting/compare/v1.0.9...v1.0.10) (2021-12-20)
+
+
+### Bug Fixes
+
+* move null species check to repository ([e3edbe2](https://github.com/Greenstand/treetracker-reporting/commit/e3edbe28acd0a1e6d720715ae95159e72801c5e6))
+
 ## [1.0.9](https://github.com/Greenstand/treetracker-reporting/compare/v1.0.8...v1.0.9) (2021-12-20)
 
 
