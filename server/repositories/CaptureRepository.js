@@ -74,14 +74,43 @@ class CaptureRepository extends BaseRepository {
     };
     const knex = this._session.getDB();
 
-    const totalOrganizationPlantersQuery = knex(this._tableName)
-      .countDistinct('planting_organization_uuid as totalPlanters')
-      .where((builder) => whereBuilder(filter, builder));
+    // total number of growers
+    const totalGrowersQuery = knex(this._tableName)
+      .count('* as totalPlanters')
+      .from(function () {
+        this.distinct(
+          'planter_first_name',
+          'planter_last_name',
+          'planter_identifier',
+        )
+          .from('capture_denormalized')
+          .where((builder) => whereBuilder(filter, builder))
+          .as('planters');
+      });
 
-    const topOrganizationPlantersQuery = knex(this._tableName)
+    // total number of growers per organization
+    const topGrowersPerOrganizatinoQuery = knex(this._tableName)
       .select(knex.raw('planting_organization_name, count(*) as count'))
-      .where((builder) => whereBuilder(filter, builder))
-      .groupBy('planting_organization_uuid', 'planting_organization_name')
+      .from(function () {
+        this.distinct(
+          'planter_first_name',
+          'planter_last_name',
+          'planter_identifier',
+          'planting_organization_name',
+          'planting_organization_uuid',
+        )
+          .from('capture_denormalized')
+          .where((builder) => whereBuilder(filter, builder))
+          .groupBy(
+            'planting_organization_uuid',
+            'planting_organization_name',
+            'planter_first_name',
+            'planter_last_name',
+            'planter_identifier',
+          )
+          .as('planters');
+      })
+      .groupBy('planting_organization_name', 'planting_organization_uuid')
       .orderBy('count', 'desc')
       .limit(options.limit)
       .offset(options.offset);
@@ -211,8 +240,9 @@ class CaptureRepository extends BaseRepository {
 
       switch (card_title) {
         case 'planters': {
-          const topOrganizationPlanters = await topOrganizationPlantersQuery;
-          return { topOrganizationPlanters };
+          const topGrowersPerOrganizatino =
+            await topGrowersPerOrganizatinoQuery;
+          return { topGrowersPerOrganizatino };
         }
         case 'species': {
           const topSpecies = await topSpeciesQuery;
@@ -241,10 +271,10 @@ class CaptureRepository extends BaseRepository {
       }
     }
 
-    const totalOrganizationPlanters = await totalOrganizationPlantersQuery;
+    const totalGrowers = await totalGrowersQuery;
     const topPlanters = await topPlantersQuery;
     const averageCapturePerPlanter = await averageCapturePerPlanterQuery;
-    const topOrganizationPlanters = await topOrganizationPlantersQuery;
+    const topGrowersPerOrganizatino = await topGrowersPerOrganizatinoQuery;
     const totalSpecies = await totalSpeciesQuery;
     const topSpecies = await topSpeciesQuery;
     const totalApprovedCaptures = await totalApprovedCapturesQuery;
@@ -258,10 +288,10 @@ class CaptureRepository extends BaseRepository {
     const lastUpdated = await lastUpdatedQuery;
 
     return {
-      totalOrganizationPlanters: +totalOrganizationPlanters[0].totalPlanters,
+      totalGrowers: +totalGrowers[0].totalPlanters,
       topPlanters,
       averageCapturePerPlanter: +averageCapturePerPlanter[0].avg,
-      topOrganizationPlanters,
+      topGrowersPerOrganizatino,
       totalSpecies: +totalSpecies[0].totalSpecies,
       topSpecies,
       totalCaptures: +totalApprovedCaptures[0].count,
