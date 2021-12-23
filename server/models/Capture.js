@@ -214,7 +214,7 @@ const generateFormattedResponse = ({
       ({ planting_organization_name, averagecapturesperplanters }) => {
         return {
           name: planting_organization_name,
-          number: averagecapturesperplanters,
+          number: Math.round(averagecapturesperplanters),
         };
       },
     ),
