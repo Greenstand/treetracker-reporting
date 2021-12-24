@@ -1,3 +1,12 @@
+## [1.0.11](https://github.com/Greenstand/treetracker-reporting/compare/v1.0.10...v1.0.11) (2021-12-24)
+
+
+### Bug Fixes
+
+* cache added to capture card queries ([6266622](https://github.com/Greenstand/treetracker-reporting/commit/6266622f7f7b6f1750cc965ec7340592f5a77933))
+* growers card, return number of grower (per organization) ([c69616e](https://github.com/Greenstand/treetracker-reporting/commit/c69616ea8e78625092b90b993ceb43b48bd275e1))
+* return whole numberf for verage ([96d4d73](https://github.com/Greenstand/treetracker-reporting/commit/96d4d731031f47101fa142ed4d28480896316f14))
+
 ## [1.0.10](https://github.com/Greenstand/treetracker-reporting/compare/v1.0.9...v1.0.10) (2021-12-20)
 
 
