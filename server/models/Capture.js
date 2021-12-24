@@ -152,8 +152,8 @@ const getCaptures =
 const generateFormattedResponse = ({
   averageCapturePerPlanter = undefined,
   topPlanters = [],
-  totalOrganizationPlanters = undefined,
-  topOrganizationPlanters = [],
+  totalGrowers = undefined,
+  topGrowersPerOrganizatino = [],
   totalSpecies = undefined,
   topSpecies = [],
   totalCaptures = undefined,
@@ -165,8 +165,8 @@ const generateFormattedResponse = ({
   lastUpdated = undefined,
 }) => {
   const planters = {
-    total: totalOrganizationPlanters,
-    planters: topOrganizationPlanters.map(
+    total: totalGrowers,
+    planters: topGrowersPerOrganizatino.map(
       ({ planting_organization_name, count }) => {
         return { name: planting_organization_name, number: count };
       },
@@ -214,7 +214,7 @@ const generateFormattedResponse = ({
       ({ planting_organization_name, averagecapturesperplanters }) => {
         return {
           name: planting_organization_name,
-          number: averagecapturesperplanters,
+          number: Math.round(averagecapturesperplanters),
         };
       },
     ),
@@ -238,8 +238,8 @@ const getCaptureStatistics = async (captureRepo, filterCriteria) => {
   const {
     topPlanters,
     averageCapturePerPlanter,
-    totalOrganizationPlanters,
-    topOrganizationPlanters,
+    totalGrowers,
+    topGrowersPerOrganizatino,
     totalSpecies,
     topSpecies,
     totalCaptures,
@@ -254,8 +254,8 @@ const getCaptureStatistics = async (captureRepo, filterCriteria) => {
   return generateFormattedResponse({
     topPlanters,
     averageCapturePerPlanter,
-    totalOrganizationPlanters,
-    topOrganizationPlanters,
+    totalGrowers,
+    topGrowersPerOrganizatino,
     totalSpecies,
     topSpecies,
     totalCaptures,
