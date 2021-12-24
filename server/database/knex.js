@@ -1,8 +1,10 @@
 const expect = require('expect-runtime');
 const log = require('loglevel');
 const NodeCache = require('node-cache');
+
 const dbCache = new NodeCache({ checkperiod: 86400 });
 
+const knex = require('knex');
 const connection = require('../../config/config').connectionString;
 
 expect(connection).to.match(/^postgresql:\//);
@@ -21,7 +23,6 @@ if (process.env.DATABASE_SCHEMA) {
 }
 log.debug(knexConfig.searchPath);
 
-const knex = require('knex');
 
 knex.QueryBuilder.extend('cache', async function () {
   try {
