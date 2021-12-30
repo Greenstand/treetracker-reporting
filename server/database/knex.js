@@ -2,7 +2,7 @@ const expect = require('expect-runtime');
 const log = require('loglevel');
 const NodeCache = require('node-cache');
 
-const dbCache = new NodeCache({ checkperiod: 86400 });
+const dbCache = new NodeCache({ checkperiod: 28800 });
 
 const knex = require('knex');
 const connection = require('../../config/config').connectionString;
@@ -32,7 +32,7 @@ knex.QueryBuilder.extend('cache', async function () {
       return cacheValue;
     }
     const data = await this;
-    dbCache.set(cacheKey, data, 86400);
+    dbCache.set(cacheKey, data, 28800);
     return data;
   } catch (e) {
     throw new Error(e);
