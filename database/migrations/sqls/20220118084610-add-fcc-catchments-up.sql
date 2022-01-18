@@ -1,0 +1,1 @@
+ALTER TABLE capture_denormalized ADD catchment varchar NULL;
