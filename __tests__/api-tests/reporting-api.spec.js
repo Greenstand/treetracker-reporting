@@ -225,7 +225,7 @@ describe('Captures GET', () => {
       });
   });
 
-  it.only(`Should get captures successfully`, function (done) {
+  it(`Should get captures successfully`, function (done) {
     request(server)
       .get(`/capture`)
       .set('Accept', 'application/json')
@@ -367,7 +367,7 @@ describe('Captures Statistics GET', () => {
           'catchments',
         ]);
 
-        // expect(res.body.last_updated_at).eq(captureOne.created_at);
+        expect(res.body.last_updated_at).eq(captureOne.created_at);
 
         expect(res.body.planters).to.have.keys(['total', 'planters']);
         expect(res.body.species).to.have.keys(['total', 'species']);
