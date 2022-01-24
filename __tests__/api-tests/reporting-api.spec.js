@@ -203,7 +203,7 @@ describe('Captures GET', () => {
       .expect(422)
       .end(function (err, res) {
         expect(res.body.message).to.eql(
-          '"sort_by" must be one of [capture_uuid, capture_created_at, planter_first_name, planter_last_name, planter_identifier, created_at, lat, lon, note, approved, planting_organization_uuid, planting_organization_name, date_paid, paid_by, payment_local_amt, species, token_id]',
+          '"sort_by" must be one of [capture_uuid, capture_created_at, planter_first_name, planter_last_name, planter_identifier, created_at, lat, lon, note, approved, planting_organization_uuid, planting_organization_name, date_paid, paid_by, payment_local_amt, species, token_id, catchment]',
         );
         if (err) return done(err);
         return done();
