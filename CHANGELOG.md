@@ -1,3 +1,26 @@
+# [1.1.0](https://github.com/Greenstand/treetracker-reporting/compare/v1.0.11...v1.1.0) (2022-01-24)
+
+
+### Bug Fixes
+
+* broken test ([683639d](https://github.com/Greenstand/treetracker-reporting/commit/683639d508e4e3276040a3f317047f0e9f0b3920))
+* broken test ([ce8e445](https://github.com/Greenstand/treetracker-reporting/commit/ce8e445fbb9c2250c84aab6945975e8c1a10c7c1))
+* broken test ([ee1f365](https://github.com/Greenstand/treetracker-reporting/commit/ee1f3651739a2ec702820810f97d7548bc82d4b8))
+* broken test ([8a4bdc3](https://github.com/Greenstand/treetracker-reporting/commit/8a4bdc33273e73251e64d137eec1a7e5215b84c8))
+* broken test ([fa56d73](https://github.com/Greenstand/treetracker-reporting/commit/fa56d737f89d386cdfabf5b9530e6c8cd738d621))
+* broken test ([189d2dd](https://github.com/Greenstand/treetracker-reporting/commit/189d2ddaa47bed139f3c06a05fea49a30399db13))
+* broken test ([5a4b0de](https://github.com/Greenstand/treetracker-reporting/commit/5a4b0dec42f5fbdd35562cd20096eb555a317ef7))
+* broken test ([81ea182](https://github.com/Greenstand/treetracker-reporting/commit/81ea182e17c2bcc58ba915b3b714ebff7815c2e5))
+* eslint error ([69333e6](https://github.com/Greenstand/treetracker-reporting/commit/69333e6b962b0abb149c1c678dc675ec73b3f4e6))
+* typo ([66008a8](https://github.com/Greenstand/treetracker-reporting/commit/66008a8147099b0083c5194cb9f14a78c0e37b3e))
+* typo ([d712bc0](https://github.com/Greenstand/treetracker-reporting/commit/d712bc08a9081b80ff90f5ba95a67dea1c9d8eb7))
+
+
+### Features
+
+* catchment card ([d6d4bb3](https://github.com/Greenstand/treetracker-reporting/commit/d6d4bb349303d98752982778248f5ba4192b87b4))
+* catchment card ([9e753b8](https://github.com/Greenstand/treetracker-reporting/commit/9e753b87a4bb803598956dd085a1134b678d5117))
+
 ## [1.0.11](https://github.com/Greenstand/treetracker-reporting/compare/v1.0.10...v1.0.11) (2021-12-24)
 
 
