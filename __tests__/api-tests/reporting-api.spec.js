@@ -203,7 +203,7 @@ describe('Captures GET', () => {
       .expect(422)
       .end(function (err, res) {
         expect(res.body.message).to.eql(
-          '"sort_by" must be one of [capture_uuid, capture_created_at, planter_first_name, planter_last_name, planter_identifier, created_at, lat, lon, note, approved, planting_organization_uuid, planting_organization_name, date_paid, paid_by, payment_local_amt, species, token_id]',
+          '"sort_by" must be one of [capture_uuid, capture_created_at, planter_first_name, planter_last_name, planter_identifier, created_at, lat, lon, note, approved, planting_organization_uuid, planting_organization_name, date_paid, paid_by, payment_local_amt, species, token_id, catchment]',
         );
         if (err) return done(err);
         return done();
@@ -255,6 +255,7 @@ describe('Captures GET', () => {
             'payment_local_amt',
             'species',
             'token_id',
+            'catchment',
           ]);
         }
         return done();
@@ -348,7 +349,7 @@ describe('Captures Statistics GET', () => {
       });
   });
 
-  it(`Should get captures stastics successfully`, function (done) {
+  it(`Should get captures statistics successfully`, function (done) {
     request(server)
       .get(`/capture/statistics`)
       .set('Accept', 'application/json')
@@ -363,6 +364,7 @@ describe('Captures Statistics GET', () => {
           'top_planters',
           'trees_per_planters',
           'last_updated_at',
+          'catchments',
         ]);
 
         expect(res.body.last_updated_at).eq(captureOne.created_at);
@@ -385,6 +387,9 @@ describe('Captures Statistics GET', () => {
         checkObjectProperties(res.body.unverified_captures.unverified_captures);
         checkObjectProperties(res.body.top_planters.top_planters);
         checkObjectProperties(res.body.trees_per_planters.trees_per_planters);
+
+        expect(res.body.catchments).to.have.keys(['average', 'catchments']);
+        checkObjectProperties(res.body.catchments.catchments);
         return done();
       });
   });
@@ -411,7 +416,7 @@ describe('Captures Statistics GET', () => {
         .end(function (err, res) {
           if (err) return done(err);
           expect(res.body.message).to.eql(
-            '"card_title" must be one of [planters, species, captures, unverified_captures, top_planters, trees_per_planters]',
+            '"card_title" must be one of [planters, species, captures, unverified_captures, top_planters, trees_per_planters, catchments]',
           );
           return done();
         });

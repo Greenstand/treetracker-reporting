@@ -23,6 +23,7 @@ const captureGetQuerySchema = Joi.object({
   since_capture_created_at: Joi.date().iso(),
   species: Joi.string(),
   token_id: Joi.string().uuid(),
+  catchment: Joi.string(),
   sort_by: Joi.string().valid(
     'capture_uuid',
     'capture_created_at',
@@ -41,6 +42,7 @@ const captureGetQuerySchema = Joi.object({
     'payment_local_amt',
     'species',
     'token_id',
+    'catchment',
   ),
   order: Joi.string().valid('asc', 'desc'),
 }).unknown(false);
@@ -63,6 +65,7 @@ const captureStatisticsGetCardQuerySchema = Joi.object({
       'unverified_captures',
       'top_planters',
       'trees_per_planters',
+      'catchments'
     )
     .required(),
 }).unknown(false);

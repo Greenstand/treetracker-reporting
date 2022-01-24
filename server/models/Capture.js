@@ -16,6 +16,7 @@ const Capture = ({
   payment_local_amt,
   species,
   token_id,
+  catchment,
 }) => {
   return Object.freeze({
     capture_uuid,
@@ -35,6 +36,7 @@ const Capture = ({
     payment_local_amt,
     species,
     token_id,
+    catchment,
   });
 };
 
@@ -52,6 +54,7 @@ const FilterCriteria = ({
   since_capture_created_at = undefined,
   species = undefined,
   token_id = undefined,
+  catchment = undefined,
 }) => {
   return Object.entries({
     capture_uuid,
@@ -68,6 +71,7 @@ const FilterCriteria = ({
     paid_by,
     species,
     token_id,
+    catchment,
   })
     .filter((entry) => entry[1] !== undefined)
     .reduce((result, item) => {
@@ -163,6 +167,8 @@ const generateFormattedResponse = ({
   averageCapturesPerPlanterPerOrganization = undefined,
   topAverageCapturesPerPlanterPerOrganization = [],
   lastUpdated = undefined,
+  averageCatchment = undefined,
+  topCatchment = [],
 }) => {
   const planters = {
     total: totalGrowers,
@@ -222,6 +228,13 @@ const generateFormattedResponse = ({
 
   const last_updated_at = lastUpdated;
 
+  const catchments = {
+    average: Math.round(averageCatchment),
+    catchments: topCatchment.map(({ catchment, count }) => {
+      return { name: catchment, number: count };
+    }),
+  };
+
   return {
     planters,
     species,
@@ -230,6 +243,7 @@ const generateFormattedResponse = ({
     top_planters,
     trees_per_planters,
     last_updated_at,
+    catchments,
   };
 };
 
@@ -249,6 +263,8 @@ const getCaptureStatistics = async (captureRepo, filterCriteria) => {
     averageCapturesPerPlanterPerOrganization,
     topAverageCapturesPerPlanterPerOrganization,
     lastUpdated,
+    averageCatchment,
+    topCatchment,    
   } = await captureRepo.getStatistics(filter);
 
   return generateFormattedResponse({
@@ -265,6 +281,8 @@ const getCaptureStatistics = async (captureRepo, filterCriteria) => {
     averageCapturesPerPlanterPerOrganization,
     topAverageCapturesPerPlanterPerOrganization,
     lastUpdated,
+    averageCatchment,
+    topCatchment,
   });
 };
 
