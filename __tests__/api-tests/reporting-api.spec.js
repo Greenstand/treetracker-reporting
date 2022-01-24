@@ -277,7 +277,7 @@ describe('Captures GET', () => {
       });
   });
 
-  it.only(`Should get captures successfully -- with filters `, function (done) {
+  it(`Should get captures successfully -- with filters `, function (done) {
     const capture = { ...captureOne };
     delete capture.created_at;
     delete capture.date_paid;

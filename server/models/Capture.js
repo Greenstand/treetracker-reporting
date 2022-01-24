@@ -16,6 +16,7 @@ const Capture = ({
   payment_local_amt,
   species,
   token_id,
+  catchment,
 }) => {
   return Object.freeze({
     capture_uuid,
@@ -35,6 +36,7 @@ const Capture = ({
     payment_local_amt,
     species,
     token_id,
+    catchment,
   });
 };
 
@@ -52,6 +54,7 @@ const FilterCriteria = ({
   since_capture_created_at = undefined,
   species = undefined,
   token_id = undefined,
+  catchment = undefined,
 }) => {
   return Object.entries({
     capture_uuid,
@@ -68,6 +71,7 @@ const FilterCriteria = ({
     paid_by,
     species,
     token_id,
+    catchment,
   })
     .filter((entry) => entry[1] !== undefined)
     .reduce((result, item) => {
