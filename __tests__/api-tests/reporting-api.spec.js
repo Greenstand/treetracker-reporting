@@ -348,7 +348,7 @@ describe('Captures Statistics GET', () => {
       });
   });
 
-  it(`Should get captures stastics successfully`, function (done) {
+  it(`Should get captures statistics successfully`, function (done) {
     request(server)
       .get(`/capture/statistics`)
       .set('Accept', 'application/json')
