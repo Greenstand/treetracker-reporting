@@ -245,6 +245,29 @@ class CaptureRepository extends BaseRepository {
 
     const lastUpdatedQuery = knex(this._tableName).max('created_at').cache();
 
+    const averageCatchmentQuery = knex(this._tableName)
+      .avg('totalCatchment')
+      .from(function () {
+        this.count('* as totalCatchment')
+          .from('capture_denormalized')
+          .where((builder) => whereBuilder(filter, builder))
+          .groupBy(
+            'catchment',
+          )
+          .as('catchments');
+      })
+      .cache();
+
+    const topCatchmentQuery = knex(this._tableName)
+      .select(knex.raw('catchment, count(*) as count'))
+      .where((builder) => whereBuilder(filter, builder))
+      .whereNotNull('catchment')
+      .groupBy('catchment')
+      .orderBy('count', 'desc')
+      .limit(options.limit)
+      .offset(options.offset)
+      .cache();
+
     if (filter?.card_title) {
       const { card_title } = filter;
 
@@ -275,6 +298,10 @@ class CaptureRepository extends BaseRepository {
             await topAverageCapturesPerPlanterPerOrganizationQuery;
           return { topAverageCapturesPerPlanterPerOrganization };
         }
+        case 'catchments': {
+          const topCatchment = await topCatchmentQuery;
+          return { topCatchment };
+        }
 
         default:
           break;
@@ -296,6 +323,8 @@ class CaptureRepository extends BaseRepository {
     const topAverageCapturesPerPlanterPerOrganization =
       await topAverageCapturesPerPlanterPerOrganizationQuery;
     const lastUpdated = await lastUpdatedQuery;
+    const averageCatchment = await averageCatchmentQuery;
+    const topCatchment = await topCatchmentQuery;
 
     return {
       totalGrowers: +totalGrowers[0].totalPlanters,
@@ -312,6 +341,8 @@ class CaptureRepository extends BaseRepository {
         averageCapturesPerPlanterPerOrganization[0].avg,
       topAverageCapturesPerPlanterPerOrganization,
       lastUpdated: lastUpdated[0].max,
+      averageCatchment: +averageCatchment[0].avg,
+      topCatchment,
     };
   }
 }
