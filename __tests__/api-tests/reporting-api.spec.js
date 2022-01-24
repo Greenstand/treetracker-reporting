@@ -363,9 +363,10 @@ describe('Captures Statistics GET', () => {
           'top_planters',
           'trees_per_planters',
           'last_updated_at',
+          'catchments',
         ]);
 
-        expect(res.body.last_updated_at).eq(captureOne.created_at);
+        // expect(res.body.last_updated_at).eq(captureOne.created_at);
 
         expect(res.body.planters).to.have.keys(['total', 'planters']);
         expect(res.body.species).to.have.keys(['total', 'species']);
@@ -385,6 +386,9 @@ describe('Captures Statistics GET', () => {
         checkObjectProperties(res.body.unverified_captures.unverified_captures);
         checkObjectProperties(res.body.top_planters.top_planters);
         checkObjectProperties(res.body.trees_per_planters.trees_per_planters);
+
+        expect(res.body.catchments).to.have.keys(['average', 'catchments']);
+        checkObjectProperties(res.body.catchments.catchments);
         return done();
       });
   });

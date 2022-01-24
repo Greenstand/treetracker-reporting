@@ -163,6 +163,8 @@ const generateFormattedResponse = ({
   averageCapturesPerPlanterPerOrganization = undefined,
   topAverageCapturesPerPlanterPerOrganization = [],
   lastUpdated = undefined,
+  averageCatchment = undefined,
+  topCatchment = [],
 }) => {
   const planters = {
     total: totalGrowers,
@@ -222,6 +224,13 @@ const generateFormattedResponse = ({
 
   const last_updated_at = lastUpdated;
 
+  const catchments = {
+    average: Math.round(averageCatchment),
+    catchments: topCatchment.map(({ catchment, count }) => {
+      return { name: catchment, number: count };
+    }),
+  };
+
   return {
     planters,
     species,
@@ -230,6 +239,7 @@ const generateFormattedResponse = ({
     top_planters,
     trees_per_planters,
     last_updated_at,
+    catchments,
   };
 };
 
@@ -249,6 +259,8 @@ const getCaptureStatistics = async (captureRepo, filterCriteria) => {
     averageCapturesPerPlanterPerOrganization,
     topAverageCapturesPerPlanterPerOrganization,
     lastUpdated,
+    averageCatchment,
+    topCatchment,    
   } = await captureRepo.getStatistics(filter);
 
   return generateFormattedResponse({
@@ -265,6 +277,8 @@ const getCaptureStatistics = async (captureRepo, filterCriteria) => {
     averageCapturesPerPlanterPerOrganization,
     topAverageCapturesPerPlanterPerOrganization,
     lastUpdated,
+    averageCatchment,
+    topCatchment,
   });
 };
 
