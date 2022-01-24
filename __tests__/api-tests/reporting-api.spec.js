@@ -225,7 +225,7 @@ describe('Captures GET', () => {
       });
   });
 
-  it(`Should get captures successfully`, function (done) {
+  it.only(`Should get captures successfully`, function (done) {
     request(server)
       .get(`/capture`)
       .set('Accept', 'application/json')
@@ -255,6 +255,7 @@ describe('Captures GET', () => {
             'payment_local_amt',
             'species',
             'token_id',
+            'catchment',
           ]);
         }
         return done();
