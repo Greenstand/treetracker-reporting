@@ -1,7 +1,7 @@
 
-var dbm;
-var type;
-var seed;
+let dbm;
+let type;
+let seed;
 const fs = require('fs');
 const path = require('path');
 
