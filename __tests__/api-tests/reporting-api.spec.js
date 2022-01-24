@@ -415,7 +415,7 @@ describe('Captures Statistics GET', () => {
         .end(function (err, res) {
           if (err) return done(err);
           expect(res.body.message).to.eql(
-            '"card_title" must be one of [planters, species, captures, unverified_captures, top_planters, trees_per_planters]',
+            '"card_title" must be one of [planters, species, captures, unverified_captures, top_planters, trees_per_planters, catchments]',
           );
           return done();
         });

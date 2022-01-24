@@ -21,6 +21,7 @@ const captureOne = Object.freeze({
   payment_local_amt: '200',
   species: 'species1',
   token_id: uuid(),
+  catchment: 'freetown',
 });
 const captureTwo = Object.freeze({
   capture_uuid: uuid(),
@@ -40,6 +41,7 @@ const captureTwo = Object.freeze({
   payment_local_amt: '400',
   species: 'species2',
   token_id: uuid(),
+  catchment: 'freetown',
 });
 const captureThree = Object.freeze({
   capture_uuid: uuid(),
@@ -59,6 +61,7 @@ const captureThree = Object.freeze({
   payment_local_amt: '400',
   species: 'species2',
   token_id: uuid(),
+  catchment: 'freetown',
 });
 
 before(async () => {
