@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: tretracker-reporting-api
+  name: treetracker-reporting-api
   labels:
     app: treetracker-reporting-api 
 spec:
