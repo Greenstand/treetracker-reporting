@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/Greenstand/treetracker-reporting/compare/v1.1.0...v1.1.1) (2022-03-19)
+
+
+### Bug Fixes
+
+* mispelled name ([e742461](https://github.com/Greenstand/treetracker-reporting/commit/e742461ce54787b3f6ba4ab4762cd22c2f42fa0d))
+
 # [1.1.0](https://github.com/Greenstand/treetracker-reporting/compare/v1.0.11...v1.1.0) (2022-01-24)
 
 
