@@ -7,7 +7,11 @@ const dbCache = new NodeCache({ checkperiod: 28800 });
 const knex = require('knex');
 const connection = require('../../config/config').connectionString;
 
-expect(connection).to.match(/^postgresql:\//);
+const postgresPattern = /^postgresql:\//;
+
+if (!postgresPattern.test(connection)) {
+  throw new Error('invalid database connection url received');
+}
 
 const knexConfig = {
   client: 'pg',
@@ -22,7 +26,6 @@ if (process.env.DATABASE_SCHEMA) {
   knexConfig.searchPath = [process.env.DATABASE_SCHEMA];
 }
 log.debug(knexConfig.searchPath);
-
 
 knex.QueryBuilder.extend('cache', async function () {
   try {
