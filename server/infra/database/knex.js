@@ -5,7 +5,7 @@ const NodeCache = require('node-cache');
 const dbCache = new NodeCache({ checkperiod: 28800 });
 
 const knex = require('knex');
-const connection = require('../../config/config').connectionString;
+const connection = require('../../../config/config').connectionString;
 
 const postgresPattern = /^postgresql:\//;
 

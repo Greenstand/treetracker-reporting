@@ -1,24 +1,11 @@
-const Capture = ({
-  capture_uuid,
-  capture_created_at,
-  planter_first_name,
-  planter_last_name,
-  planter_identifier,
-  created_at,
-  lat,
-  lon,
-  note,
-  approved,
-  planting_organization_uuid,
-  planting_organization_name,
-  date_paid,
-  paid_by,
-  payment_local_amt,
-  species,
-  token_id,
-  catchment,
-}) => {
-  return Object.freeze({
+const CaptureRepository = require('../repositories/CaptureRepository');
+
+class Capture {
+  constructor(session) {
+    this._captureRepository = new CaptureRepository(session);
+  }
+
+  static Capture({
     capture_uuid,
     capture_created_at,
     planter_first_name,
@@ -37,300 +24,203 @@ const Capture = ({
     species,
     token_id,
     catchment,
-  });
-};
-
-const FilterCriteria = ({
-  approved = undefined,
-  capture_uuid = undefined,
-  paid_by = undefined,
-  planter_first_name = undefined,
-  planter_identifier = undefined,
-  planter_last_name = undefined,
-  planting_organization_uuid = undefined,
-  planting_organization_name = undefined,
-  since = undefined,
-  since_date_paid = undefined,
-  since_capture_created_at = undefined,
-  species = undefined,
-  token_id = undefined,
-  catchment = undefined,
-}) => {
-  return Object.entries({
-    capture_uuid,
-    planter_first_name,
-    planter_last_name,
-    planter_identifier,
-    created_at: since && new Date(since),
-    approved,
-    planting_organization_uuid,
-    planting_organization_name,
-    capture_created_at:
-      since_capture_created_at && new Date(since_capture_created_at),
-    date_paid: since_date_paid && new Date(since_date_paid),
-    paid_by,
-    species,
-    token_id,
-    catchment,
-  })
-    .filter((entry) => entry[1] !== undefined)
-    .reduce((result, item) => {
-      result[item[0]] = item[1];
-      return result;
-    }, {});
-};
-
-const QueryOptions = ({
-  limit = undefined,
-  offset = undefined,
-  order = 'asc',
-  sort_by = undefined,
-}) => {
-  return Object.entries({ limit, offset, order, orderBy: sort_by })
-    .filter((entry) => entry[1] !== undefined)
-    .reduce((result, item) => {
-      result[item[0]] = item[1];
-      return result;
-    }, {});
-};
-
-const StatisticsFilterCriteria = ({
-  capture_created_start_date = undefined,
-  capture_created_end_date = undefined,
-  card_title = undefined,
-}) => {
-  return Object.entries({
-    capture_created_start_date,
-    capture_created_end_date,
-    card_title,
-  })
-    .filter((entry) => entry[1] !== undefined)
-    .reduce((result, item) => {
-      result[item[0]] = item[1];
-      return result;
-    }, {});
-};
-
-const getCaptures =
-  (captureRepo) =>
-  async (filterCriteria = undefined, url) => {
-    let filter = {};
-    let options = { limit: 100, offset: 0 };
-    filter = FilterCriteria({
-      ...filterCriteria,
+  }) {
+    return Object.freeze({
+      capture_uuid,
+      capture_created_at,
+      planter_first_name,
+      planter_last_name,
+      planter_identifier,
+      created_at,
+      lat,
+      lon,
+      note,
+      approved,
+      planting_organization_uuid,
+      planting_organization_name,
+      date_paid,
+      paid_by,
+      payment_local_amt,
+      species,
+      token_id,
+      catchment,
     });
-    options = { ...options, ...QueryOptions({ ...filterCriteria }) };
+  }
 
-    const queryFilterObjects = { ...filterCriteria };
-    queryFilterObjects.limit = options.limit;
+  async getCaptures(filter, limitOptions) {
+    const filterCriteria = {
+      ...filter,
+      ...(filter?.since && { created_at: new Date(filter.since) }),
+      ...(filter?.since_capture_created_at && {
+        capture_created_at: new Date(filter.since_capture_created_at),
+      }),
+      ...(filter?.since_date_paid && {
+        date_paid: new Date(filter.since_date_paid),
+      }),
+    };
 
-    // remove offset property, as it is calculated later
-    delete queryFilterObjects.offset;
+    delete filterCriteria.since;
+    delete filterCriteria.since_capture_created_at;
+    delete filterCriteria.since_date_paid;
 
-    const query = Object.keys(queryFilterObjects)
-      .map((key) => `${key}=${encodeURIComponent(queryFilterObjects[key])}`)
-      .join('&');
-
-    const urlWithLimitAndOffset = `${url}?${query}&offset=`;
-
-    const next = `${urlWithLimitAndOffset}${+options.offset + +options.limit}`;
-    let prev = null;
-    if (options.offset - +options.limit >= 0) {
-      prev = `${urlWithLimitAndOffset}${+options.offset - +options.limit}`;
-    }
-
-    const { captures, count } = await captureRepo.getCaptures(filter, options);
+    const { captures, count } = await this._captureRepository.getCaptures(
+      filterCriteria,
+      limitOptions,
+    );
 
     return {
       captures: captures.map((row) => {
-        return Capture({ ...row });
+        return this.constructor.Capture({ ...row });
       }),
       totalCount: count,
-      links: {
-        prev,
-        next,
-      },
     };
-  };
+  }
 
-const generateFormattedResponse = ({
-  averageCapturePerPlanter = undefined,
-  topPlanters = [],
-  totalGrowers = undefined,
-  topGrowersPerOrganizatino = [],
-  totalSpecies = undefined,
-  topSpecies = [],
-  totalCaptures = undefined,
-  topCaptures = [],
-  totalUnverifiedCaptures = undefined,
-  topUnverifiedCaptures = [],
-  averageCapturesPerPlanterPerOrganization = undefined,
-  topAverageCapturesPerPlanterPerOrganization = [],
-  lastUpdated = undefined,
-  averageCatchment = undefined,
-  topCatchment = [],
-}) => {
-  const planters = {
-    total: totalGrowers,
-    planters: topGrowersPerOrganizatino.map(
-      ({ planting_organization_name, count }) => {
+  generateFormattedResponse({
+    averageCapturePerPlanter = undefined,
+    topPlanters = [],
+    totalGrowers = undefined,
+    topGrowersPerOrganizatino = [],
+    totalSpecies = undefined,
+    topSpecies = [],
+    totalCaptures = undefined,
+    topCaptures = [],
+    totalUnverifiedCaptures = undefined,
+    topUnverifiedCaptures = [],
+    averageCapturesPerPlanterPerOrganization = undefined,
+    topAverageCapturesPerPlanterPerOrganization = [],
+    lastUpdated = undefined,
+    averageCatchment = undefined,
+    topCatchment = [],
+  }) {
+    const planters = {
+      total: totalGrowers,
+      planters: topGrowersPerOrganizatino.map(
+        ({ planting_organization_name, count }) => {
+          return { name: planting_organization_name, number: count };
+        },
+      ),
+    };
+
+    const species = {
+      total: totalSpecies,
+      species: topSpecies.map(({ species, count }) => {
+        return { name: species, number: count };
+      }),
+    };
+
+    const captures = {
+      total: totalCaptures,
+      captures: topCaptures.map(({ planting_organization_name, count }) => {
         return { name: planting_organization_name, number: count };
-      },
-    ),
-  };
+      }),
+    };
 
-  const species = {
-    total: totalSpecies,
-    species: topSpecies.map(({ species, count }) => {
-      return { name: species, number: count };
-    }),
-  };
+    const unverified_captures = {
+      total: totalUnverifiedCaptures,
+      unverified_captures: topUnverifiedCaptures.map(
+        ({ planting_organization_name, count }) => {
+          return { name: planting_organization_name, number: count };
+        },
+      ),
+    };
 
-  const captures = {
-    total: totalCaptures,
-    captures: topCaptures.map(({ planting_organization_name, count }) => {
-      return { name: planting_organization_name, number: count };
-    }),
-  };
+    const top_planters = {
+      average: Math.round(averageCapturePerPlanter),
+      top_planters: topPlanters.map(
+        ({ planter_first_name, planter_last_name, count }) => {
+          return {
+            name: `${planter_first_name} ${planter_last_name}`,
+            number: count,
+          };
+        },
+      ),
+    };
 
-  const unverified_captures = {
-    total: totalUnverifiedCaptures,
-    unverified_captures: topUnverifiedCaptures.map(
-      ({ planting_organization_name, count }) => {
-        return { name: planting_organization_name, number: count };
-      },
-    ),
-  };
+    const trees_per_planters = {
+      average: Math.round(averageCapturesPerPlanterPerOrganization),
+      trees_per_planters: topAverageCapturesPerPlanterPerOrganization.map(
+        ({ planting_organization_name, averagecapturesperplanters }) => {
+          return {
+            name: planting_organization_name,
+            number: Math.round(averagecapturesperplanters),
+          };
+        },
+      ),
+    };
 
-  const top_planters = {
-    average: Math.round(averageCapturePerPlanter),
-    top_planters: topPlanters.map(
-      ({ planter_first_name, planter_last_name, count }) => {
-        return {
-          name: `${planter_first_name} ${planter_last_name}`,
-          number: count,
-        };
-      },
-    ),
-  };
+    const last_updated_at = lastUpdated;
 
-  const trees_per_planters = {
-    average: Math.round(averageCapturesPerPlanterPerOrganization),
-    trees_per_planters: topAverageCapturesPerPlanterPerOrganization.map(
-      ({ planting_organization_name, averagecapturesperplanters }) => {
-        return {
-          name: planting_organization_name,
-          number: Math.round(averagecapturesperplanters),
-        };
-      },
-    ),
-  };
+    const catchments = {
+      average: Math.round(averageCatchment),
+      catchments: topCatchment.map(({ catchment, count }) => {
+        return { name: catchment, number: count };
+      }),
+    };
 
-  const last_updated_at = lastUpdated;
+    return {
+      planters,
+      species,
+      captures,
+      unverified_captures,
+      top_planters,
+      trees_per_planters,
+      last_updated_at,
+      catchments,
+    };
+  }
 
-  const catchments = {
-    average: Math.round(averageCatchment),
-    catchments: topCatchment.map(({ catchment, count }) => {
-      return { name: catchment, number: count };
-    }),
-  };
+  async getCaptureStatistics(filter) {
+    const {
+      topPlanters,
+      averageCapturePerPlanter,
+      totalGrowers,
+      topGrowersPerOrganizatino,
+      totalSpecies,
+      topSpecies,
+      totalCaptures,
+      topCaptures,
+      totalUnverifiedCaptures,
+      topUnverifiedCaptures,
+      averageCapturesPerPlanterPerOrganization,
+      topAverageCapturesPerPlanterPerOrganization,
+      lastUpdated,
+      averageCatchment,
+      topCatchment,
+    } = await this._captureRepository.getStatistics(filter);
 
-  return {
-    planters,
-    species,
-    captures,
-    unverified_captures,
-    top_planters,
-    trees_per_planters,
-    last_updated_at,
-    catchments,
-  };
-};
+    return this.generateFormattedResponse({
+      topPlanters,
+      averageCapturePerPlanter,
+      totalGrowers,
+      topGrowersPerOrganizatino,
+      totalSpecies,
+      topSpecies,
+      totalCaptures,
+      topCaptures,
+      totalUnverifiedCaptures,
+      topUnverifiedCaptures,
+      averageCapturesPerPlanterPerOrganization,
+      topAverageCapturesPerPlanterPerOrganization,
+      lastUpdated,
+      averageCatchment,
+      topCatchment,
+    });
+  }
 
-const getCaptureStatistics = async (captureRepo, filterCriteria) => {
-  const filter = StatisticsFilterCriteria({ ...filterCriteria });
-  const {
-    topPlanters,
-    averageCapturePerPlanter,
-    totalGrowers,
-    topGrowersPerOrganizatino,
-    totalSpecies,
-    topSpecies,
-    totalCaptures,
-    topCaptures,
-    totalUnverifiedCaptures,
-    topUnverifiedCaptures,
-    averageCapturesPerPlanterPerOrganization,
-    topAverageCapturesPerPlanterPerOrganization,
-    lastUpdated,
-    averageCatchment,
-    topCatchment,    
-  } = await captureRepo.getStatistics(filter);
+  async getCaptureStatisticsSingleCard(filter, limitOptions) {
+    const { card_title } = filter;
 
-  return generateFormattedResponse({
-    topPlanters,
-    averageCapturePerPlanter,
-    totalGrowers,
-    topGrowersPerOrganizatino,
-    totalSpecies,
-    topSpecies,
-    totalCaptures,
-    topCaptures,
-    totalUnverifiedCaptures,
-    topUnverifiedCaptures,
-    averageCapturesPerPlanterPerOrganization,
-    topAverageCapturesPerPlanterPerOrganization,
-    lastUpdated,
-    averageCatchment,
-    topCatchment,
-  });
-};
-
-const getCaptureStatisticsSingleCard =
-  (captureRepo) => async (filterCriteria, url) => {
-    const { card_title } = filterCriteria;
-    let options = { limit: 7, offset: 0 };
-    options = { ...options, ...QueryOptions({ ...filterCriteria }) };
-
-    const filter = StatisticsFilterCriteria({ ...filterCriteria });
-
-    const queryFilterObjects = { ...filterCriteria };
-    queryFilterObjects.limit = options.limit;
-
-    // remove offset property, as it is calculated later
-    delete queryFilterObjects.offset;
-
-    const query = Object.keys(queryFilterObjects)
-      .map((key) => `${key}=${encodeURIComponent(queryFilterObjects[key])}`)
-      .join('&');
-
-    const urlWithLimitAndOffset = `${url}?${query}&offset=`;
-
-    const next = `${urlWithLimitAndOffset}${+options.offset + +options.limit}`;
-    let prev = null;
-    if (options.offset - +options.limit >= 0) {
-      prev = `${urlWithLimitAndOffset}${+options.offset - +options.limit}`;
-    }
-
-    const result = await captureRepo.getStatistics(filter, options);
+    const result = await this._captureRepository.getStatistics(
+      filter,
+      limitOptions,
+    );
 
     return {
       card_information:
-        generateFormattedResponse(result)[card_title][card_title],
-      links: {
-        prev,
-        next,
-      },
+        this.generateFormattedResponse(result)[card_title][card_title],
     };
-  };
+  }
+}
 
-module.exports = {
-  getCaptures,
-  getCaptureStatistics,
-  getCaptureStatisticsSingleCard,
-  generateFormattedResponse,
-  QueryOptions,
-  StatisticsFilterCriteria,
-  FilterCriteria,
-  Capture,
-};
+module.exports = Capture;

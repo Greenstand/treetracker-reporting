@@ -1,7 +1,7 @@
 require('dotenv').config();
 const request = require('supertest');
 const { expect } = require('chai');
-const server = require('../../server/app');
+const server = require('../server/app');
 const { captureOne } = require('./seed-data-creation');
 
 describe('Captures GET', () => {
@@ -232,9 +232,15 @@ describe('Captures GET', () => {
       .expect(200)
       .end(function (err, res) {
         if (err) return done(err);
-        expect(res.body).to.have.keys(['captures', 'links', 'totalCount']);
+        expect(res.body).to.have.keys([
+          'captures',
+          'links',
+          'totalCount',
+          'query',
+        ]);
+
         expect(res.body.links).to.have.keys(['prev', 'next']);
-        expect(res.body.totalCount).to.eq(3);
+        expect(res.body.totalCount).to.eq(4);
 
         for (const capture of res.body.captures) {
           expect(capture).to.have.keys([
@@ -270,9 +276,14 @@ describe('Captures GET', () => {
       .expect(200)
       .end(function (err, res) {
         if (err) return done(err);
-        expect(res.body).to.have.keys(['captures', 'links', 'totalCount']);
+        expect(res.body).to.have.keys([
+          'captures',
+          'links',
+          'totalCount',
+          'query',
+        ]);
         expect(res.body.links).to.have.keys(['prev', 'next']);
-        expect(res.body.totalCount).to.eq(3);
+        expect(res.body.totalCount).to.eq(4);
         expect(res.body.captures[0].planter_first_name).to.eq('c');
         return done();
       });
@@ -297,7 +308,12 @@ describe('Captures GET', () => {
       .expect(200)
       .end(function (err, res) {
         if (err) return done(err);
-        expect(res.body).to.have.keys(['captures', 'links', 'totalCount']);
+        expect(res.body).to.have.keys([
+          'captures',
+          'links',
+          'totalCount',
+          'query',
+        ]);
         expect(res.body.links).to.have.keys(['prev', 'next']);
         expect(res.body.links.prev).to.eq(null);
         expect(res.body.totalCount).to.eq(1);
@@ -313,41 +329,6 @@ describe('Captures Statistics GET', () => {
       expect(object).to.have.keys(['name', 'number']);
     }
   };
-  it(`Should raise validation error with error code 422 -- 'capture_created_start_date' query parameter should be a date  `, function (done) {
-    request(server)
-      .get(`/capture/statistics`)
-      .query({
-        capture_created_start_date: 'capture_created_start_date',
-      })
-      .set('Accept', 'application/json')
-      .expect(422)
-      .end(function (err, res) {
-        if (err) return done(err);
-        console.log(res.body);
-        expect(res.body.message).to.eql(
-          '"capture_created_start_date" must be in ISO 8601 date format',
-        );
-        return done();
-      });
-  });
-
-  it(`Should raise validation error with error code 422 -- 'capture_created_end_date' query parameter should be a date  `, function (done) {
-    request(server)
-      .get(`/capture/statistics`)
-      .query({
-        capture_created_end_date: 'capture_created_end_date',
-      })
-      .set('Accept', 'application/json')
-      .expect(422)
-      .end(function (err, res) {
-        if (err) return done(err);
-        console.log(res.body);
-        expect(res.body.message).to.eql(
-          '"capture_created_end_date" must be in ISO 8601 date format',
-        );
-        return done();
-      });
-  });
 
   it(`Should get captures statistics successfully`, function (done) {
     request(server)
@@ -355,6 +336,7 @@ describe('Captures Statistics GET', () => {
       .set('Accept', 'application/json')
       .expect(200)
       .end(function (err, res) {
+        // console.log(res.body);
         if (err) return done(err);
         expect(res.body).to.have.keys([
           'planters',
@@ -381,15 +363,15 @@ describe('Captures Statistics GET', () => {
           'average',
           'trees_per_planters',
         ]);
+        expect(res.body.catchments).to.have.keys(['average', 'catchments']);
         checkObjectProperties(res.body.planters.planters);
         checkObjectProperties(res.body.species.species);
         checkObjectProperties(res.body.captures.captures);
         checkObjectProperties(res.body.unverified_captures.unverified_captures);
         checkObjectProperties(res.body.top_planters.top_planters);
         checkObjectProperties(res.body.trees_per_planters.trees_per_planters);
-
-        expect(res.body.catchments).to.have.keys(['average', 'catchments']);
         checkObjectProperties(res.body.catchments.catchments);
+
         return done();
       });
   });
@@ -513,7 +495,6 @@ describe('Captures Statistics GET', () => {
         .expect(422)
         .end(function (err, res) {
           if (err) return done(err);
-          console.log(res.body);
           expect(res.body.message).to.eql(
             '"capture_created_start_date" must be in ISO 8601 date format',
           );
@@ -532,7 +513,6 @@ describe('Captures Statistics GET', () => {
         .expect(422)
         .end(function (err, res) {
           if (err) return done(err);
-          console.log(res.body);
           expect(res.body.message).to.eql(
             '"capture_created_end_date" must be in ISO 8601 date format',
           );
@@ -550,8 +530,7 @@ describe('Captures Statistics GET', () => {
         .expect(200)
         .end(function (err, res) {
           if (err) return done(err);
-          expect(res.body).to.have.keys(['card_information', 'links']);
-          expect(res.body.links).to.have.keys(['prev', 'next']);
+          expect(res.body).to.have.keys(['card_information', 'query']);
           checkObjectProperties(res.body.card_information);
           return done();
         });

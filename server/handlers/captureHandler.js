@@ -1,11 +1,9 @@
 const Joi = require('joi');
-const Session = require('../models/Session');
-const CaptureRepository = require('../repositories/CaptureRepository');
+const CaptureService = require('../services/CaptureService');
 const {
-  getCaptures,
-  getCaptureStatistics,
-  getCaptureStatisticsSingleCard,
-} = require('../models/Capture');
+  generatePrevAndNext,
+  getFilterAndLimitOptions,
+} = require('../utils/helper');
 
 const captureGetQuerySchema = Joi.object({
   approved: Joi.boolean(),
@@ -44,7 +42,7 @@ const captureGetQuerySchema = Joi.object({
     'token_id',
     'catchment',
   ),
-  order: Joi.string().valid('asc', 'desc'),
+  order: Joi.string().valid('asc', 'desc').default('asc'),
 }).unknown(false);
 
 const captureStatisticsQuerySchema = Joi.object({
@@ -65,32 +63,46 @@ const captureStatisticsGetCardQuerySchema = Joi.object({
       'unverified_captures',
       'top_planters',
       'trees_per_planters',
-      'catchments'
+      'catchments',
     )
     .required(),
 }).unknown(false);
 
 const captureGet = async (req, res) => {
-  await captureGetQuerySchema.validateAsync(req.query, { abortEarly: false });
-  const session = new Session();
-  const captureRepo = new CaptureRepository(session);
+  const query = await captureGetQuerySchema.validateAsync(req.query, {
+    abortEarly: false,
+  });
+  const { filter, limitOptions } = getFilterAndLimitOptions(query);
+  const captureService = new CaptureService();
+  const { totalCount, captures } = await captureService.getCaptures(
+    filter,
+    limitOptions,
+  );
 
   const url = `capture`;
 
-  const executeGetCapture = getCaptures(captureRepo);
-  const result = await executeGetCapture(req.query, url);
-  res.send(result);
-  res.end();
+  const links = generatePrevAndNext({
+    url,
+    count: totalCount,
+    limitOptions,
+    queryObject: { ...filter, ...limitOptions },
+  });
+
+  res.send({
+    captures,
+    links,
+    totalCount,
+    query: { ...limitOptions, ...filter },
+  });
 };
 
 const captureStatisticsGet = async (req, res) => {
   await captureStatisticsQuerySchema.validateAsync(req.query, {
     abortEarly: false,
   });
-  const session = new Session();
-  const captureRepo = new CaptureRepository(session);
+  const captureService = new CaptureService();
+  const result = await captureService.getCaptureStatistics(req.query);
 
-  const result = await getCaptureStatistics(captureRepo, req.query);
   res.send(result);
   res.end();
 };
@@ -99,16 +111,16 @@ const captureStatisticsGetCard = async (req, res) => {
   await captureStatisticsGetCardQuerySchema.validateAsync(req.query, {
     abortEarly: false,
   });
-  const session = new Session();
-  const captureRepo = new CaptureRepository(session);
+  const captureService = new CaptureService();
 
-  const url = `capture/statistics/card`;
+  const { filter, limitOptions } = getFilterAndLimitOptions(req.query);
+  const { card_information = [] } =
+    await captureService.getCaptureStatisticsSingleCard(filter, limitOptions);
 
-  const executeGetCaptureStatisticsCard =
-    getCaptureStatisticsSingleCard(captureRepo);
-  const result = await executeGetCaptureStatisticsCard(req.query, url);
-  res.send(result);
-  res.end();
+  res.send({
+    card_information,
+    query: { ...limitOptions, ...filter },
+  });
 };
 
 module.exports = {
