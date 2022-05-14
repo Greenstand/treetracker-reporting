@@ -76,7 +76,7 @@ class Capture {
     };
   }
 
-  generateFormattedResponse({
+  static generateFormattedResponse({
     averageCapturePerPlanter = undefined,
     topPlanters = [],
     totalGrowers = undefined,
@@ -104,8 +104,8 @@ class Capture {
 
     const species = {
       total: totalSpecies,
-      species: topSpecies.map(({ species, count }) => {
-        return { name: species, number: count };
+      species: topSpecies.map(({ species: s, count }) => {
+        return { name: s, number: count };
       }),
     };
 
@@ -189,7 +189,7 @@ class Capture {
       topCatchment,
     } = await this._captureRepository.getStatistics(filter);
 
-    return this.generateFormattedResponse({
+    return this.constructor.generateFormattedResponse({
       topPlanters,
       averageCapturePerPlanter,
       totalGrowers,
@@ -218,7 +218,9 @@ class Capture {
 
     return {
       card_information:
-        this.generateFormattedResponse(result)[card_title][card_title],
+        this.constructor.generateFormattedResponse(result)[card_title][
+          card_title
+        ],
     };
   }
 }

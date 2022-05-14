@@ -242,7 +242,7 @@ describe('Captures GET', () => {
         expect(res.body.links).to.have.keys(['prev', 'next']);
         expect(res.body.totalCount).to.eq(4);
 
-        for (const capture of res.body.captures) {
+        res.body.captures.forEach((capture) => {
           expect(capture).to.have.keys([
             'capture_uuid',
             'capture_created_at',
@@ -263,7 +263,7 @@ describe('Captures GET', () => {
             'token_id',
             'catchment',
           ]);
-        }
+        });
         return done();
       });
   });
@@ -325,9 +325,9 @@ describe('Captures GET', () => {
 
 describe('Captures Statistics GET', () => {
   const checkObjectProperties = (array) => {
-    for (const object of array) {
+    array.forEach((object) => {
       expect(object).to.have.keys(['name', 'number']);
-    }
+    });
   };
 
   it(`Should get captures statistics successfully`, function (done) {

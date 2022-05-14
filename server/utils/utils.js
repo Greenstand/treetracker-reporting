@@ -5,7 +5,7 @@
 // const JWTService = require("../services/JWTService.js");
 const log = require('loglevel');
 const { ValidationError } = require('joi');
-const HttpError = require("./HttpError");
+const HttpError = require('./HttpError');
 
 /*
  * This is from the library https://github.com/Abazhenov/express-async-handler
@@ -31,7 +31,7 @@ exports.handlerWrapper = (fn) =>
     });
   };
 
-exports.errorHandler = (err, req, res, next) => {
+exports.errorHandler = (err, req, res, _next) => {
   log.debug('catch error:', err);
   if (err instanceof HttpError) {
     res.status(err.code).send({
