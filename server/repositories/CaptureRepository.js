@@ -251,9 +251,7 @@ class CaptureRepository extends BaseRepository {
         this.count('* as totalCatchment')
           .from('capture_denormalized')
           .where((builder) => whereBuilder(filter, builder))
-          .groupBy(
-            'catchment',
-          )
+          .groupBy('catchment')
           .as('catchments');
       })
       .cache();
