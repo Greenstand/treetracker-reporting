@@ -1,3 +1,12 @@
+## [1.1.2](https://github.com/Greenstand/treetracker-reporting/compare/v1.1.1...v1.1.2) (2022-05-24)
+
+
+### Bug Fixes
+
+* db url check ([de3ef23](https://github.com/Greenstand/treetracker-reporting/commit/de3ef237b5719e23f74b049c258d28b905fa4e6a))
+* linting ([ed68d1f](https://github.com/Greenstand/treetracker-reporting/commit/ed68d1f5784cdbec1d978527161e8b0f0e881f70))
+* refactoring ([927d28a](https://github.com/Greenstand/treetracker-reporting/commit/927d28ad65a71a96540542f0648668583cb5b999))
+
 ## [1.1.1](https://github.com/Greenstand/treetracker-reporting/compare/v1.1.0...v1.1.1) (2022-03-19)
 
 
