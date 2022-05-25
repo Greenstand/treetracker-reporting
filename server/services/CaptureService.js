@@ -11,7 +11,12 @@ class CaptureService {
     return this._capture.getCaptures(filter, limitOptions);
   }
 
-  async getCaptureStatistics(filter) {
+  async getCaptureStatistics(filterParam) {
+    const filter = { ...filterParam };
+    if (filter.clear_cache) {
+      await this._session.getDB().resetCache();
+    }
+    delete filter.clear_cache;
     return this._capture.getCaptureStatistics(filter);
   }
 

@@ -41,4 +41,8 @@ knex.QueryBuilder.extend('cache', async function () {
   }
 });
 
+knex.QueryBuilder.extend('resetCache', async function () {
+  dbCache.flushAll();
+});
+
 module.exports = knex(knexConfig);
