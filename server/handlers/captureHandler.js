@@ -48,6 +48,7 @@ const captureGetQuerySchema = Joi.object({
 const captureStatisticsQuerySchema = Joi.object({
   capture_created_start_date: Joi.date().iso(),
   capture_created_end_date: Joi.date().iso(),
+  clear_cache: Joi.boolean(),
 }).unknown(false);
 
 const captureStatisticsGetCardQuerySchema = Joi.object({
