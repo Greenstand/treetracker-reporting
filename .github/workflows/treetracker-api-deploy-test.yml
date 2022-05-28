@@ -1,4 +1,4 @@
-name: Deploy Service to Prod Env
+name: Deploy Service to Test Env
 
 on:
   workflow_dispatch:
@@ -11,8 +11,8 @@ env:
   project-directory: ./
 
 jobs:
-  deploy-prod:
-    name: Deploy latest to prod environment, requires approval
+  deploy-test:
+    name: Deploy latest to test environment, requires approval
     runs-on: ubuntu-latest
     if: |
       github.repository_owner == 'Greenstand'
@@ -21,12 +21,12 @@ jobs:
       - name: Install kustomize
         run: curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
       - name: Run kustomize
-        run: (cd deployment/overlays/production && ../../../kustomize edit set image greenstand/${{ github.event.repository.name }}:${{ github.event.inputs.environment }})
-      - name: Commit prod kustomization file with new app version
+        run: (cd deployment/overlays/test && ../../../kustomize edit set image greenstand/${{ github.event.repository.name }}:${{ github.event.inputs.environment }})
+      - name: Commit test kustomization file with new app version
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git commit -am "chore: bump docker image tag ${{ github.event.inputs.environment }})} [skip ci]"
+          git commit -am "chore: bump docker image tag ${{ github.event.inputs.environment }} [skip ci]"
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:

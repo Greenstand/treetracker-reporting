@@ -34,3 +34,5 @@ spec:
               secretKeyRef:
                 name: database-connection
                 key: db
+      imagePullSecrets:
+        - name: greenstand-docker-secret
