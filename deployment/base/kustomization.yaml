@@ -4,3 +4,4 @@ resources:
 - service.yaml
 - namespace.yaml
 - database-connection-sealed-secret.yaml
+- database-migration-connection-sealed-secret.yaml
