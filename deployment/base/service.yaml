@@ -3,12 +3,12 @@ kind: Service
 metadata:
   name: treetracker-reporting-api-ambassador-svc
   labels:
-    app: treetracker-webmap-api
+    app: treetracker-reporting-api
     name: treetracker-reporting-api-ambassador-svc
   namespace: reporting
 spec:
   selector:
-    app: tretracker-reporting-api
+    app: treetracker-reporting-api
   ports:
     - name: http
       protocol: TCP

@@ -8,11 +8,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: tretracker-reporting-api
+      app: treetracker-reporting-api
   template:
     metadata:
       labels:
-        app: tretracker-reporting-api
+        app: treetracker-reporting-api
     spec:
       affinity:
         nodeAffinity:
@@ -24,7 +24,7 @@ spec:
                 values:
                 - microservices-node-pool
       containers:
-      - name: tretracker-reporting-api
+      - name: treetracker-reporting-api
         image: greenstand/treetracker-reporting:TAG
         env:
           - name: DATABASE_SCHEMA
