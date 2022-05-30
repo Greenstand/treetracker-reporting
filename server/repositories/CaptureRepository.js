@@ -86,8 +86,7 @@ class CaptureRepository extends BaseRepository {
           .from('capture_denormalized')
           .where((builder) => whereBuilder(filter, builder))
           .as('planters');
-      })
-      .cache();
+      });
 
     // total number of growers per organization
     const topGrowersPerOrganizatinoQuery = knex(this._tableName)
@@ -114,8 +113,7 @@ class CaptureRepository extends BaseRepository {
       .groupBy('planting_organization_name', 'planting_organization_uuid')
       .orderBy('count', 'desc')
       .limit(options.limit)
-      .offset(options.offset)
-      .cache();
+      .offset(options.offset);
 
     const topPlantersQuery = knex(this._tableName)
       .select(
@@ -125,8 +123,7 @@ class CaptureRepository extends BaseRepository {
       .groupBy('planter_first_name', 'planter_last_name', 'planter_identifier')
       .orderBy('count', 'desc')
       .limit(options.limit)
-      .offset(options.offset)
-      .cache();
+      .offset(options.offset);
 
     const averageCapturePerPlanterQuery = knex(this._tableName)
       .avg('totalPlanters')
@@ -140,13 +137,11 @@ class CaptureRepository extends BaseRepository {
             'planter_identifier',
           )
           .as('planters');
-      })
-      .cache();
+      });
 
     const totalSpeciesQuery = knex(this._tableName)
       .where((builder) => whereBuilder(filter, builder))
-      .countDistinct('species as totalSpecies')
-      .cache();
+      .countDistinct('species as totalSpecies');
 
     const topSpeciesQuery = knex(this._tableName)
       .select(knex.raw('species, count(*) as count'))
@@ -155,13 +150,11 @@ class CaptureRepository extends BaseRepository {
       .groupBy('species')
       .orderBy('count', 'desc')
       .limit(options.limit)
-      .offset(options.offset)
-      .cache();
+      .offset(options.offset);
 
     const totalApprovedCapturesQuery = knex(this._tableName)
       .count()
-      .where((builder) => whereBuilder({ ...filter, approved: true }, builder))
-      .cache();
+      .where((builder) => whereBuilder({ ...filter, approved: true }, builder));
 
     const topApprovedCapturesQuery = knex(this._tableName)
       .select(knex.raw('planting_organization_name, count(*) as count'))
@@ -169,13 +162,13 @@ class CaptureRepository extends BaseRepository {
       .groupBy('planting_organization_uuid', 'planting_organization_name')
       .orderBy('count', 'desc')
       .limit(options.limit)
-      .offset(options.offset)
-      .cache();
+      .offset(options.offset);
 
     const totalUnverifiedCapturesQuery = knex(this._tableName)
       .count()
-      .where((builder) => whereBuilder({ ...filter, approved: false }, builder))
-      .cache();
+      .where((builder) =>
+        whereBuilder({ ...filter, approved: false }, builder),
+      );
 
     const topUnverifiedCapturesQuery = knex(this._tableName)
       .select(knex.raw('planting_organization_name, count(*) as count'))
@@ -183,8 +176,7 @@ class CaptureRepository extends BaseRepository {
       .groupBy('planting_organization_uuid', 'planting_organization_name')
       .orderBy('count', 'desc')
       .limit(options.limit)
-      .offset(options.offset)
-      .cache();
+      .offset(options.offset);
 
     const averageCapturesPerPlanterPerOrganizationQuery = knex(this._tableName)
       .avg('averageCapturesPerPlanters')
@@ -209,8 +201,7 @@ class CaptureRepository extends BaseRepository {
           })
           .groupBy('planting_organization_name', 'planting_organization_uuid')
           .as('plantersAverage');
-      })
-      .cache();
+      });
 
     const topAverageCapturesPerPlanterPerOrganizationQuery = knex(
       this._tableName,
@@ -240,10 +231,9 @@ class CaptureRepository extends BaseRepository {
       .groupBy('planting_organization_name', 'planting_organization_uuid')
       .orderBy('averagecapturesperplanters', 'desc')
       .limit(options.limit)
-      .offset(options.offset)
-      .cache();
+      .offset(options.offset);
 
-    const lastUpdatedQuery = knex(this._tableName).max('created_at').cache();
+    const lastUpdatedQuery = knex(this._tableName).max('created_at');
 
     const averageCatchmentQuery = knex(this._tableName)
       .avg('totalCatchment')
@@ -253,8 +243,7 @@ class CaptureRepository extends BaseRepository {
           .where((builder) => whereBuilder(filter, builder))
           .groupBy('catchment')
           .as('catchments');
-      })
-      .cache();
+      });
 
     const topCatchmentQuery = knex(this._tableName)
       .select(knex.raw('catchment, count(*) as count'))
@@ -263,8 +252,7 @@ class CaptureRepository extends BaseRepository {
       .groupBy('catchment')
       .orderBy('count', 'desc')
       .limit(options.limit)
-      .offset(options.offset)
-      .cache();
+      .offset(options.offset);
 
     if (filter?.card_title) {
       const { card_title } = filter;
@@ -272,32 +260,33 @@ class CaptureRepository extends BaseRepository {
       switch (card_title) {
         case 'planters': {
           const topGrowersPerOrganizatino =
-            await topGrowersPerOrganizatinoQuery;
+            await topGrowersPerOrganizatinoQuery.cache();
           return { topGrowersPerOrganizatino };
         }
         case 'species': {
-          const topSpecies = await topSpeciesQuery;
+          const topSpecies = await topSpeciesQuery.cache();
           return { topSpecies };
         }
         case 'captures': {
-          const topApprovedCaptures = await topApprovedCapturesQuery;
+          const topApprovedCaptures = await topApprovedCapturesQuery.cache();
           return { topCaptures: topApprovedCaptures };
         }
         case 'unverified_captures': {
-          const topUnverifiedCaptures = await topUnverifiedCapturesQuery;
+          const topUnverifiedCaptures =
+            await topUnverifiedCapturesQuery.cache();
           return { topUnverifiedCaptures };
         }
         case 'top_planters': {
-          const topPlanters = await topPlantersQuery;
+          const topPlanters = await topPlantersQuery.cache();
           return { topPlanters };
         }
         case 'trees_per_planters': {
           const topAverageCapturesPerPlanterPerOrganization =
-            await topAverageCapturesPerPlanterPerOrganizationQuery;
+            await topAverageCapturesPerPlanterPerOrganizationQuery.cache();
           return { topAverageCapturesPerPlanterPerOrganization };
         }
         case 'catchments': {
-          const topCatchment = await topCatchmentQuery;
+          const topCatchment = await topCatchmentQuery.cache();
           return { topCatchment };
         }
 
@@ -306,23 +295,25 @@ class CaptureRepository extends BaseRepository {
       }
     }
 
-    const totalGrowers = await totalGrowersQuery;
-    const topPlanters = await topPlantersQuery;
-    const averageCapturePerPlanter = await averageCapturePerPlanterQuery;
-    const topGrowersPerOrganizatino = await topGrowersPerOrganizatinoQuery;
-    const totalSpecies = await totalSpeciesQuery;
-    const topSpecies = await topSpeciesQuery;
-    const totalApprovedCaptures = await totalApprovedCapturesQuery;
-    const topApprovedCaptures = await topApprovedCapturesQuery;
-    const totalUnverifiedCaptures = await totalUnverifiedCapturesQuery;
-    const topUnverifiedCaptures = await topUnverifiedCapturesQuery;
+    const totalGrowers = await totalGrowersQuery.cache();
+    const topPlanters = await topPlantersQuery.cache();
+    const averageCapturePerPlanter =
+      await averageCapturePerPlanterQuery.cache();
+    const topGrowersPerOrganizatino =
+      await topGrowersPerOrganizatinoQuery.cache();
+    const totalSpecies = await totalSpeciesQuery.cache();
+    const topSpecies = await topSpeciesQuery.cache();
+    const totalApprovedCaptures = await totalApprovedCapturesQuery.cache();
+    const topApprovedCaptures = await topApprovedCapturesQuery.cache();
+    const totalUnverifiedCaptures = await totalUnverifiedCapturesQuery.cache();
+    const topUnverifiedCaptures = await topUnverifiedCapturesQuery.cache();
     const averageCapturesPerPlanterPerOrganization =
-      await averageCapturesPerPlanterPerOrganizationQuery;
+      await averageCapturesPerPlanterPerOrganizationQuery.cache();
     const topAverageCapturesPerPlanterPerOrganization =
-      await topAverageCapturesPerPlanterPerOrganizationQuery;
-    const lastUpdated = await lastUpdatedQuery;
-    const averageCatchment = await averageCatchmentQuery;
-    const topCatchment = await topCatchmentQuery;
+      await topAverageCapturesPerPlanterPerOrganizationQuery.cache();
+    const lastUpdated = await lastUpdatedQuery.cache();
+    const averageCatchment = await averageCatchmentQuery.cache();
+    const topCatchment = await topCatchmentQuery.cache();
 
     return {
       totalGrowers: +totalGrowers[0].totalPlanters,
