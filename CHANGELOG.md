@@ -1,3 +1,10 @@
+## [1.1.5](https://github.com/Greenstand/treetracker-reporting/compare/v1.1.4...v1.1.5) (2022-05-30)
+
+
+### Bug Fixes
+
+* modify query caches ([e294218](https://github.com/Greenstand/treetracker-reporting/commit/e2942184c6ebe0d695f6957fe61bb3a484b94ccf))
+
 ## [1.1.4](https://github.com/Greenstand/treetracker-reporting/compare/v1.1.3...v1.1.4) (2022-05-29)
 
 
