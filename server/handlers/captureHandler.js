@@ -56,6 +56,7 @@ const captureStatisticsGetCardQuerySchema = Joi.object({
   offset: Joi.number().integer().greater(-1),
   capture_created_start_date: Joi.date().iso(),
   capture_created_end_date: Joi.date().iso(),
+  clear_cache: Joi.boolean(),
   card_title: Joi.string()
     .valid(
       'planters',
