@@ -92,7 +92,7 @@ class Capture {
     lastUpdated = undefined,
     averageCatchment = undefined,
     topCatchment = [],
-    genderCount,
+    genderCount = [],
   }) {
     const planters = {
       total: totalGrowers,
