@@ -92,6 +92,7 @@ class Capture {
     lastUpdated = undefined,
     averageCatchment = undefined,
     topCatchment = [],
+    genderCount,
   }) {
     const planters = {
       total: totalGrowers,
@@ -158,6 +159,16 @@ class Capture {
       }),
     };
 
+    const totalCount = genderCount.reduce((a, b) => a + +b.count, 0);
+
+    const gender_details = genderCount.map(({ gender, count }) => {
+      return {
+        gender,
+        count,
+        percentage: (+count / totalCount) * 100,
+      };
+    });
+
     return {
       planters,
       species,
@@ -167,6 +178,7 @@ class Capture {
       trees_per_planters,
       last_updated_at,
       catchments,
+      gender_details,
     };
   }
 
@@ -187,6 +199,7 @@ class Capture {
       lastUpdated,
       averageCatchment,
       topCatchment,
+      genderCount,
     } = await this._captureRepository.getStatistics(filter);
 
     return this.constructor.generateFormattedResponse({
@@ -205,6 +218,7 @@ class Capture {
       lastUpdated,
       averageCatchment,
       topCatchment,
+      genderCount,
     });
   }
 

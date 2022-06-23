@@ -254,6 +254,12 @@ class CaptureRepository extends BaseRepository {
       .limit(options.limit)
       .offset(options.offset);
 
+    const genderCountQuery = knex(this._tableName)
+      .select(knex.raw('gender, count(*) as count'))
+      .where((builder) => whereBuilder(filter, builder))
+      .groupBy('gender')
+      .orderBy('count', 'desc');
+
     if (filter?.card_title) {
       const { card_title } = filter;
 
@@ -314,6 +320,7 @@ class CaptureRepository extends BaseRepository {
     const lastUpdated = await lastUpdatedQuery.cache();
     const averageCatchment = await averageCatchmentQuery.cache();
     const topCatchment = await topCatchmentQuery.cache();
+    const genderCount = await genderCountQuery.cache();
 
     return {
       totalGrowers: +totalGrowers[0].totalPlanters,
@@ -332,6 +339,7 @@ class CaptureRepository extends BaseRepository {
       lastUpdated: lastUpdated[0].max,
       averageCatchment: +averageCatchment[0].avg,
       topCatchment,
+      genderCount,
     };
   }
 }

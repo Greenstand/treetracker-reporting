@@ -347,6 +347,7 @@ describe('Captures Statistics GET', () => {
           'trees_per_planters',
           'last_updated_at',
           'catchments',
+          'gender_details',
         ]);
 
         expect(res.body.last_updated_at).eq(captureOne.created_at);
