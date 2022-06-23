@@ -1,3 +1,16 @@
+# [1.2.0](https://github.com/Greenstand/treetracker-reporting/compare/v1.1.5...v1.2.0) (2022-06-23)
+
+
+### Bug Fixes
+
+* minor fix ([47af878](https://github.com/Greenstand/treetracker-reporting/commit/47af8789ad7e3d8603da6dd697d595aba75fbfc9))
+* update dependencies ([393551d](https://github.com/Greenstand/treetracker-reporting/commit/393551d1eae128d713ec07f4213eb3dcc37d0b4e))
+
+
+### Features
+
+* add gender to statistics ([a5bb478](https://github.com/Greenstand/treetracker-reporting/commit/a5bb4780269b01b8ac7fd275c38531c2a75cf742))
+
 ## [1.1.5](https://github.com/Greenstand/treetracker-reporting/compare/v1.1.4...v1.1.5) (2022-05-30)
 
 
