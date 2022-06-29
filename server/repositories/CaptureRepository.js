@@ -256,6 +256,16 @@ class CaptureRepository extends BaseRepository {
 
     const genderCountQuery = knex(this._tableName)
       .select(knex.raw('gender, count(*) as count'))
+      .from(function () {
+        this.distinct(
+          'planter_first_name',
+          'planter_last_name',
+          'planter_identifier',
+          'gender',
+        )
+          .from('capture_denormalized')
+          .as('planters');
+      })
       .where((builder) => whereBuilder(filter, builder))
       .groupBy('gender')
       .orderBy('count', 'desc');
