@@ -1,4 +1,5 @@
 patchesStrategicMerge:
+- database-migration-connection-sealed-secret.yaml
 - database-connection-sealed-secret.yaml
 - mapping.yaml
 images:
