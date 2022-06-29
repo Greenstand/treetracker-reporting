@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/Greenstand/treetracker-reporting/compare/v1.2.0...v1.2.1) (2022-06-29)
+
+
+### Bug Fixes
+
+* update gender to be distinct per user ([1a531c1](https://github.com/Greenstand/treetracker-reporting/commit/1a531c1fe7d1fa0f20fb432307daf4b4267239ad))
+
 # [1.2.0](https://github.com/Greenstand/treetracker-reporting/compare/v1.1.5...v1.2.0) (2022-06-23)
 
 
