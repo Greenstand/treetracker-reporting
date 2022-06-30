@@ -1,3 +1,10 @@
+## [1.2.5](https://github.com/Greenstand/treetracker-reporting/compare/v1.2.4...v1.2.5) (2022-06-30)
+
+
+### Bug Fixes
+
+* update migration in dev env ([508f92a](https://github.com/Greenstand/treetracker-reporting/commit/508f92ac69035fc2945bbeb55cc4bee548fa81de))
+
 ## [1.2.4](https://github.com/Greenstand/treetracker-reporting/compare/v1.2.3...v1.2.4) (2022-06-29)
 
 
