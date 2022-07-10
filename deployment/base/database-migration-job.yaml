@@ -20,7 +20,7 @@ spec:
                       - microservices-node-pool
       containers:
         - name: migration
-          image: greenstand/treetracker-reporting-api:VERSION
+          image: greenstand/treetracker-reporting:VERSION
           env:
             - name: DATABASE_URL
               valueFrom:
