@@ -1,3 +1,10 @@
+## [1.2.6](https://github.com/Greenstand/treetracker-reporting/compare/v1.2.5...v1.2.6) (2022-07-10)
+
+
+### Bug Fixes
+
+* reduce max pool ([ad7c810](https://github.com/Greenstand/treetracker-reporting/commit/ad7c8108c80e8adc17a281dc827e75ca6fcfef8c))
+
 ## [1.2.5](https://github.com/Greenstand/treetracker-reporting/compare/v1.2.4...v1.2.5) (2022-06-30)
 
 
