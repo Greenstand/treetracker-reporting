@@ -1,3 +1,10 @@
+## [1.2.10](https://github.com/Greenstand/treetracker-reporting/compare/v1.2.9...v1.2.10) (2022-07-20)
+
+
+### Bug Fixes
+
+* gender query ([99e86c9](https://github.com/Greenstand/treetracker-reporting/commit/99e86c9121e82b43914a350cbfb6848d6a2c78a1))
+
 ## [1.2.9](https://github.com/Greenstand/treetracker-reporting/compare/v1.2.8...v1.2.9) (2022-07-12)
 
 
