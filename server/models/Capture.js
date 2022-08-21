@@ -165,7 +165,7 @@ class Capture {
       return {
         name: gender,
         number: count,
-        percentage: (+count / totalCount) * 100,
+        percentage: Math.round((+count / totalCount) * 100),
       };
     });
 
@@ -178,7 +178,7 @@ class Capture {
       trees_per_planters,
       last_updated_at,
       catchments,
-      gender_details: { gender_details },
+      gender_details: { total: totalGrowers, gender_details },
     };
   }
 
