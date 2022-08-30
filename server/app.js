@@ -1,5 +1,6 @@
 const express = require('express');
 const Sentry = require('@sentry/node');
+const cors = require('cors');
 const HttpError = require('./utils/HttpError');
 
 const router = require('./routes');
@@ -9,6 +10,8 @@ const { errorHandler, handlerWrapper } = require('./utils/utils');
 const app = express();
 
 Sentry.init({ dsn: sentryDSN });
+
+app.use(cors());
 
 /*
  * Check request

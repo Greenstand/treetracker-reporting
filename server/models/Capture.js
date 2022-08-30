@@ -163,9 +163,9 @@ class Capture {
 
     const gender_details = genderCount.map(({ gender, count }) => {
       return {
-        gender,
-        count,
-        percentage: (+count / totalCount) * 100,
+        name: gender,
+        number: count,
+        percentage: Math.round((+count / totalCount) * 100),
       };
     });
 
@@ -178,7 +178,7 @@ class Capture {
       trees_per_planters,
       last_updated_at,
       catchments,
-      gender_details,
+      gender_details: { total: totalGrowers, gender_details },
     };
   }
 

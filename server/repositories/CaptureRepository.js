@@ -267,6 +267,7 @@ class CaptureRepository extends BaseRepository {
           .from('capture_denormalized')
           .as('planters');
       })
+      // .where((builder) => whereBuilder(filter, builder))
       .groupBy('gender')
       .orderBy('count', 'desc');
 
