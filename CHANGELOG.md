@@ -1,3 +1,17 @@
+# [1.3.0](https://github.com/Greenstand/treetracker-reporting/compare/v1.2.10...v1.3.0) (2022-08-30)
+
+
+### Bug Fixes
+
+* add gender_details to expected fields for capture report ([66dae57](https://github.com/Greenstand/treetracker-reporting/commit/66dae57e34253748b4e5ac397082a13f9268acb2))
+* remove reporting. from table name in CaptureRepository ([214fdc9](https://github.com/Greenstand/treetracker-reporting/commit/214fdc99a31f3b77e8537511a1b8fc6a4add8055))
+
+
+### Features
+
+* add cors ([15ada60](https://github.com/Greenstand/treetracker-reporting/commit/15ada609d4fd32c5e85effa75596d77f34d0c003))
+* format gender data to match other report cards ([8186a79](https://github.com/Greenstand/treetracker-reporting/commit/8186a79c9a2d2b9f2a78bf663f5a7ba35b20688e))
+
 ## [1.2.10](https://github.com/Greenstand/treetracker-reporting/compare/v1.2.9...v1.2.10) (2022-07-20)
 
 
