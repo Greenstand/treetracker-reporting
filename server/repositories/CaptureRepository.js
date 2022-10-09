@@ -353,6 +353,40 @@ class CaptureRepository extends BaseRepository {
       genderCount,
     };
   }
+
+  async getApprovalRate(options = { limit: 20, offset: 0 }) {
+    const query = `
+      SELECT 
+        round(count(*) * 100.00 / cd2.count, 2) as capture_approval_rate,
+        cd1.planter_first_name,
+        cd1.planter_last_name,
+        cd1.planter_identifier
+      FROM capture_denormalized as cd1
+      JOIN (
+        SELECT
+          count(*) as count,
+          planter_first_name,
+          planter_last_name,
+          planter_identifier
+        FROM capture_denormalized
+        GROUP BY
+          planter_first_name, planter_last_name, planter_identifier  
+      ) as cd2
+      ON cd1.planter_first_name = cd2.planter_first_name
+      AND cd1.planter_last_name = cd2.planter_last_name
+      AND cd1.planter_identifier = cd2.planter_identifier
+      WHERE
+        approved = true
+      GROUP BY
+        cd1.planter_first_name, cd1.planter_last_name, cd1.planter_identifier, cd2.count
+      ORDER BY
+        capture_approval_rate DESC
+      LIMIT ${options.limit}
+      OFFSET ${options.offset}
+    `;
+    const object = await this._session.getDB().raw(query);
+    return object.rows;
+  }
 }
 
 module.exports = CaptureRepository;

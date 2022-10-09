@@ -29,6 +29,10 @@ class CaptureService {
     const filter = await this.clearCache(filterParam);
     return this._capture.getCaptureStatisticsSingleCard(filter, limitOptions);
   }
+
+  async getCaptureApprovalRateForGrowers(limitOptions) {
+    return this._capture.getCaptureApprovalRateForGrowers(limitOptions);
+  }
 }
 
 module.exports = CaptureService;

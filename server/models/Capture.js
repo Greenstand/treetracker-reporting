@@ -237,6 +237,14 @@ class Capture {
         ],
     };
   }
+
+  async getCaptureApprovalRateForGrowers(limitOptions) {
+    const captureApprovalRateForGrowers =
+      await this._captureRepository.getApprovalRate(limitOptions);
+    return {
+      captureApprovalRateForGrowers,
+    };
+  }
 }
 
 module.exports = Capture;

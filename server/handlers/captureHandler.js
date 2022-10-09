@@ -126,8 +126,19 @@ const captureStatisticsGetCard = async (req, res) => {
   });
 };
 
+const captureGrowerApprovalRate = async (req, res) => {
+  const captureService = new CaptureService();
+
+  const { limitOptions } = getFilterAndLimitOptions(req.query);
+  const result = await captureService.getCaptureApprovalRateForGrowers(
+    limitOptions,
+  );
+  res.send(result);
+};
+
 module.exports = {
   captureGet,
   captureStatisticsGet,
   captureStatisticsGetCard,
+  captureGrowerApprovalRate,
 };
