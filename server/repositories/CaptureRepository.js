@@ -50,6 +50,7 @@ class CaptureRepository extends BaseRepository {
   }
 
   async getStatistics(filter, options = { limit: 3, offset: 0 }) {
+    const knex = this._session.getDB();
     const whereBuilder = function (object, builder) {
       const result = builder;
       const filterObject = { ...object };
@@ -70,9 +71,21 @@ class CaptureRepository extends BaseRepository {
         );
         delete filterObject.capture_created_end_date;
       }
+      if (filterObject.planting_organization_uuid) {
+        const stakeholderRelationshipQuery = knex.raw(
+          `SELECT sg.stakeholder_id from stakeholder.getStakeholderChildren(?) sg 
+           join stakeholder.stakeholder ss on ss.id = sg.stakeholder_id 
+           where ss.type = 'Organization'`,
+          [filterObject.planting_organization_uuid],
+        );
+        result.whereIn(
+          'planting_organization_uuid',
+          stakeholderRelationshipQuery,
+        );
+        delete filterObject.planting_organization_uuid;
+      }
       result.where(filterObject);
     };
-    const knex = this._session.getDB();
 
     // total number of growers
     const totalGrowersQuery = knex(this._tableName)
@@ -267,7 +280,6 @@ class CaptureRepository extends BaseRepository {
           .from('capture_denormalized')
           .as('planters');
       })
-      // .where((builder) => whereBuilder(filter, builder))
       .groupBy('gender')
       .orderBy('count', 'desc');
 
