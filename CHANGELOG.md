@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/Greenstand/treetracker-reporting/compare/v1.4.0...v1.4.1) (2022-10-22)
+
+
+### Bug Fixes
+
+* update dev and test db secrets ([d7e993e](https://github.com/Greenstand/treetracker-reporting/commit/d7e993ec7e331bb667bacc7db792e3157a8e5c23))
+
 # [1.4.0](https://github.com/Greenstand/treetracker-reporting/compare/v1.3.0...v1.4.0) (2022-10-22)
 
 
