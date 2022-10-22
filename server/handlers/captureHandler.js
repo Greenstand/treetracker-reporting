@@ -48,6 +48,7 @@ const captureGetQuerySchema = Joi.object({
 const captureStatisticsQuerySchema = Joi.object({
   capture_created_start_date: Joi.date().iso(),
   capture_created_end_date: Joi.date().iso(),
+  planting_organization_uuid: Joi.string().uuid(),
   clear_cache: Joi.boolean(),
 }).unknown(false);
 
@@ -56,6 +57,7 @@ const captureStatisticsGetCardQuerySchema = Joi.object({
   offset: Joi.number().integer().greater(-1),
   capture_created_start_date: Joi.date().iso(),
   capture_created_end_date: Joi.date().iso(),
+  planting_organization_uuid: Joi.string().uuid(),
   clear_cache: Joi.boolean(),
   card_title: Joi.string()
     .valid(
