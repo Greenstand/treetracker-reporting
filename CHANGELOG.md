@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/Greenstand/treetracker-reporting/compare/v1.3.0...v1.4.0) (2022-10-22)
+
+
+### Features
+
+* filter statistics by planting organization ([278a192](https://github.com/Greenstand/treetracker-reporting/commit/278a1925f90ad4c448b45baa77b3a1418fa9bbfd))
+
 # [1.3.0](https://github.com/Greenstand/treetracker-reporting/compare/v1.2.10...v1.3.0) (2022-08-30)
 
 
