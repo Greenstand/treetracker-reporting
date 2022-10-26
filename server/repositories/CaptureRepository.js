@@ -51,6 +51,7 @@ class CaptureRepository extends BaseRepository {
 
   async getStatistics(filter, options = { limit: 3, offset: 0 }) {
     const knex = this._session.getDB();
+
     const whereBuilder = function (object, builder) {
       const result = builder;
       const filterObject = { ...object };
@@ -82,6 +83,40 @@ class CaptureRepository extends BaseRepository {
           'planting_organization_uuid',
           stakeholderRelationshipQuery,
         );
+        delete filterObject.planting_organization_uuid;
+      }
+      result.where(filterObject);
+    };
+
+    const cachmentWhereBuilder = function (object, builder) {
+      const result = builder;
+      const filterObject = { ...object };
+      delete filterObject.card_title;
+      if (filterObject.capture_created_start_date) {
+        result.where(
+          'capture_created_at',
+          '>=',
+          filterObject.capture_created_start_date,
+        );
+        delete filterObject.capture_created_start_date;
+      }
+      if (filterObject.capture_created_end_date) {
+        result.where(
+          'capture_created_at',
+          '<=',
+          filterObject.capture_created_end_date,
+        );
+        delete filterObject.capture_created_end_date;
+      }
+      if (filterObject.planting_organization_uuid) {
+        const regionRelationshipQuery = knex.raw(
+          `SELECT r.name from regions.region r where owner_id in 
+            (SELECT sg.stakeholder_id from stakeholder.getStakeholderChildren(?) sg 
+            join stakeholder.stakeholder ss on ss.id = sg.stakeholder_id 
+            where ss.type = 'Organization')`,
+          [filterObject.planting_organization_uuid],
+        );
+        result.whereIn('catchment', regionRelationshipQuery);
         delete filterObject.planting_organization_uuid;
       }
       result.where(filterObject);
@@ -253,14 +288,14 @@ class CaptureRepository extends BaseRepository {
       .from(function () {
         this.count('* as totalCatchment')
           .from('capture_denormalized')
-          .where((builder) => whereBuilder(filter, builder))
+          .where((builder) => cachmentWhereBuilder(filter, builder))
           .groupBy('catchment')
           .as('catchments');
       });
 
     const topCatchmentQuery = knex(this._tableName)
       .select(knex.raw('catchment, count(*) as count'))
-      .where((builder) => whereBuilder(filter, builder))
+      .where((builder) => cachmentWhereBuilder(filter, builder))
       .whereNotNull('catchment')
       .groupBy('catchment')
       .orderBy('count', 'desc')
