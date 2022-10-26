@@ -1,3 +1,10 @@
+## [1.4.2](https://github.com/Greenstand/treetracker-reporting/compare/v1.4.1...v1.4.2) (2022-10-26)
+
+
+### Bug Fixes
+
+* filter catchments by organization ([1b71553](https://github.com/Greenstand/treetracker-reporting/commit/1b715530f1148a677b3ac00947fdc4a82aab8b45))
+
 ## [1.4.1](https://github.com/Greenstand/treetracker-reporting/compare/v1.4.0...v1.4.1) (2022-10-22)
 
 
