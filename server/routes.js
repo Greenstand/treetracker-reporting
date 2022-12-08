@@ -8,7 +8,8 @@ const {
 } = require('./handlers/captureHandler');
 const { handlerWrapper } = require('./utils/utils');
 const {
-  treeGet
+  treeGet,
+  treeStatisticsGet
 } = require('./handlers/treeHandler');
 
 router.get('/capture', handlerWrapper(captureGet));
@@ -19,5 +20,6 @@ router.get(
 );
 
 router.get('/tree', handlerWrapper(treeGet));
+router.get('/tree/statistics', handlerWrapper(treeStatisticsGet))
 
 module.exports = router;

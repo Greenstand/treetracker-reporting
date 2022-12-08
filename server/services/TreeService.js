@@ -7,9 +7,23 @@ class TreeService {
         this._tree= new Tree(this._session);
     }
 
+    async clearCache(filterParam) {
+        const filter = { ...filterParam };
+        if (filter.clear_cache) {
+          await this._session.getDB().resetCache();
+        }
+        delete filter.clear_cache;
+        return filter;
+    }
+
     async getTrees(filter, limitOptions) {
         return this._tree.getTrees(filter, limitOptions);
       }
+
+    async getTreeStatistics(filterParam) {
+        const filter = await this.clearCache(filterParam);
+        return this._tree.getTreeStatistics(filter);
+    }
 }
 
 module.exports = TreeService;

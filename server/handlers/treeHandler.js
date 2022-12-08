@@ -32,6 +32,13 @@ const {
     order: Joi.string().valid('asc', 'desc').default('asc'),
   }).unknown(false);
 
+  const treeStatisticsQuerySchema = Joi.object({
+    tree_created_start_date: Joi.date().iso(),
+    tree_created_end_date: Joi.date().iso(),
+    planting_organization_uuid: Joi.string().uuid(),
+    clear_cache: Joi.boolean(),
+  }).unknown(false);
+
   const treeGet = async (req, res) => {
     const query = await treeGetQuerySchema.validateAsync(req.query, {
       abortEarly: false,
@@ -60,6 +67,18 @@ const {
     });
   };
 
+  const treeStatisticsGet = async (req, res) => {
+    await treeStatisticsQuerySchema.validateAsync(req.query, {
+      abortEarly: false,
+    });
+    const treeService = new TreeService();
+    const result = await treeService.getTreeStatistics(req.query);
+  
+    res.send(result);
+    res.end();
+  };
+
   module.exports = {
     treeGet,
+    treeStatisticsGet
   }
