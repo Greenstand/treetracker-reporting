@@ -187,6 +187,22 @@ class Tree {
       genderCount,
     });
   }
+
+  async getTreeStatisticsSingleCard(filter, limitOptions) {
+    const { card_title } = filter;
+
+    const result = await this._treeRepository.getStatistics(
+      filter,
+      limitOptions,
+    );
+
+    return {
+      card_information:
+        this.constructor.generateFormattedResponse(result)[card_title][
+          card_title
+        ],
+    };
+  }
 }
 
 module.exports = Tree;

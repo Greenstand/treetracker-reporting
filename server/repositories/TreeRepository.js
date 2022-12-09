@@ -51,6 +51,7 @@ class TreeRepository extends BaseRepository {
         const whereBuilder = function (object, builder) {
           const result = builder;
           const filterObject = { ...object };
+          delete filterObject.card_title;
           if (filterObject.tree_created_start_date) {
             result.where(
               'tree_created_at',

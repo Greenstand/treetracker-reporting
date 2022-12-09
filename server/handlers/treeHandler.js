@@ -39,6 +39,27 @@ const {
     clear_cache: Joi.boolean(),
   }).unknown(false);
 
+  const treeStatisticsGetCardQuerySchema = Joi.object({
+    limit: Joi.number().integer().greater(0).less(101),
+    offset: Joi.number().integer().greater(-1),
+    tree_created_start_date: Joi.date().iso(),
+    tree_created_end_date: Joi.date().iso(),
+    planting_organization_uuid: Joi.string().uuid(),
+    clear_cache: Joi.boolean(),
+    card_title: Joi.string()
+      .valid(
+        'planters',
+        'species',
+        'captures',
+        'unverified_captures',
+        'top_planters',
+        'trees_per_planters',
+        'catchments',
+        'gender_details',
+      )
+      .required(),
+  }).unknown(false);
+
   const treeGet = async (req, res) => {
     const query = await treeGetQuerySchema.validateAsync(req.query, {
       abortEarly: false,
@@ -78,7 +99,24 @@ const {
     res.end();
   };
 
+  const treeStatisticsGetCard = async (req, res) => {
+    await treeStatisticsGetCardQuerySchema .validateAsync(req.query, {
+      abortEarly: false,
+    });
+    const treeService = new TreeService();
+  
+    const { filter, limitOptions } = getFilterAndLimitOptions(req.query);
+    const { card_information = [] } =
+      await treeService.getTreeStatisticsSingleCard(filter, limitOptions);
+  
+    res.send({
+      card_information,
+      query: { ...limitOptions, ...filter },
+    });
+  };
+
   module.exports = {
     treeGet,
-    treeStatisticsGet
+    treeStatisticsGet,
+    treeStatisticsGetCard
   }

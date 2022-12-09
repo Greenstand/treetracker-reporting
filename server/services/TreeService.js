@@ -24,6 +24,11 @@ class TreeService {
         const filter = await this.clearCache(filterParam);
         return this._tree.getTreeStatistics(filter);
     }
+
+    async getTreeStatisticsSingleCard(filterParam, limitOptions) {
+        const filter = await this.clearCache(filterParam);
+        return this._tree.getTreeStatisticsSingleCard(filter, limitOptions);
+    }
 }
 
 module.exports = TreeService;
