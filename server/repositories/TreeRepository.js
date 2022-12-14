@@ -42,7 +42,7 @@ class TreeRepository extends BaseRepository {
             .getDB()(this._tableName)
             .count('*')
             .where((builder) => whereBuilder(filter, builder));
-          return { captures: await promise, count: +count[0].count };        
+          return { trees: await promise, count: +count[0].count };        
     }
 
     async getStatistics(filter, options = { limit: 3, offset: 0 }) {
@@ -135,11 +135,11 @@ class TreeRepository extends BaseRepository {
           .limit(options.limit)
           .offset(options.offset);
     
-        const averageCapturePerPlanterQuery = knex(this._tableName)
+        const averageTreePerPlanterQuery = knex(this._tableName)
           .avg('totalPlanters')
           .from(function () {
             this.count('* as totalPlanters')
-              .from('capture_denormalized')
+              .from('tree_denormalized')
               .where((builder) => whereBuilder(filter, builder))
               .groupBy(
                 'planter_first_name',
@@ -162,7 +162,7 @@ class TreeRepository extends BaseRepository {
           .limit(options.limit)
           .offset(options.offset);
     
-        const averageCapturesPerPlanterPerOrganizationQuery = knex(this._tableName)
+        const averageTreesPerPlanterPerOrganizationQuery = knex(this._tableName)
           .avg('averageTreesPerPlanters')
           .from(function () {
             this.avg('count as averageTreesPerPlanters')
@@ -187,12 +187,12 @@ class TreeRepository extends BaseRepository {
               .as('plantersAverage');
           });
     
-        const topAverageCapturesPerPlanterPerOrganizationQuery = knex(
+        const topAverageTreesPerPlanterPerOrganizationQuery = knex(
           this._tableName,
         )
           .select(
             knex.raw(
-              'planting_organization_name, avg(count) as averagecapturesperplanters',
+              'planting_organization_name, avg(count) as averagetreesperplanters',
             ),
           )
           .from(function () {
@@ -213,7 +213,7 @@ class TreeRepository extends BaseRepository {
               .as('plantersCount');
           })
           .groupBy('planting_organization_name', 'planting_organization_uuid')
-          .orderBy('averagecapturesperplanters', 'desc')
+          .orderBy('averagetreesperplanters', 'desc')
           .limit(options.limit)
           .offset(options.offset);
     
@@ -237,9 +237,9 @@ class TreeRepository extends BaseRepository {
               return { topPlanters };
             }
             case 'trees_per_planters': {
-              const topAverageCapturesPerPlanterPerOrganization =
-                await topAverageCapturesPerPlanterPerOrganizationQuery.cache();
-              return { topAverageCapturesPerPlanterPerOrganization };
+              const topAverageTreesPerPlanterPerOrganization =
+                await topAverageTreesPerPlanterPerOrganizationQuery.cache();
+              return { topAverageTreesPerPlanterPerOrganization };
             }
     
             default:
@@ -249,28 +249,28 @@ class TreeRepository extends BaseRepository {
     
         const totalGrowers = await totalGrowersQuery.cache();
         const topPlanters = await topPlantersQuery.cache();
-        const averageCapturePerPlanter =
-          await averageCapturePerPlanterQuery.cache();
+        const averageTreePerPlanter =
+          await averageTreePerPlanterQuery.cache();
         const topGrowersPerOrganizatino =
           await topGrowersPerOrganizatinoQuery.cache();
         const totalSpecies = await totalSpeciesQuery.cache();
         const topSpecies = await topSpeciesQuery.cache();
-        const averageCapturesPerPlanterPerOrganization =
-          await averageCapturesPerPlanterPerOrganizationQuery.cache();
-        const topAverageCapturesPerPlanterPerOrganization =
-          await topAverageCapturesPerPlanterPerOrganizationQuery.cache();
+        const averageTreesPerPlanterPerOrganization =
+          await averageTreesPerPlanterPerOrganizationQuery.cache();
+        const topAverageTreesPerPlanterPerOrganization =
+          await topAverageTreesPerPlanterPerOrganizationQuery.cache();
         const lastUpdated = await lastUpdatedQuery.cache();
     
         return {
           totalGrowers: +totalGrowers[0].totalPlanters,
           topPlanters,
-          averageCapturePerPlanter: +averageCapturePerPlanter[0].avg,
+          averageTreePerPlanter: +averageTreePerPlanter[0].avg,
           topGrowersPerOrganizatino,
           totalSpecies: +totalSpecies[0].totalSpecies,
           topSpecies,
-          averageCapturesPerPlanterPerOrganization:
-            averageCapturesPerPlanterPerOrganization[0].avg,
-          topAverageCapturesPerPlanterPerOrganization,
+          averageTreesPerPlanterPerOrganization:
+            averageTreesPerPlanterPerOrganization[0].avg,
+          topAverageTreesPerPlanterPerOrganization,
           lastUpdated: lastUpdated[0].max,
         };
       }

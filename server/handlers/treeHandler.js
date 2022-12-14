@@ -50,8 +50,8 @@ const {
       .valid(
         'planters',
         'species',
-        'captures',
-        'unverified_captures',
+        'trees',
+        'unverified_trees',
         'top_planters',
         'trees_per_planters',
         'catchments',
@@ -66,7 +66,7 @@ const {
     });
     const { filter, limitOptions } = getFilterAndLimitOptions(query);
     const treeService = new TreeService();
-    const { totalCount, captures } = await treeService.getTrees(
+    const { totalCount, trees } = await treeService.getTrees(
       filter,
       limitOptions,
     );
@@ -81,7 +81,7 @@ const {
     });
   
     res.send({
-      captures,
+      trees,
       links,
       totalCount,
       query: { ...limitOptions, ...filter },

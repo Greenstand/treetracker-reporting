@@ -39,8 +39,8 @@ class Tree {
         const filterCriteria = {
           ...filter,
           ...(filter?.since && { created_at: new Date(filter.since) }),
-          ...(filter?.since_capture_created_at && {
-            capture_created_at: new Date(filter.since_capture_created_at),
+          ...(filter?.since_tree_created_at && {
+            tree_created_at: new Date(filter.since_tree_created_at),
           }),
           ...(filter?.since_date_paid && {
             date_paid: new Date(filter.since_date_paid),
@@ -48,16 +48,16 @@ class Tree {
         };
     
         delete filterCriteria.since;
-        delete filterCriteria.since_capture_created_at;
+        delete filterCriteria.since_tree_created_at;
         delete filterCriteria.since_date_paid;
     
-        const { captures, count } = await this._treeRepository.getTrees(
+        const { trees, count } = await this._treeRepository.getTrees(
           filterCriteria,
           limitOptions,
         );
     
         return {
-          captures: captures.map((row) => {
+          trees: trees.map((row) => {
             return this.constructor.Tree({ ...row });
           }),
           totalCount: count,
@@ -73,8 +73,8 @@ class Tree {
         topSpecies = [],
         totalTrees = undefined,
         topTrees = [],
-        averageCapturesPerPlanterPerOrganization = undefined,
-        topAverageCapturesPerPlanterPerOrganization = [],
+        averageTreesPerPlanterPerOrganization = undefined,
+        topAverageTreesPerPlanterPerOrganization = [],
         lastUpdated = undefined,
         genderCount = [],
       }) {
@@ -114,12 +114,12 @@ class Tree {
         };
     
         const trees_per_planters = {
-          average: Math.round(averageCapturesPerPlanterPerOrganization),
-          trees_per_planters: topAverageCapturesPerPlanterPerOrganization.map(
-            ({ planting_organization_name, averagecapturesperplanters }) => {
+          average: Math.round(averageTreesPerPlanterPerOrganization),
+          trees_per_planters: topAverageTreesPerPlanterPerOrganization.map(
+            ({ planting_organization_name, averagetreesperplanters }) => {
               return {
                 name: planting_organization_name,
-                number: Math.round(averagecapturesperplanters),
+                number: Math.round(averagetreesperplanters),
               };
             },
           ),
