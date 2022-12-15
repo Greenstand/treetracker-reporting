@@ -1,3 +1,19 @@
+# [1.5.0](https://github.com/Greenstand/treetracker-reporting/compare/v1.4.2...v1.5.0) (2022-12-15)
+
+
+### Bug Fixes
+
+* minor updates ([1379577](https://github.com/Greenstand/treetracker-reporting/commit/137957782e9529280c5289872d26fb4eb888f23f))
+* rename capture to tree ([86e2824](https://github.com/Greenstand/treetracker-reporting/commit/86e2824af491a2e9d0c53e6229346ea8e01bb1f5))
+
+
+### Features
+
+* /tree/statistics route added ([8ddb8b3](https://github.com/Greenstand/treetracker-reporting/commit/8ddb8b355bd1b2d356127b3fa10d8a329067fbd8))
+* /tree/statistics/card route added ([9071d2c](https://github.com/Greenstand/treetracker-reporting/commit/9071d2ce0e5cf0f7dfe42ff2545b356ca1eb7616))
+* get tree endpoint ([d28a685](https://github.com/Greenstand/treetracker-reporting/commit/d28a6859577206304283f75cd3d2aa4eb69d19fb))
+* tree_denormalized - db-migrate ([71da8c0](https://github.com/Greenstand/treetracker-reporting/commit/71da8c08cfab613c6a66ddb4cc87ffbb53a7cf3d))
+
 ## [1.4.2](https://github.com/Greenstand/treetracker-reporting/compare/v1.4.1...v1.4.2) (2022-10-26)
 
 
