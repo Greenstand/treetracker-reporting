@@ -186,7 +186,7 @@ class TreeRepository extends BaseRepository {
     const topAverageTreesPerPlanterPerOrganizationQuery = knex(this._tableName)
       .select(
         knex.raw(
-          'planting_organization_name, avg(count) as averageTreesPerPlanters',
+          'planting_organization_name, avg(count) as averagetreesperplanters',
         ),
       )
       .from(function () {
@@ -207,7 +207,7 @@ class TreeRepository extends BaseRepository {
           .as('plantersCount');
       })
       .groupBy('planting_organization_name', 'planting_organization_uuid')
-      .orderBy('averageTreesPerPlanters', 'desc')
+      .orderBy('averagetreesperplanters', 'desc')
       .limit(options.limit)
       .offset(options.offset);
 
