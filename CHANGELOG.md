@@ -1,3 +1,10 @@
+## [1.5.2](https://github.com/Greenstand/treetracker-reporting/compare/v1.5.1...v1.5.2) (2022-12-18)
+
+
+### Bug Fixes
+
+* planter_last_name not null ([247b93b](https://github.com/Greenstand/treetracker-reporting/commit/247b93b71a5dbc157e48d43e03af496b12a57821))
+
 ## [1.5.1](https://github.com/Greenstand/treetracker-reporting/compare/v1.5.0...v1.5.1) (2022-12-18)
 
 
