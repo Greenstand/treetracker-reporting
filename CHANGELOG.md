@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/Greenstand/treetracker-reporting/compare/v1.5.0...v1.5.1) (2022-12-18)
+
+
+### Bug Fixes
+
+* trees/statistics endpoint unknown error ([646d89a](https://github.com/Greenstand/treetracker-reporting/commit/646d89a58070dbf310a0e6ca471a4c5e1b83dcd6))
+
 # [1.5.0](https://github.com/Greenstand/treetracker-reporting/compare/v1.4.2...v1.5.0) (2022-12-15)
 
 
