@@ -259,10 +259,6 @@ class TreeRepository extends BaseRepository {
     const lastUpdated = await lastUpdatedQuery.cache();
 
     const totalTrees = await totalTreesQuery.cache();
-    // // const totalTrees = await knex(this._tableName).count('id as totalTrees').cache();
-    // const {count:totalTrees} = await this._session
-    //   .getDB()(this._tableName)
-    //   .count('*').first();
 
     return {
       totalGrowers: +totalGrowers[0].totalPlanters,
