@@ -241,6 +241,10 @@ class TreeRepository extends BaseRepository {
       }
     }
 
+    const totalTreesQuery = knex(this._tableName)
+      .count()
+      .where((builder) => whereBuilder({ ...filter}, builder));
+
     const totalGrowers = await totalGrowersQuery.cache();
     const topPlanters = await topPlantersQuery.cache();
     const averageTreePerPlanter = await averageTreePerPlanterQuery.cache();
@@ -254,6 +258,8 @@ class TreeRepository extends BaseRepository {
       await topAverageTreesPerPlanterPerOrganizationQuery.cache();
     const lastUpdated = await lastUpdatedQuery.cache();
 
+    const totalTrees = await totalTreesQuery.cache();
+
     return {
       totalGrowers: +totalGrowers[0].totalPlanters,
       topPlanters,
@@ -265,6 +271,7 @@ class TreeRepository extends BaseRepository {
         averageTreesPerPlanterPerOrganization[0].avg,
       topAverageTreesPerPlanterPerOrganization,
       lastUpdated: lastUpdated[0].max,
+      totalTrees: +totalTrees[0].count,
     };
   }
 }
