@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/Greenstand/treetracker-reporting/compare/v1.5.2...v1.6.0) (2022-12-27)
+
+
+### Features
+
+* tree total ([e684688](https://github.com/Greenstand/treetracker-reporting/commit/e684688a45f862ae8d94ab20030934407bc5adb6))
+
 ## [1.5.2](https://github.com/Greenstand/treetracker-reporting/compare/v1.5.1...v1.5.2) (2022-12-18)
 
 
