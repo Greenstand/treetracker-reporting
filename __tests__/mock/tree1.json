@@ -1,0 +1,13 @@
+{
+    "tree_uuid": "141a86dd-b15d-42e2-b211-3d14a26d3ce7",
+    "tree_created_at": "2022-12-03",
+    "planter_first_name": "John",
+    "planter_last_name": "Doe",
+    "planter_identifier": "plant1",
+    "lat": "6.035670",
+    "lon": "80.298000",
+    "note": "Lorem ipsum dolor sit amet",
+    "planting_organization_uuid": "29cd3141-afbf-412b-8b0d-e37b56e5665d",
+    "planting_organization_name": "Greenstand",
+    "species": "species1"
+}

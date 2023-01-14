@@ -72,7 +72,6 @@ class Tree {
     averageTreesPerPlanterPerOrganization = undefined,
     topAverageTreesPerPlanterPerOrganization = [],
     lastUpdated = undefined,
-    genderCount = [],
   }) {
     const planters = {
       total: totalGrowers,
@@ -112,26 +111,16 @@ class Tree {
     const trees_per_planters = {
       average: Math.round(averageTreesPerPlanterPerOrganization),
       trees_per_planters: topAverageTreesPerPlanterPerOrganization.map(
-        ({ planting_organization_name, averageTreesPerPlanters }) => {
+        ({ planting_organization_name, averagetreesperplanters }) => {
           return {
             name: planting_organization_name,
-            number: Math.round(averageTreesPerPlanters),
+            number: Math.round(averagetreesperplanters),
           };
         },
       ),
     };
 
     const last_updated_at = lastUpdated;
-
-    const totalCount = genderCount.reduce((a, b) => a + +b.count, 0);
-
-    const gender_details = genderCount.map(({ gender, count }) => {
-      return {
-        name: gender,
-        number: count,
-        percentage: Math.round((+count / totalCount) * 100),
-      };
-    });
 
     return {
       planters,
@@ -140,14 +129,13 @@ class Tree {
       top_planters,
       trees_per_planters,
       last_updated_at,
-      gender_details: { total: totalGrowers, gender_details },
     };
   }
 
   async getTreeStatistics(filter) {
     const {
       topPlanters,
-      averageTreePerPlanter,
+      averageTreesPerPlanter,
       totalGrowers,
       topGrowersPerOrganizatino,
       totalSpecies,
@@ -157,16 +145,15 @@ class Tree {
       totalUnverifiedTrees,
       topUnverifiedTrees,
       averageTreesPerPlanterPerOrganization,
-      topAverageTreeesPerPlanterPerOrganization,
+      topAverageTreesPerPlanterPerOrganization,
       lastUpdated,
       averageCatchment,
       topCatchment,
-      genderCount,
     } = await this._treeRepository.getStatistics(filter);
 
     return this.constructor.generateFormattedResponse({
       topPlanters,
-      averageTreePerPlanter,
+      averageTreesPerPlanter,
       totalGrowers,
       topGrowersPerOrganizatino,
       totalSpecies,
@@ -176,11 +163,10 @@ class Tree {
       totalUnverifiedTrees,
       topUnverifiedTrees,
       averageTreesPerPlanterPerOrganization,
-      topAverageTreeesPerPlanterPerOrganization,
+      topAverageTreesPerPlanterPerOrganization,
       lastUpdated,
       averageCatchment,
       topCatchment,
-      genderCount,
     });
   }
 
