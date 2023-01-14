@@ -131,7 +131,7 @@ class TreeRepository extends BaseRepository {
       .limit(options.limit)
       .offset(options.offset);
 
-    const averageTreePerPlanterQuery = knex(this._tableName)
+    const averageTreesPerPlanterQuery = knex(this._tableName)
       .avg('totalPlanters')
       .from(function () {
         this.count('* as totalPlanters')
@@ -211,6 +211,18 @@ class TreeRepository extends BaseRepository {
       .limit(options.limit)
       .offset(options.offset);
 
+    const totalTreesQuery = knex(this._tableName)
+      .count()
+      .where((builder) => whereBuilder({ ...filter }, builder));
+
+    const topTreesQuery = knex(this._tableName)
+      .select(knex.raw('planting_organization_name, count(*) as count'))
+      .where((builder) => whereBuilder({ ...filter }, builder))
+      .groupBy('planting_organization_uuid', 'planting_organization_name')
+      .orderBy('count', 'desc')
+      .limit(options.limit)
+      .offset(options.offset);
+
     const lastUpdatedQuery = knex(this._tableName).max('created_at');
 
     if (filter?.card_title) {
@@ -243,7 +255,7 @@ class TreeRepository extends BaseRepository {
 
     const totalGrowers = await totalGrowersQuery.cache();
     const topPlanters = await topPlantersQuery.cache();
-    const averageTreePerPlanter = await averageTreePerPlanterQuery.cache();
+    const averageTreesPerPlanter = await averageTreesPerPlanterQuery.cache();
     const topGrowersPerOrganizatino =
       await topGrowersPerOrganizatinoQuery.cache();
     const totalSpecies = await totalSpeciesQuery.cache();
@@ -253,11 +265,13 @@ class TreeRepository extends BaseRepository {
     const topAverageTreesPerPlanterPerOrganization =
       await topAverageTreesPerPlanterPerOrganizationQuery.cache();
     const lastUpdated = await lastUpdatedQuery.cache();
+    const totalTrees = await totalTreesQuery.cache();
+    const topTrees = await topTreesQuery.cache();
 
     return {
       totalGrowers: +totalGrowers[0].totalPlanters,
       topPlanters,
-      averageTreePerPlanter: +averageTreePerPlanter[0].avg,
+      averageTreesPerPlanter: +averageTreesPerPlanter[0].avg,
       topGrowersPerOrganizatino,
       totalSpecies: +totalSpecies[0].totalSpecies,
       topSpecies,
@@ -265,6 +279,8 @@ class TreeRepository extends BaseRepository {
         averageTreesPerPlanterPerOrganization[0].avg,
       topAverageTreesPerPlanterPerOrganization,
       lastUpdated: lastUpdated[0].max,
+      totalTrees: +totalTrees[0].count,
+      topTrees,
     };
   }
 }

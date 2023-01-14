@@ -152,12 +152,9 @@ describe('tree_denormalized', () => {
         'gender_details',
       ]);
 
-      console.log('================');
-      console.log(result.body);
-      console.log('================');
       expect(result.body.planters).to.have.keys(['total', 'planters']);
       expect(result.body.species).to.have.keys(['total', 'species']);
-      expect(result.body.trees).to.have.keys(['trees']);
+      expect(result.body.trees).to.have.keys(['total', 'trees']);
       expect(result.body.top_planters).to.have.keys([
         'average',
         'top_planters',
