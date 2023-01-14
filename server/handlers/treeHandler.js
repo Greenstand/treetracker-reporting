@@ -47,16 +47,7 @@ const treeStatisticsGetCardQuerySchema = Joi.object({
   planting_organization_uuid: Joi.string().uuid(),
   clear_cache: Joi.boolean(),
   card_title: Joi.string()
-    .valid(
-      'planters',
-      'species',
-      'trees',
-      'unverified_trees',
-      'top_planters',
-      'trees_per_planters',
-      'catchments',
-      'gender_details',
-    )
+    .valid('planters', 'species', 'trees', 'top_planters', 'trees_per_planters')
     .required(),
 }).unknown(false);
 

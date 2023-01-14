@@ -139,7 +139,7 @@ describe('tree_denormalized', () => {
       });
     });
 
-    it.only('Should get trees statistics successfully', async () => {
+    it('Should get trees statistics successfully', async () => {
       const result = await request(app).get('/tree/statistics').expect(200);
 
       expect(result.body).to.have.keys([
@@ -149,7 +149,6 @@ describe('tree_denormalized', () => {
         'top_planters',
         'trees_per_planters',
         'last_updated_at',
-        'gender_details',
       ]);
 
       expect(result.body.planters).to.have.keys(['total', 'planters']);
@@ -173,7 +172,7 @@ describe('tree_denormalized', () => {
         })
         .expect(422);
       expect(result.body.message).to.eql(
-        '"card_title" must be one of [planters, species, trees, unverified_trees, top_planters, trees_per_planters, catchments, gender_details]',
+        `"card_title" must be one of [planters, species, trees, top_planters, trees_per_planters]`,
       );
     });
 

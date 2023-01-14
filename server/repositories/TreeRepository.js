@@ -248,6 +248,11 @@ class TreeRepository extends BaseRepository {
           return { topAverageTreesPerPlanterPerOrganization };
         }
 
+        case 'trees': {
+          const topTrees = await topTreesQuery.cache();
+          return { topTrees };
+        }
+
         default:
           break;
       }
