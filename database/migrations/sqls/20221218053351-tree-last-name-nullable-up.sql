@@ -1,0 +1,1 @@
+ALTER TABLE tree_denormalized ALTER COLUMN planter_last_name DROP NOT NULL

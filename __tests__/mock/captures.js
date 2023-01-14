@@ -1,5 +1,4 @@
 const { v4: uuid } = require('uuid');
-const knex = require('../server/infra/database/knex');
 
 const planting_organization_uuid = uuid();
 
@@ -23,6 +22,7 @@ const captureOne = Object.freeze({
   token_id: uuid(),
   catchment: 'freetown',
 });
+
 const captureTwo = Object.freeze({
   capture_uuid: uuid(),
   planter_first_name: 'b',
@@ -43,6 +43,7 @@ const captureTwo = Object.freeze({
   token_id: uuid(),
   catchment: 'freetown',
 });
+
 const captureThree = Object.freeze({
   capture_uuid: uuid(),
   planter_first_name: 'c',
@@ -63,6 +64,7 @@ const captureThree = Object.freeze({
   token_id: uuid(),
   catchment: 'freetown',
 });
+
 const captureFour = Object.freeze({
   capture_uuid: uuid(),
   planter_first_name: 'c',
@@ -84,19 +86,9 @@ const captureFour = Object.freeze({
   catchment: 'freetown',
 });
 
-before(async () => {
-  await knex('capture_denormalized').insert([
-    captureOne,
-    captureTwo,
-    captureThree,
-    captureFour,
-  ]);
-});
-
-after(async () => {
-  await knex('capture_denormalized').del();
-});
-
 module.exports = {
   captureOne,
+  captureTwo,
+  captureThree,
+  captureFour,
 };

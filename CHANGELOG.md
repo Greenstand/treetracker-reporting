@@ -1,3 +1,79 @@
+# [1.7.0](https://github.com/Greenstand/treetracker-reporting/compare/v1.6.0...v1.7.0) (2023-01-14)
+
+
+### Bug Fixes
+
+* add support for node 18 ([a1a1bdb](https://github.com/Greenstand/treetracker-reporting/commit/a1a1bdbf35707b3b4002242227337e5f91991522))
+* add support for node 18 ([434d216](https://github.com/Greenstand/treetracker-reporting/commit/434d216979c6b4803e3fa5798c04d981d2f6d5c2))
+* minor fixes ([0f8e25b](https://github.com/Greenstand/treetracker-reporting/commit/0f8e25b530fdfe2e29e010e4681c733bee318c52))
+* resolve merge conflict ([f307ace](https://github.com/Greenstand/treetracker-reporting/commit/f307ace12e3be8065abec69ac3e15ce40d8394e6))
+* update dev workflow to node 18 ([ed9c0b9](https://github.com/Greenstand/treetracker-reporting/commit/ed9c0b987740cadf7fa21719bb83fe0737ba11c8))
+* update tree card titles ([f22c9b6](https://github.com/Greenstand/treetracker-reporting/commit/f22c9b61a32372603dc66fa1f8409bc437a48317))
+
+
+### Features
+
+* sync package-lock.json ([1f6583b](https://github.com/Greenstand/treetracker-reporting/commit/1f6583b0f5c109e0405788b439b30523ccf5b5c0))
+* test added for tree endpoint ([3805799](https://github.com/Greenstand/treetracker-reporting/commit/3805799b6aefa79d6d1ff36c86b5703748ea7cc9))
+
+# [1.6.0](https://github.com/Greenstand/treetracker-reporting/compare/v1.5.2...v1.6.0) (2022-12-27)
+
+
+### Features
+
+* tree total ([e684688](https://github.com/Greenstand/treetracker-reporting/commit/e684688a45f862ae8d94ab20030934407bc5adb6))
+
+## [1.5.2](https://github.com/Greenstand/treetracker-reporting/compare/v1.5.1...v1.5.2) (2022-12-18)
+
+
+### Bug Fixes
+
+* planter_last_name not null ([247b93b](https://github.com/Greenstand/treetracker-reporting/commit/247b93b71a5dbc157e48d43e03af496b12a57821))
+
+## [1.5.1](https://github.com/Greenstand/treetracker-reporting/compare/v1.5.0...v1.5.1) (2022-12-18)
+
+
+### Bug Fixes
+
+* trees/statistics endpoint unknown error ([646d89a](https://github.com/Greenstand/treetracker-reporting/commit/646d89a58070dbf310a0e6ca471a4c5e1b83dcd6))
+
+# [1.5.0](https://github.com/Greenstand/treetracker-reporting/compare/v1.4.2...v1.5.0) (2022-12-15)
+
+
+### Bug Fixes
+
+* minor updates ([1379577](https://github.com/Greenstand/treetracker-reporting/commit/137957782e9529280c5289872d26fb4eb888f23f))
+* rename capture to tree ([86e2824](https://github.com/Greenstand/treetracker-reporting/commit/86e2824af491a2e9d0c53e6229346ea8e01bb1f5))
+
+
+### Features
+
+* /tree/statistics route added ([8ddb8b3](https://github.com/Greenstand/treetracker-reporting/commit/8ddb8b355bd1b2d356127b3fa10d8a329067fbd8))
+* /tree/statistics/card route added ([9071d2c](https://github.com/Greenstand/treetracker-reporting/commit/9071d2ce0e5cf0f7dfe42ff2545b356ca1eb7616))
+* get tree endpoint ([d28a685](https://github.com/Greenstand/treetracker-reporting/commit/d28a6859577206304283f75cd3d2aa4eb69d19fb))
+* tree_denormalized - db-migrate ([71da8c0](https://github.com/Greenstand/treetracker-reporting/commit/71da8c08cfab613c6a66ddb4cc87ffbb53a7cf3d))
+
+## [1.4.2](https://github.com/Greenstand/treetracker-reporting/compare/v1.4.1...v1.4.2) (2022-10-26)
+
+
+### Bug Fixes
+
+* filter catchments by organization ([1b71553](https://github.com/Greenstand/treetracker-reporting/commit/1b715530f1148a677b3ac00947fdc4a82aab8b45))
+
+## [1.4.1](https://github.com/Greenstand/treetracker-reporting/compare/v1.4.0...v1.4.1) (2022-10-22)
+
+
+### Bug Fixes
+
+* update dev and test db secrets ([d7e993e](https://github.com/Greenstand/treetracker-reporting/commit/d7e993ec7e331bb667bacc7db792e3157a8e5c23))
+
+# [1.4.0](https://github.com/Greenstand/treetracker-reporting/compare/v1.3.0...v1.4.0) (2022-10-22)
+
+
+### Features
+
+* filter statistics by planting organization ([278a192](https://github.com/Greenstand/treetracker-reporting/commit/278a1925f90ad4c448b45baa77b3a1418fa9bbfd))
+
 # [1.3.0](https://github.com/Greenstand/treetracker-reporting/compare/v1.2.10...v1.3.0) (2022-08-30)
 
 
