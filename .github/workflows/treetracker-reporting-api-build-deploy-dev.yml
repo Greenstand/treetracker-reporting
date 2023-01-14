@@ -5,7 +5,6 @@ on:
     branches:
       - main
 
-
 env:
   project-directory: ./
 
@@ -20,38 +19,38 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-            ref: ${{ github.event.inputs.git-tag }}
-      - name: Use Node.js 16.x
+          ref: ${{ github.event.inputs.git-tag }}
+      - name: Use Node.js 18.x # due to semantic release
         uses: actions/setup-node@v1
         with:
-          node-version: '16.x'
-          
+          node-version: '18.x'
+
       - name: npm clean install
         run: npm ci
         working-directory: ${{ env.project-directory }}
-        
+
       - run: npm i -g semantic-release @semantic-release/{git,exec,changelog}
-      
+
       - run: semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
+
       - name: get-npm-version
         id: package-version
         uses: martinbeentjes/npm-get-version-action@master
-        
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
-        
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
-        
+
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-          
+
       - name: Build snapshot and push on merge
         id: docker_build_release
         uses: docker/build-push-action@v2
@@ -60,7 +59,7 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: greenstand/${{ github.event.repository.name }}:${{ steps.package-version.outputs.current-version }}
-          
+
       - id: export_bumped_version
         run: |
           export BUMPED_VERSION="${{ steps.package-version.outputs.current-version }}"
