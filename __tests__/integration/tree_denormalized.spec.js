@@ -139,7 +139,7 @@ describe('tree_denormalized', () => {
       });
     });
 
-    it('Should get trees statistics successfully', async () => {
+    it.only('Should get trees statistics successfully', async () => {
       const result = await request(app).get('/tree/statistics').expect(200);
 
       expect(result.body).to.have.keys([
@@ -152,6 +152,9 @@ describe('tree_denormalized', () => {
         'gender_details',
       ]);
 
+      console.log('================');
+      console.log(result.body);
+      console.log('================');
       expect(result.body.planters).to.have.keys(['total', 'planters']);
       expect(result.body.species).to.have.keys(['total', 'species']);
       expect(result.body.trees).to.have.keys(['trees']);
