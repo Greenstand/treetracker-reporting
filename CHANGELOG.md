@@ -1,3 +1,21 @@
+# [1.7.0](https://github.com/Greenstand/treetracker-reporting/compare/v1.6.0...v1.7.0) (2023-01-14)
+
+
+### Bug Fixes
+
+* add support for node 18 ([a1a1bdb](https://github.com/Greenstand/treetracker-reporting/commit/a1a1bdbf35707b3b4002242227337e5f91991522))
+* add support for node 18 ([434d216](https://github.com/Greenstand/treetracker-reporting/commit/434d216979c6b4803e3fa5798c04d981d2f6d5c2))
+* minor fixes ([0f8e25b](https://github.com/Greenstand/treetracker-reporting/commit/0f8e25b530fdfe2e29e010e4681c733bee318c52))
+* resolve merge conflict ([f307ace](https://github.com/Greenstand/treetracker-reporting/commit/f307ace12e3be8065abec69ac3e15ce40d8394e6))
+* update dev workflow to node 18 ([ed9c0b9](https://github.com/Greenstand/treetracker-reporting/commit/ed9c0b987740cadf7fa21719bb83fe0737ba11c8))
+* update tree card titles ([f22c9b6](https://github.com/Greenstand/treetracker-reporting/commit/f22c9b61a32372603dc66fa1f8409bc437a48317))
+
+
+### Features
+
+* sync package-lock.json ([1f6583b](https://github.com/Greenstand/treetracker-reporting/commit/1f6583b0f5c109e0405788b439b30523ccf5b5c0))
+* test added for tree endpoint ([3805799](https://github.com/Greenstand/treetracker-reporting/commit/3805799b6aefa79d6d1ff36c86b5703748ea7cc9))
+
 # [1.6.0](https://github.com/Greenstand/treetracker-reporting/compare/v1.5.2...v1.6.0) (2022-12-27)
 
 
