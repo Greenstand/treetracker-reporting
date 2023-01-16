@@ -93,6 +93,7 @@ class Capture {
     averageCatchment = undefined,
     topCatchment = [],
     genderCount = [],
+    approvalRates,
   }) {
     const planters = {
       total: totalGrowers,
@@ -179,6 +180,7 @@ class Capture {
       last_updated_at,
       catchments,
       gender_details: { total: totalGrowers, gender_details },
+      approval_rates: approvalRates,
     };
   }
 
@@ -200,6 +202,7 @@ class Capture {
       averageCatchment,
       topCatchment,
       genderCount,
+      approvalRates,
     } = await this._captureRepository.getStatistics(filter);
 
     return this.constructor.generateFormattedResponse({
@@ -219,6 +222,7 @@ class Capture {
       averageCatchment,
       topCatchment,
       genderCount,
+      approvalRates,
     });
   }
 
@@ -235,14 +239,6 @@ class Capture {
         this.constructor.generateFormattedResponse(result)[card_title][
           card_title
         ],
-    };
-  }
-
-  async getCaptureApprovalRateForGrowers(limitOptions) {
-    const captureApprovalRateForGrowers =
-      await this._captureRepository.getApprovalRate(limitOptions);
-    return {
-      captureApprovalRateForGrowers,
     };
   }
 }

@@ -5,13 +5,12 @@ const {
   captureGet,
   captureStatisticsGet,
   captureStatisticsGetCard,
-  captureGrowerApprovalRate,
 } = require('./handlers/captureHandler');
 const { handlerWrapper } = require('./utils/utils');
 const {
   treeGet,
   treeStatisticsGet,
-  treeStatisticsGetCard
+  treeStatisticsGetCard,
 } = require('./handlers/treeHandler');
 
 router.get('/capture', handlerWrapper(captureGet));
@@ -20,7 +19,6 @@ router.get(
   '/capture/statistics/card',
   handlerWrapper(captureStatisticsGetCard),
 );
-router.get('/capture/approvalRate', handlerWrapper(captureGrowerApprovalRate));
 
 router.get('/tree', handlerWrapper(treeGet));
 router.get('/tree/statistics', handlerWrapper(treeStatisticsGet));

@@ -358,7 +358,6 @@ describe('capture_denormalized', () => {
         .set('Accept', 'application/json')
         .expect(200)
         .end(function (err, res) {
-          // console.log(res.body);
           if (err) return done(err);
           expect(res.body).to.have.keys([
             'planters',
@@ -370,6 +369,7 @@ describe('capture_denormalized', () => {
             'last_updated_at',
             'catchments',
             'gender_details',
+            'approval_rates',
           ]);
 
           expect(res.body.last_updated_at).eq(captureOne.created_at);
@@ -426,7 +426,7 @@ describe('capture_denormalized', () => {
           .end(function (err, res) {
             if (err) return done(err);
             expect(res.body.message).to.eql(
-              '"card_title" must be one of [planters, species, captures, unverified_captures, top_planters, trees_per_planters, catchments, gender_details]',
+              '"card_title" must be one of [planters, species, captures, unverified_captures, top_planters, trees_per_planters, catchments, gender_details, approval_rates]',
             );
             return done();
           });
