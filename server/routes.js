@@ -10,7 +10,7 @@ const { handlerWrapper } = require('./utils/utils');
 const {
   treeGet,
   treeStatisticsGet,
-  treeStatisticsGetCard
+  treeStatisticsGetCard,
 } = require('./handlers/treeHandler');
 
 router.get('/capture', handlerWrapper(captureGet));

@@ -69,6 +69,7 @@ const captureStatisticsGetCardQuerySchema = Joi.object({
       'trees_per_planters',
       'catchments',
       'gender_details',
+      'approval_rates',
     )
     .required(),
 }).unknown(false);

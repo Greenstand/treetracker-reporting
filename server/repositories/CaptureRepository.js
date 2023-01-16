@@ -318,6 +318,47 @@ class CaptureRepository extends BaseRepository {
       .groupBy('gender')
       .orderBy('count', 'desc');
 
+    const approvalRateQuery = knex(`${this._tableName} as cd1`)
+      .select(
+        knex.raw(`
+          round(count(*) * 100.00 / cd2.count, 1) as capture_approval_rate,
+          cd1.planter_identifier
+      `),
+      )
+      .join(
+        knex
+          .select(
+            knex.raw(`
+              count(*) as count,
+              planter_first_name,
+              planter_last_name,
+              planter_identifier
+            `),
+          )
+          .from(this._tableName)
+          .groupBy(
+            'planter_first_name',
+            'planter_last_name',
+            'planter_identifier',
+          )
+          .as('cd2'),
+        function () {
+          this.on('cd1.planter_first_name', '=', 'cd2.planter_first_name')
+            .andOn('cd1.planter_last_name', '=', 'cd2.planter_last_name')
+            .andOn('cd1.planter_identifier', '=', 'cd2.planter_identifier');
+        },
+      )
+      .where((builder) => whereBuilder({ ...filter, approved: true }, builder))
+      .groupBy(
+        'cd1.planter_first_name',
+        'cd1.planter_last_name',
+        'cd1.planter_identifier',
+        'cd2.count',
+      )
+      .orderBy('capture_approval_rate', 'desc')
+      .limit(options.limit)
+      .offset(options.offset);
+
     if (filter?.card_title) {
       const { card_title } = filter;
 
@@ -353,6 +394,10 @@ class CaptureRepository extends BaseRepository {
           const topCatchment = await topCatchmentQuery.cache();
           return { topCatchment };
         }
+        case 'approval_rates': {
+          const approvalRates = await approvalRateQuery.cache();
+          return { approvalRates };
+        }
 
         default:
           break;
@@ -379,6 +424,7 @@ class CaptureRepository extends BaseRepository {
     const averageCatchment = await averageCatchmentQuery.cache();
     const topCatchment = await topCatchmentQuery.cache();
     const genderCount = await genderCountQuery.cache();
+    const approvalRates = await approvalRateQuery.cache();
 
     return {
       totalGrowers: +totalGrowers[0].totalPlanters,
@@ -398,6 +444,7 @@ class CaptureRepository extends BaseRepository {
       averageCatchment: +averageCatchment[0].avg,
       topCatchment,
       genderCount,
+      approvalRates,
     };
   }
 }
