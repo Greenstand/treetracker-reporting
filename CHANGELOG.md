@@ -1,3 +1,11 @@
+# [1.8.0](https://github.com/Greenstand/treetracker-reporting/compare/v1.7.0...v1.8.0) (2023-01-16)
+
+
+### Features
+
+* Added capture approval rate for growers ([2abd28f](https://github.com/Greenstand/treetracker-reporting/commit/2abd28f965fac0fbe58aefc82a8f92140d4c44d8)), closes [#51](https://github.com/Greenstand/treetracker-reporting/issues/51)
+* approval rates card ([1c99ca1](https://github.com/Greenstand/treetracker-reporting/commit/1c99ca175b1c137e498b73aace08bb4ac87225b3))
+
 # [1.7.0](https://github.com/Greenstand/treetracker-reporting/compare/v1.6.0...v1.7.0) (2023-01-14)
 
 
