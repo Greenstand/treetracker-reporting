@@ -464,11 +464,11 @@ describe('capture_denormalized', () => {
           });
       });
 
-      it(`Should raise validation error with error code 422 -- 'limit' query parameter should be less than 101  `, function (done) {
+      it(`Should raise validation error with error code 422 -- 'limit' query parameter should be less than 1001  `, function (done) {
         request(server)
           .get(`/capture/statistics/card`)
           .query({
-            limit: 101,
+            limit: 1001,
             card_title: 'planters',
           })
           .set('Accept', 'application/json')
