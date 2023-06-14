@@ -1,3 +1,10 @@
+## [1.8.2](https://github.com/Greenstand/treetracker-reporting/compare/v1.8.1...v1.8.2) (2023-06-14)
+
+
+### Bug Fixes
+
+* add capture approval information ([258f860](https://github.com/Greenstand/treetracker-reporting/commit/258f8604c6966bfe353732bd90e042fe00dea4a4))
+
 ## [1.8.1](https://github.com/Greenstand/treetracker-reporting/compare/v1.8.0...v1.8.1) (2023-06-14)
 
 
