@@ -53,7 +53,7 @@ const captureStatisticsQuerySchema = Joi.object({
 }).unknown(false);
 
 const captureStatisticsGetCardQuerySchema = Joi.object({
-  limit: Joi.number().integer().greater(0).less(101),
+  limit: Joi.number().integer().greater(0).less(1001),
   offset: Joi.number().integer().greater(-1),
   capture_created_start_date: Joi.date().iso(),
   capture_created_end_date: Joi.date().iso(),

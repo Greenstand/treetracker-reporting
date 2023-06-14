@@ -321,6 +321,8 @@ class CaptureRepository extends BaseRepository {
     const approvalRateQuery = knex(`${this._tableName} as cd1`)
       .select(
         knex.raw(`
+          count(*) as approved_captures,
+          cd2.count as total_captures,
           round(count(*) * 100.00 / cd2.count, 1) as capture_approval_rate,
           cd1.planter_identifier
       `),
@@ -355,7 +357,7 @@ class CaptureRepository extends BaseRepository {
         'cd1.planter_identifier',
         'cd2.count',
       )
-      .orderBy('capture_approval_rate', 'desc')
+      .orderBy('capture_approval_rate', 'asc')
       .limit(options.limit)
       .offset(options.offset);
 
