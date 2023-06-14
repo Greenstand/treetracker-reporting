@@ -1,3 +1,10 @@
+## [1.8.1](https://github.com/Greenstand/treetracker-reporting/compare/v1.8.0...v1.8.1) (2023-06-14)
+
+
+### Bug Fixes
+
+* approval rates ([469d0fc](https://github.com/Greenstand/treetracker-reporting/commit/469d0fc118385a6b6cf695dbbec121f6fab18022))
+
 # [1.8.0](https://github.com/Greenstand/treetracker-reporting/compare/v1.7.0...v1.8.0) (2023-01-16)
 
 
