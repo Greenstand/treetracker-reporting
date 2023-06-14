@@ -475,7 +475,7 @@ describe('capture_denormalized', () => {
           .expect(422)
           .end(function (err, res) {
             if (err) return done(err);
-            expect(res.body.message).to.eql('"limit" must be less than 101');
+            expect(res.body.message).to.eql('"limit" must be less than 1001');
             return done();
           });
       });
