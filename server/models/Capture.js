@@ -180,7 +180,7 @@ class Capture {
       last_updated_at,
       catchments,
       gender_details: { total: totalGrowers, gender_details },
-      approval_rates: approvalRates,
+      approval_rates: { approval_rates: approvalRates },
     };
   }
 
