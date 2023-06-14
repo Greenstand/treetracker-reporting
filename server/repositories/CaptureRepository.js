@@ -321,13 +321,14 @@ class CaptureRepository extends BaseRepository {
     const approvalRateQuery = knex(`${this._tableName} as cd1`)
       .select(
         knex.raw(`
-          count(*) as approved_captures,
-          cd2.count as total_captures,
-          round(count(*) * 100.00 / cd2.count, 1) as capture_approval_rate,
+          count(*) as total_captures,
+          COALESCE (cd2.count, 0) as approved_captures,
+          count(*) - COALESCE (cd2.count, 0) as not_approved_captures,
+          round(COALESCE (cd2.count, 0) * 100.00 / count(*), 1) as capture_approval_rate,
           cd1.planter_identifier
       `),
       )
-      .join(
+      .leftJoin(
         knex
           .select(
             knex.raw(`
@@ -338,6 +339,7 @@ class CaptureRepository extends BaseRepository {
             `),
           )
           .from(this._tableName)
+          .where((builder) => whereBuilder({ approved: true }, builder))
           .groupBy(
             'planter_first_name',
             'planter_last_name',
@@ -350,7 +352,7 @@ class CaptureRepository extends BaseRepository {
             .andOn('cd1.planter_identifier', '=', 'cd2.planter_identifier');
         },
       )
-      .where((builder) => whereBuilder({ ...filter, approved: true }, builder))
+      .where((builder) => whereBuilder({ ...filter }, builder))
       .groupBy(
         'cd1.planter_first_name',
         'cd1.planter_last_name',
