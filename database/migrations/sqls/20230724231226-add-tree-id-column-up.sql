@@ -1,0 +1,1 @@
+ALTER TABLE capture_denormalized ADD COLUMN tree_id uuid;
