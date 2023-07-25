@@ -2,8 +2,8 @@ const BaseRepository = require('./BaseRepository');
 
 class CaptureRepository extends BaseRepository {
   constructor(session) {
-    super('capture_denormalized', session);
-    this._tableName = 'capture_denormalized';
+    super('reporting.capture_denormalized', session);
+    this._tableName = 'reporting.capture_denormalized';
     this._session = session;
   }
 
@@ -55,6 +55,7 @@ class CaptureRepository extends BaseRepository {
     const whereBuilder = function (object, builder) {
       const result = builder;
       const filterObject = { ...object };
+      console.log('FILTEROBJ', filterObject)
       delete filterObject.card_title;
       if (filterObject.capture_created_start_date) {
         result.where(
@@ -131,7 +132,7 @@ class CaptureRepository extends BaseRepository {
           'planter_last_name',
           'planter_identifier',
         )
-          .from('capture_denormalized')
+          .from('reporting.capture_denormalized')
           .where((builder) => whereBuilder(filter, builder))
           .as('planters');
       });
@@ -147,7 +148,7 @@ class CaptureRepository extends BaseRepository {
           'planting_organization_name',
           'planting_organization_uuid',
         )
-          .from('capture_denormalized')
+          .from('reporting.capture_denormalized')
           .where((builder) => whereBuilder(filter, builder))
           .groupBy(
             'planting_organization_uuid',
@@ -177,7 +178,7 @@ class CaptureRepository extends BaseRepository {
       .avg('totalPlanters')
       .from(function () {
         this.count('* as totalPlanters')
-          .from('capture_denormalized')
+          .from('reporting.capture_denormalized')
           .where((builder) => whereBuilder(filter, builder))
           .groupBy(
             'planter_first_name',
@@ -236,7 +237,7 @@ class CaptureRepository extends BaseRepository {
                 `count(*) as count, planting_organization_name, planting_organization_uuid`,
               ),
             )
-              .from('capture_denormalized')
+              .from('reporting.capture_denormalized')
               .where((builder) => whereBuilder(filter, builder))
               .groupBy(
                 'planting_organization_uuid',
@@ -265,7 +266,7 @@ class CaptureRepository extends BaseRepository {
             `count(*) as count, planting_organization_name, planting_organization_uuid`,
           ),
         )
-          .from('capture_denormalized')
+          .from('reporting.capture_denormalized')
           .where((builder) => whereBuilder(filter, builder))
           .groupBy(
             'planting_organization_uuid',
@@ -287,7 +288,7 @@ class CaptureRepository extends BaseRepository {
       .avg('totalCatchment')
       .from(function () {
         this.count('* as totalCatchment')
-          .from('capture_denormalized')
+          .from('reporting.capture_denormalized')
           .where((builder) => cachmentWhereBuilder(filter, builder))
           .groupBy('catchment')
           .as('catchments');
@@ -312,7 +313,7 @@ class CaptureRepository extends BaseRepository {
           'gender',
         )
           .where((builder) => whereBuilder(filter, builder))
-          .from('capture_denormalized')
+          .from('reporting.capture_denormalized')
           .as('planters');
       })
       .groupBy('gender')
@@ -370,7 +371,7 @@ class CaptureRepository extends BaseRepository {
         .whereNotNull('tree_id')
         .where((builder) => whereBuilder({ ...filter, approved: true }, builder));
 
-    //top matched captures (by organization)
+    // top matched captures (by organization)
     const topMatchedCapturesQuery = knex(this._tableName)
           .select(knex.raw('planting_organization_name, count(*) as count'))
           .whereNotNull('tree_id')
@@ -403,6 +404,7 @@ class CaptureRepository extends BaseRepository {
             await topUnverifiedCapturesQuery.cache();
           return { topUnverifiedCaptures };
         }
+
         case 'top_planters': {
           const topPlanters = await topPlantersQuery.cache();
           return { topPlanters };
@@ -421,7 +423,6 @@ class CaptureRepository extends BaseRepository {
           return { approvalRates };
         }
         case 'matched_captures': {
-          console.log('MATCHED CAPTURES IS CALLED')
           const topMatchedCaptures = await topMatchedCapturesQuery.cache();
           return { topMatchedCaptures };
         }
