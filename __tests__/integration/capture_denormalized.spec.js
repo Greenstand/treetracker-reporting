@@ -364,6 +364,7 @@ describe('capture_denormalized', () => {
             'species',
             'captures',
             'unverified_captures',
+            'matched_captures',
             'top_planters',
             'trees_per_planters',
             'last_updated_at',
@@ -381,6 +382,7 @@ describe('capture_denormalized', () => {
             'total',
             'unverified_captures',
           ]);
+          expect(res.body.matched_captures).to.have.keys(['total', 'matched_captures']);
           expect(res.body.top_planters).to.have.keys([
             'average',
             'top_planters',
@@ -396,6 +398,7 @@ describe('capture_denormalized', () => {
           checkObjectProperties(
             res.body.unverified_captures.unverified_captures,
           );
+          checkObjectProperties(res.body.matched_captures.matched_captures);
           checkObjectProperties(res.body.top_planters.top_planters);
           checkObjectProperties(res.body.trees_per_planters.trees_per_planters);
           checkObjectProperties(res.body.catchments.catchments);
@@ -426,7 +429,7 @@ describe('capture_denormalized', () => {
           .end(function (err, res) {
             if (err) return done(err);
             expect(res.body.message).to.eql(
-              '"card_title" must be one of [planters, species, captures, unverified_captures, top_planters, trees_per_planters, catchments, gender_details, approval_rates]',
+              '"card_title" must be one of [planters, species, captures, unverified_captures, matched_captures, top_planters, trees_per_planters, catchments, gender_details, approval_rates]',
             );
             return done();
           });
