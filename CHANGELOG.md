@@ -1,3 +1,20 @@
+# [1.9.0](https://github.com/Greenstand/treetracker-reporting/compare/v1.8.3...v1.9.0) (2023-07-25)
+
+
+### Bug Fixes
+
+* eslint errors ([63d70c6](https://github.com/Greenstand/treetracker-reporting/commit/63d70c6cb7385e805e297192344485c7361287f8))
+* removed table name prefix ([f184299](https://github.com/Greenstand/treetracker-reporting/commit/f184299e1ccf36ea29dc84aa3798d69251a88115))
+
+
+### Features
+
+* matched_captures reporting card ([dbad755](https://github.com/Greenstand/treetracker-reporting/commit/dbad7554d71a05c2c7e829374a70947d9ef08782))
+* matched_captures schema validation update ([4c2e0e0](https://github.com/Greenstand/treetracker-reporting/commit/4c2e0e08a9a756c4b18c3d46d6186241e0d03b12))
+* migration to add tree_id column ([f139545](https://github.com/Greenstand/treetracker-reporting/commit/f139545eb93891348140d95bb3cadf1751741e69))
+* repository methods for matched_captures ([31f4c77](https://github.com/Greenstand/treetracker-reporting/commit/31f4c77049809759e3a61fb24f1a89371e014712))
+* update capture_denormalized.spec.js ([97e3d58](https://github.com/Greenstand/treetracker-reporting/commit/97e3d5813b69882252aa208226de5a5061df66e0))
+
 ## [1.8.3](https://github.com/Greenstand/treetracker-reporting/compare/v1.8.2...v1.8.3) (2023-06-14)
 
 
