@@ -363,6 +363,24 @@ class CaptureRepository extends BaseRepository {
       .limit(options.limit)
       .offset(options.offset);
 
+
+    // total number of matched captures
+    const totalMatchedCapturesQuery = knex(this._tableName)
+        .count()
+        .whereNotNull('tree_id')
+        .where((builder) => whereBuilder({ ...filter, approved: true }, builder));
+
+    // top matched captures (by organization)
+    const topMatchedCapturesQuery = knex(this._tableName)
+          .select(knex.raw('planting_organization_name, count(*) as count'))
+          .whereNotNull('tree_id')
+          .where((builder) => whereBuilder({ ...filter, approved: true }, builder))
+          .groupBy('planting_organization_uuid', 'planting_organization_name')
+          .orderBy('count', 'desc')
+          .limit(options.limit)
+          .offset(options.offset);
+
+
     if (filter?.card_title) {
       const { card_title } = filter;
 
@@ -385,6 +403,7 @@ class CaptureRepository extends BaseRepository {
             await topUnverifiedCapturesQuery.cache();
           return { topUnverifiedCaptures };
         }
+
         case 'top_planters': {
           const topPlanters = await topPlantersQuery.cache();
           return { topPlanters };
@@ -401,6 +420,10 @@ class CaptureRepository extends BaseRepository {
         case 'approval_rates': {
           const approvalRates = await approvalRateQuery.cache();
           return { approvalRates };
+        }
+        case 'matched_captures': {
+          const topMatchedCaptures = await topMatchedCapturesQuery.cache();
+          return { topMatchedCaptures };
         }
 
         default:
@@ -429,6 +452,8 @@ class CaptureRepository extends BaseRepository {
     const topCatchment = await topCatchmentQuery.cache();
     const genderCount = await genderCountQuery.cache();
     const approvalRates = await approvalRateQuery.cache();
+    const totalMatchedCaptures = await totalMatchedCapturesQuery.cache();
+    const topMatchedCaptures = await topMatchedCapturesQuery.cache();
 
     return {
       totalGrowers: +totalGrowers[0].totalPlanters,
@@ -449,6 +474,8 @@ class CaptureRepository extends BaseRepository {
       topCatchment,
       genderCount,
       approvalRates,
+      totalMatchedCaptures: +totalMatchedCaptures[0].count,
+      topMatchedCaptures,
     };
   }
 }

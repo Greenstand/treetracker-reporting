@@ -1,0 +1,1 @@
+ALTER TABLE capture_denormalized DROP COLUMN tree_id;
