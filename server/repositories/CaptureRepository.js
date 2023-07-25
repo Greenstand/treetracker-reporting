@@ -2,8 +2,8 @@ const BaseRepository = require('./BaseRepository');
 
 class CaptureRepository extends BaseRepository {
   constructor(session) {
-    super('reporting.capture_denormalized', session);
-    this._tableName = 'reporting.capture_denormalized';
+    super('capture_denormalized', session);
+    this._tableName = 'capture_denormalized';
     this._session = session;
   }
 
@@ -55,7 +55,6 @@ class CaptureRepository extends BaseRepository {
     const whereBuilder = function (object, builder) {
       const result = builder;
       const filterObject = { ...object };
-      console.log('FILTEROBJ', filterObject)
       delete filterObject.card_title;
       if (filterObject.capture_created_start_date) {
         result.where(
@@ -132,7 +131,7 @@ class CaptureRepository extends BaseRepository {
           'planter_last_name',
           'planter_identifier',
         )
-          .from('reporting.capture_denormalized')
+          .from('capture_denormalized')
           .where((builder) => whereBuilder(filter, builder))
           .as('planters');
       });
@@ -148,7 +147,7 @@ class CaptureRepository extends BaseRepository {
           'planting_organization_name',
           'planting_organization_uuid',
         )
-          .from('reporting.capture_denormalized')
+          .from('capture_denormalized')
           .where((builder) => whereBuilder(filter, builder))
           .groupBy(
             'planting_organization_uuid',
@@ -178,7 +177,7 @@ class CaptureRepository extends BaseRepository {
       .avg('totalPlanters')
       .from(function () {
         this.count('* as totalPlanters')
-          .from('reporting.capture_denormalized')
+          .from('capture_denormalized')
           .where((builder) => whereBuilder(filter, builder))
           .groupBy(
             'planter_first_name',
@@ -237,7 +236,7 @@ class CaptureRepository extends BaseRepository {
                 `count(*) as count, planting_organization_name, planting_organization_uuid`,
               ),
             )
-              .from('reporting.capture_denormalized')
+              .from('capture_denormalized')
               .where((builder) => whereBuilder(filter, builder))
               .groupBy(
                 'planting_organization_uuid',
@@ -266,7 +265,7 @@ class CaptureRepository extends BaseRepository {
             `count(*) as count, planting_organization_name, planting_organization_uuid`,
           ),
         )
-          .from('reporting.capture_denormalized')
+          .from('capture_denormalized')
           .where((builder) => whereBuilder(filter, builder))
           .groupBy(
             'planting_organization_uuid',
@@ -288,7 +287,7 @@ class CaptureRepository extends BaseRepository {
       .avg('totalCatchment')
       .from(function () {
         this.count('* as totalCatchment')
-          .from('reporting.capture_denormalized')
+          .from('capture_denormalized')
           .where((builder) => cachmentWhereBuilder(filter, builder))
           .groupBy('catchment')
           .as('catchments');
@@ -313,7 +312,7 @@ class CaptureRepository extends BaseRepository {
           'gender',
         )
           .where((builder) => whereBuilder(filter, builder))
-          .from('reporting.capture_denormalized')
+          .from('capture_denormalized')
           .as('planters');
       })
       .groupBy('gender')
