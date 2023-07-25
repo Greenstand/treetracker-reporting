@@ -94,6 +94,8 @@ class Capture {
     topCatchment = [],
     genderCount = [],
     approvalRates,
+    totalMatchedCaptures = undefined,
+    topMatchedCaptures = [],
   }) {
     const planters = {
       total: totalGrowers,
@@ -170,11 +172,22 @@ class Capture {
       };
     });
 
+    const matched_captures = {
+      total: totalMatchedCaptures,
+      matched_captures: topMatchedCaptures.map(({ planting_organization_name, count }) => {
+        return {
+          name: planting_organization_name,
+          number: count,
+        }
+      })
+    }
+
     return {
       planters,
       species,
       captures,
       unverified_captures,
+      matched_captures,
       top_planters,
       trees_per_planters,
       last_updated_at,
@@ -203,6 +216,8 @@ class Capture {
       topCatchment,
       genderCount,
       approvalRates,
+      totalMatchedCaptures,
+      topMatchedCaptures,
     } = await this._captureRepository.getStatistics(filter);
 
     return this.constructor.generateFormattedResponse({
@@ -223,6 +238,8 @@ class Capture {
       topCatchment,
       genderCount,
       approvalRates,
+      totalMatchedCaptures,
+      topMatchedCaptures,
     });
   }
 
