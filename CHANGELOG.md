@@ -1,3 +1,16 @@
+# [1.10.0](https://github.com/Greenstand/treetracker-reporting/compare/v1.9.0...v1.10.0) (2023-08-22)
+
+
+### Bug Fixes
+
+* tests ([cb3045a](https://github.com/Greenstand/treetracker-reporting/commit/cb3045a2be0c035bc464d73a6837e6330dde2e0b))
+
+
+### Features
+
+* add surviving freetown cards ([6d88f04](https://github.com/Greenstand/treetracker-reporting/commit/6d88f040493902b8ff6723a821e66a6b160ef16f))
+* add surviving freetown cards ([0e9590a](https://github.com/Greenstand/treetracker-reporting/commit/0e9590a97365e3c87c50dd286eb7cd746942c760))
+
 # [1.9.0](https://github.com/Greenstand/treetracker-reporting/compare/v1.8.3...v1.9.0) (2023-07-25)
 
 
