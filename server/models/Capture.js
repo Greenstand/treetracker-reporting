@@ -96,6 +96,12 @@ class Capture {
     approvalRates,
     totalMatchedCaptures = undefined,
     topMatchedCaptures = [],
+    totalSurvivingTrees,
+    survivingTrees = [],
+    averageSurvivingCatchments,
+    survivingCatchments = [],
+    totalSurvivingSpecies,
+    survivingSpecies = [],
   }) {
     const planters = {
       total: totalGrowers,
@@ -174,13 +180,36 @@ class Capture {
 
     const matched_captures = {
       total: totalMatchedCaptures,
-      matched_captures: topMatchedCaptures.map(({ planting_organization_name, count }) => {
-        return {
-          name: planting_organization_name,
-          number: count,
-        }
-      })
-    }
+      matched_captures: topMatchedCaptures.map(
+        ({ planting_organization_name, count }) => {
+          return {
+            name: planting_organization_name,
+            number: count,
+          };
+        },
+      ),
+    };
+
+    const surviving_catchments = {
+      average: Math.round(averageSurvivingCatchments),
+      catchments: survivingCatchments.map(({ catchment, count }) => {
+        return { name: catchment, number: count };
+      }),
+    };
+
+    const surviving_trees = {
+      total: totalSurvivingTrees,
+      trees: survivingTrees.map(({ planting_organization_name, count }) => {
+        return { name: planting_organization_name, number: count };
+      }),
+    };
+
+    const surviving_species = {
+      total: totalSurvivingSpecies,
+      species: survivingSpecies.map(({ species: s, count }) => {
+        return { name: s, number: count };
+      }),
+    };
 
     return {
       planters,
@@ -192,6 +221,9 @@ class Capture {
       trees_per_planters,
       last_updated_at,
       catchments,
+      surviving_catchments,
+      surviving_trees,
+      surviving_species,
       gender_details: { total: totalGrowers, gender_details },
       approval_rates: { approval_rates: approvalRates },
     };
@@ -218,6 +250,12 @@ class Capture {
       approvalRates,
       totalMatchedCaptures,
       topMatchedCaptures,
+      totalSurvivingTrees,
+      survivingTrees,
+      averageSurvivingCatchments,
+      survivingCatchments,
+      totalSurvivingSpecies,
+      survivingSpecies,
     } = await this._captureRepository.getStatistics(filter);
 
     return this.constructor.generateFormattedResponse({
@@ -240,6 +278,12 @@ class Capture {
       approvalRates,
       totalMatchedCaptures,
       topMatchedCaptures,
+      totalSurvivingTrees,
+      survivingTrees,
+      averageSurvivingCatchments,
+      survivingCatchments,
+      totalSurvivingSpecies,
+      survivingSpecies,
     });
   }
 
