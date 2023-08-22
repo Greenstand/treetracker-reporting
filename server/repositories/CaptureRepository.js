@@ -363,23 +363,87 @@ class CaptureRepository extends BaseRepository {
       .limit(options.limit)
       .offset(options.offset);
 
-
     // total number of matched captures
     const totalMatchedCapturesQuery = knex(this._tableName)
-        .count()
-        .whereNotNull('tree_id')
-        .where((builder) => whereBuilder({ ...filter, approved: true }, builder));
+      .count()
+      .whereNotNull('tree_id')
+      .where((builder) => whereBuilder({ ...filter, approved: true }, builder));
 
     // top matched captures (by organization)
     const topMatchedCapturesQuery = knex(this._tableName)
-          .select(knex.raw('planting_organization_name, count(*) as count'))
-          .whereNotNull('tree_id')
-          .where((builder) => whereBuilder({ ...filter, approved: true }, builder))
-          .groupBy('planting_organization_uuid', 'planting_organization_name')
-          .orderBy('count', 'desc')
-          .limit(options.limit)
-          .offset(options.offset);
+      .select(knex.raw('planting_organization_name, count(*) as count'))
+      .whereNotNull('tree_id')
+      .where((builder) => whereBuilder({ ...filter, approved: true }, builder))
+      .groupBy('planting_organization_uuid', 'planting_organization_name')
+      .orderBy('count', 'desc')
+      .limit(options.limit)
+      .offset(options.offset);
 
+    // FREETOWN SURVIVING TREES' CARDS
+    const freetownSurvivingTreesFilter = {
+      tree_organization_uuid: '058148b8-9606-4c61-9dea-7c7174faf234',
+    };
+    const totalSurvivingTreesQuery = knex(this._tableName)
+      .count()
+      .where((builder) =>
+        whereBuilder({ ...filter, ...freetownSurvivingTreesFilter }, builder),
+      );
+
+    const survivingTreesQuery = knex(this._tableName)
+      .select(knex.raw('planting_organization_name, count(*) as count'))
+      .where((builder) =>
+        whereBuilder({ ...filter, ...freetownSurvivingTreesFilter }, builder),
+      )
+      .groupBy('planting_organization_uuid', 'planting_organization_name')
+      .orderBy('count', 'desc')
+      .limit(options.limit)
+      .offset(options.offset);
+
+    const averageSurvivingCatchmentsQuery = knex(this._tableName)
+      .avg('totalCatchment')
+      .from(function () {
+        this.count('* as totalCatchment')
+          .from('capture_denormalized')
+          .where((builder) =>
+            cachmentWhereBuilder(
+              { ...filter, ...freetownSurvivingTreesFilter },
+              builder,
+            ),
+          )
+          .groupBy('catchment')
+          .as('catchments');
+      });
+
+    const survivingCatchmentsQuery = knex(this._tableName)
+      .select(knex.raw('catchment, count(*) as count'))
+      .where((builder) =>
+        cachmentWhereBuilder(
+          { ...filter, ...freetownSurvivingTreesFilter },
+          builder,
+        ),
+      )
+      .whereNotNull('catchment')
+      .groupBy('catchment')
+      .orderBy('count', 'desc')
+      .limit(options.limit)
+      .offset(options.offset);
+
+    const totalSurvivingSpeciesQuery = knex(this._tableName)
+      .where((builder) =>
+        whereBuilder({ ...filter, ...freetownSurvivingTreesFilter }, builder),
+      )
+      .countDistinct('species as totalSpecies');
+
+    const survivingSpeciesQuery = knex(this._tableName)
+      .select(knex.raw('species, count(*) as count'))
+      .where((builder) =>
+        whereBuilder({ ...filter, ...freetownSurvivingTreesFilter }, builder),
+      )
+      .whereNotNull('species')
+      .groupBy('species')
+      .orderBy('count', 'desc')
+      .limit(options.limit)
+      .offset(options.offset);
 
     if (filter?.card_title) {
       const { card_title } = filter;
@@ -425,6 +489,19 @@ class CaptureRepository extends BaseRepository {
           const topMatchedCaptures = await topMatchedCapturesQuery.cache();
           return { topMatchedCaptures };
         }
+        // FREETOWN SURVIVING TREES
+        case 'surviving_trees': {
+          const survivingTrees = await survivingTreesQuery.cache();
+          return { survivingTrees };
+        }
+        case 'surviving_catchments': {
+          const survivingCatchments = await survivingCatchmentsQuery.cache();
+          return { survivingCatchments };
+        }
+        case 'surviving_species': {
+          const survivingSpecies = await survivingSpeciesQuery.cache();
+          return { survivingSpecies };
+        }
 
         default:
           break;
@@ -454,6 +531,13 @@ class CaptureRepository extends BaseRepository {
     const approvalRates = await approvalRateQuery.cache();
     const totalMatchedCaptures = await totalMatchedCapturesQuery.cache();
     const topMatchedCaptures = await topMatchedCapturesQuery.cache();
+    const totalSurvivingTrees = await totalSurvivingTreesQuery.cache();
+    const survivingTrees = await survivingTreesQuery.cache();
+    const averageSurvivingCatchments =
+      await averageSurvivingCatchmentsQuery.cache();
+    const survivingCatchments = await survivingCatchmentsQuery.cache();
+    const totalSurvivingSpecies = await totalSurvivingSpeciesQuery.cache();
+    const survivingSpecies = await survivingSpeciesQuery.cache();
 
     return {
       totalGrowers: +totalGrowers[0].totalPlanters,
@@ -476,6 +560,12 @@ class CaptureRepository extends BaseRepository {
       approvalRates,
       totalMatchedCaptures: +totalMatchedCaptures[0].count,
       topMatchedCaptures,
+      totalSurvivingTrees: +totalSurvivingTrees[0].count,
+      survivingTrees,
+      averageSurvivingCatchments: +averageSurvivingCatchments[0].count,
+      survivingCatchments,
+      totalSurvivingSpecies: +totalSurvivingSpecies[0].count,
+      survivingSpecies,
     };
   }
 }
