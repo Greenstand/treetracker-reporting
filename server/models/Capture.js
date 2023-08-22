@@ -96,11 +96,11 @@ class Capture {
     approvalRates,
     totalMatchedCaptures = undefined,
     topMatchedCaptures = [],
-    totalSurvivingTrees,
+    totalSurvivingTrees = undefined,
     survivingTrees = [],
-    averageSurvivingCatchments,
+    averageSurvivingCatchments = undefined,
     survivingCatchments = [],
-    totalSurvivingSpecies,
+    totalSurvivingSpecies = undefined,
     survivingSpecies = [],
   }) {
     const planters = {

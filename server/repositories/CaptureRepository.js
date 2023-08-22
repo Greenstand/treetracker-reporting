@@ -562,7 +562,7 @@ class CaptureRepository extends BaseRepository {
       topMatchedCaptures,
       totalSurvivingTrees: +totalSurvivingTrees[0].count,
       survivingTrees,
-      averageSurvivingCatchments: +averageSurvivingCatchments[0].count,
+      averageSurvivingCatchments: +averageSurvivingCatchments[0].avg,
       survivingCatchments,
       totalSurvivingSpecies: +totalSurvivingSpecies[0].count,
       survivingSpecies,
