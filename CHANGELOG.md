@@ -1,3 +1,10 @@
+## [1.10.1](https://github.com/Greenstand/treetracker-reporting/compare/v1.10.0...v1.10.1) (2023-08-22)
+
+
+### Bug Fixes
+
+* minor fixes ([cfc3c0c](https://github.com/Greenstand/treetracker-reporting/commit/cfc3c0c309fb6f552e36116f4cebeecd65d21cee))
+
 # [1.10.0](https://github.com/Greenstand/treetracker-reporting/compare/v1.9.0...v1.10.0) (2023-08-22)
 
 
