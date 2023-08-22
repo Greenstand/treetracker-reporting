@@ -371,6 +371,9 @@ describe('capture_denormalized', () => {
             'catchments',
             'gender_details',
             'approval_rates',
+            'surviving_trees',
+            'surviving_species',
+            'surviving_catchments',
           ]);
 
           expect(res.body.last_updated_at).eq(captureOne.created_at);
@@ -432,7 +435,7 @@ describe('capture_denormalized', () => {
           .end(function (err, res) {
             if (err) return done(err);
             expect(res.body.message).to.eql(
-              '"card_title" must be one of [planters, species, captures, unverified_captures, matched_captures, top_planters, trees_per_planters, catchments, gender_details, approval_rates,surviving_trees,surviving_catchments,surviving_species]',
+              '"card_title" must be one of [planters, species, captures, unverified_captures, matched_captures, top_planters, trees_per_planters, catchments, gender_details, approval_rates, surviving_trees, surviving_catchments, surviving_species]',
             );
             return done();
           });
