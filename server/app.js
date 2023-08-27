@@ -14,7 +14,7 @@ Sentry.init({ dsn: sentryDSN });
 app.use(cors());
 
 /*
- * check request
+ * Check request
  */
 app.use(
   handlerWrapper(async (req, _res, next) => {
