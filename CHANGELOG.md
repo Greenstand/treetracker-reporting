@@ -1,3 +1,10 @@
+## [1.10.5](https://github.com/Greenstand/treetracker-reporting/compare/v1.10.4...v1.10.5) (2023-08-28)
+
+
+### Bug Fixes
+
+* update sealed secret for db in dev ([fd9e8b8](https://github.com/Greenstand/treetracker-reporting/commit/fd9e8b86e9915933d4a6a134f377461a2c706b68))
+
 ## [1.10.4](https://github.com/Greenstand/treetracker-reporting/compare/v1.10.3...v1.10.4) (2023-08-27)
 
 
