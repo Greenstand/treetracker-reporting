@@ -138,4 +138,5 @@ npm run server-test
 
 This command would run a API server locally, and seed some basic data into DB (the same with the data we used in the integration test).
 
+.
 
