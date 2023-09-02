@@ -1,3 +1,10 @@
+## [1.10.7](https://github.com/Greenstand/treetracker-reporting/compare/v1.10.6...v1.10.7) (2023-09-02)
+
+
+### Bug Fixes
+
+* trigger deployment ([a7e8b96](https://github.com/Greenstand/treetracker-reporting/commit/a7e8b96aebc7fa7118f58f761a6b2df131615ad4))
+
 ## [1.10.6](https://github.com/Greenstand/treetracker-reporting/compare/v1.10.5...v1.10.6) (2023-09-01)
 
 
