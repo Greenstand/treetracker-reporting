@@ -192,21 +192,23 @@ class Capture {
 
     const surviving_catchments = {
       average: Math.round(averageSurvivingCatchments),
-      catchments: survivingCatchments.map(({ catchment, count }) => {
+      surviving_catchments: survivingCatchments.map(({ catchment, count }) => {
         return { name: catchment, number: count };
       }),
     };
 
     const surviving_trees = {
       total: totalSurvivingTrees,
-      trees: survivingTrees.map(({ planting_organization_name, count }) => {
-        return { name: planting_organization_name, number: count };
-      }),
+      surviving_trees: survivingTrees.map(
+        ({ planting_organization_name, count }) => {
+          return { name: planting_organization_name, number: count };
+        },
+      ),
     };
 
     const surviving_species = {
       total: totalSurvivingSpecies,
-      species: survivingSpecies.map(({ species: s, count }) => {
+      surviving_species: survivingSpecies.map(({ species: s, count }) => {
         return { name: s, number: count };
       }),
     };
