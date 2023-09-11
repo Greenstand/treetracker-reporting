@@ -1,3 +1,10 @@
+## [1.10.8](https://github.com/Greenstand/treetracker-reporting/compare/v1.10.7...v1.10.8) (2023-09-11)
+
+
+### Bug Fixes
+
+* change variable names ([7b32910](https://github.com/Greenstand/treetracker-reporting/commit/7b329100be57482b58a5f75b598f73e3c3d67fd0))
+
 ## [1.10.7](https://github.com/Greenstand/treetracker-reporting/compare/v1.10.6...v1.10.7) (2023-09-02)
 
 
